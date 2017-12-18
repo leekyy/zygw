@@ -32,7 +32,5 @@ class TestController extends Controller
 
         return ApiResponse::makeResponse(true, $result, ApiResponse::SUCCESS_CODE);
     }
-    public function yy(){
-        
-    }
+
 }

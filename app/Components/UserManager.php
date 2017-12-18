@@ -8,8 +8,11 @@
  */
 
 namespace App\Components;
-
 use App\Models\User;
+use App\Models\Goods;
+use App\Models\Rules;
+use Illuminate\Support\Facades\DB;
+use App\Models\Pingjia;
 
 class UserManager
 {
@@ -21,9 +24,9 @@ class UserManager
      *
      * 2017-09-28
      */
-    public static function getUserInfoByIdWithToken($id)
+    public static function getUserInfoByIdWithToken($data)
     {
-        $user = User::where('id', '=', $id)->first();
+        $user = User::find($data['id']);
         return $user;
     }
 
@@ -36,7 +39,7 @@ class UserManager
      */
     public static function getUserInfoById($id)
     {
-        $user = self::getUserInfoByIdWithToken($id);
+        $user = User::where('id','=',$id)->first();
         if ($user) {
             $user->token = null;
         }
@@ -53,7 +56,7 @@ class UserManager
      * 返回值
      *
      */
-    public static function ckeckToken($id, $token)
+    public static function checkToken($id, $token)
     {
         //根据id、token获取用户信息
         $count = User::where('id', '=', $id)->where('token', '=', $token)->count();
@@ -63,6 +66,61 @@ class UserManager
             return false;
         }
     }
+
+    /*获取用户的佣金
+     * By yinyue
+     *
+     * 2017-12-5
+     */
+
+    public static  function  getUserYongjin($id){
+        $user = User::find($id);
+        return $user;
+
+    }
+
+    /*获取积分商品
+     * By yinyue
+     *2017-12-6
+     */
+     public static  function  getGoods(){
+         $good = Goods::where('state',"=",'0')->get();
+         return $good;
+     }
+
+    /*获取积分规则
+   * By yinyue
+   *2017-12-7
+   */
+    public static  function  getRules(){
+        $rules = Rules::where('state',"=",'0')->get();
+        return $rules;
+    }
+
+    /*获取客户对我的接待评价
+  * By yinyue
+  *2017-12-7
+  */
+    public static  function  getPingjia(){
+//        $hrs = DB::table('t_housing_resources')->leftJoin('t_house_detail','t_housing_resources.id','=','t_house_detail.house_id')->find($id);
+        $rules = DB::table('t_client_data')->join('t_reception_evaluation','t_client_data.id','=','t_reception_evaluation.kehu_id')->get();
+        return $rules;
+    }
+
+/*获取成交客户的房贷信息
+ * By yinyue
+ * 2017-12-8
+ */
+
+ public static  function  getJisuanqi(){
+
+
+
+
+
+
+ }
+
 
     /*
      * 用户登录
@@ -109,6 +167,9 @@ class UserManager
         if (array_key_exists('xcx_openid', $data)) {
             $user->xcx_openid = array_get($data, 'xcx_openid');
         }
+        if (array_key_exists('token', $data)) {
+            $user->token = array_get($data, 'token');
+        }
         if (array_key_exists('unionid', $data)) {
             $user->unionid = array_get($data, 'unionid');
         }
@@ -127,6 +188,21 @@ class UserManager
         if (array_key_exists('city', $data)) {
             $user->city = array_get($data, 'city');
         }
+        if (array_key_exists('email', $data)) {
+            $user->email = array_get($data, 'email');
+        }
+        if (array_key_exists('cardID', $data)) {
+            $user->cardID = array_get($data, 'cardID');
+        }
+        if (array_key_exists('tuijian', $data)) {
+            $user->tuijian = array_get($data, 'tuijian');
+        }
+        if (array_key_exists('yongjin', $data)) {
+            $user->yongjin = array_get($data, 'yongjin');
+        }
+
+
+
         return $user;
     }
 
@@ -166,9 +242,9 @@ class UserManager
     public static function updateUser($data)
     {
         //配置用户信息
-        $user = self::getUserInfoByIdWithToken($data['user_id']);
-        $user = self::setUser($user, $data);
-        $user->save();
+        $user = UserManager::getUserInfoByIdWithToken($data);
+      $user = self::setUser($user, $data);
+       $user->save();
         return $user;
     }
 

@@ -25,6 +25,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/index', 'Admin\IndexController@index');  //首页
     Route::get('/dashboard/index', 'Admin\IndexController@index');    //首页
 
+
     //错误页面
     Route::get('/error/500', 'Admin\IndexController@error');  //错误页面
 

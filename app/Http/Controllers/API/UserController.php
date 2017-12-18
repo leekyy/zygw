@@ -120,7 +120,7 @@ class UserController extends Controller
     public function updateUserById(Request $request)
     {
         $requestValidationResult = RequestValidator::validator($request->all(), [
-            'user_id' => 'required',
+            'id' => 'required',
         ]);
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
@@ -144,8 +144,8 @@ class UserController extends Controller
     public function getUserById(Request $request)
     {
         $requestValidationResult = RequestValidator::validator($request->all(), [
-            'id' => 'required',
-        ]);
+      'id' => 'required',
+    ]);
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
@@ -158,6 +158,60 @@ class UserController extends Controller
         }
     }
 
+    /*获取用户的佣金
+     *
+     * By yinyue
+     * 2017-12-5
+     */
+
+    public  function getUserYongjin(Request $request){
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $data = $request->all();
+        $user = UserManager::getUserYongjin($data['id']);
+        if ($user) {
+            return ApiResponse::makeResponse(true, $user, ApiResponse::SUCCESS_CODE);
+        } else {
+            return ApiResponse::makeResponse(false, ApiResponse::$errorMassage[ApiResponse::NO_USER], ApiResponse::NO_USER);
+        }
+
+    }
+//获取积分商品
+    public function  getGoods(){
+        $user = UserManager::getGoods();
+        return ApiResponse::makeResponse(true, $user, ApiResponse::SUCCESS_CODE);
+    }
+
+    //获取积分规则
+    public function  getRules(){
+        $rules = UserManager::getRules();
+        return ApiResponse::makeResponse(true, $rules, ApiResponse::SUCCESS_CODE);
+    }
+    //获取客户的成交的房贷计算器
+//    public function getJisuanqi(){
+//        $hrs = UserManager::getJisuanqi();
+//        return ApiResponse::makeResponse(true, $hrs, ApiResponse::SUCCESS_CODE);
+//    }
+
+//获取客户对我的接待评价
+    public function getPingjia(Request $request){
+        $data = $request->all();
+        $requestValidationResult = RequestValidator::validator($data, [
+//            'id' => 'required',
+        ]);
+        if (!$requestValidationResult) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $hrs = UserManager::getPingjia();
+
+//      $hrs = HByIdManager::getHById($id);
+
+        return ApiResponse::makeResponse(true, $hrs, ApiResponse::SUCCESS_CODE);
+    }
     /*
      * 根据id获取用户信息带token
      *
@@ -171,7 +225,8 @@ class UserController extends Controller
     public function getUserInfoByIdWithToken(Request $request)
     {
         $requestValidationResult = RequestValidator::validator($request->all(), [
-            'id' => 'required',
+//            'user_id' => 'requ//            'token'=>'required',ired',
+
         ]);
 
         $data = $request->all();
@@ -180,7 +235,7 @@ class UserController extends Controller
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
 
-        $user = UserManager::getUserInfoByIdWithToken($data['id']);
+        $user = UserManager::getUserInfoByIdWithToken($data);
         if ($user) {
             return ApiResponse::makeResponse(true, $user, ApiResponse::SUCCESS_CODE);
         } else {
