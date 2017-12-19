@@ -66,6 +66,18 @@ class KHManager
         $bkh->kehu_name = $data['kehu_name'];
         $bkh->telephone = $data['telephone'];
         $bkh->cartID = $data['cartID'];
+        $bkh->area = $data['area'];
+        $bkh->way = $data['way'];
+        $bkh->intent = $data['intent'];
+        $bkh->size = $data['size'];
+        $bkh->purpose = $data['purpose'];
+//      $bkh->visitingstate = $data['visitingstate'];
+//        $bkh->transactionstate = $data['transactionstate'];
+//        $bkh->signingstate = $data['signingstate'];
+//        $bkh->transactionmethod = $data['transactionmethod'];
+        $bkh->care = $data['care'];
+        $bkh->remark = $data['remark'];
+        $bkh->order = $data['order'];
         $bkh->save();
         return $bkh;
     }
