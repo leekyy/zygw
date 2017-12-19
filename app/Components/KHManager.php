@@ -71,7 +71,7 @@ class KHManager
         $bkh->intent = $data['intent'];
         $bkh->size = $data['size'];
         $bkh->purpose = $data['purpose'];
-//      $bkh->visitingstate = $data['visitingstate'];
+//        $bkh->visitingstate = $data['visitingstate'];
 //        $bkh->transactionstate = $data['transactionstate'];
 //        $bkh->signingstate = $data['signingstate'];
 //        $bkh->transactionmethod = $data['transactionmethod'];
