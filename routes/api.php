@@ -72,6 +72,11 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('user/getUserYongjin','API\UserController@getUserYongjin');
     //获取积分商品
     Route::get('goods/getGoods','API\UserController@getGoods');
+    Route::get('goods/getGoodById','API\UserController@getGoodById');
+    Route::post('user/getUserJifen','API\UserController@getUserJifen');
+    Route::post('user/getExchange','API\UserController@getExchange');
+    //获取合作细则
+    Route::get('user/getHezuo','API\UserController@getHezuo');
     //获取积分规则
     Route::get('rules/getRules','API\UserController@getRules');
     //获取客户对我的接待评价

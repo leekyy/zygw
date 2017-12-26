@@ -8,6 +8,7 @@
  */
 
 namespace App\Components;
+use App\Models\Exange;
 use App\Models\User;
 use App\Models\Goods;
 use App\Models\Rules;
@@ -88,6 +89,86 @@ class UserManager
          return $good;
      }
 
+    public static function  getGoodById($data){
+        $id = $data['id'];
+        $hr = Goods::find($id);
+        return $hr;
+    }
+
+
+     /*获取用户的兑换记录
+      * By yinyue
+      * 2017-12-22
+      */
+     public static  function getExchange($data){
+        //var_dump($good);
+        //$goods = new Exange();
+
+        $good = DB::table('t_goods_information')
+        ->where('id','=',$data['id'])
+        ->where('state','=',0)
+        ->first();
+
+
+        $user = DB::table('t_user_info')
+        ->where('id','=',$data['user_id'])
+        ->where('jifen','>=',$good->point)
+        ->first();
+
+        if(empty($user)){
+            return false;
+        }else{
+             $p = $user->jifen - $good->point;
+             $rs = DB::table('t_user_info')
+             ->where('id','=',$data['user_id']) 
+             ->update(['jifen'=>$p]);   
+        }
+
+         
+        // $user = DB::table('t_goods_exchange')
+        // ->get();
+
+        $goods = DB::table('t_goods_exchange')
+        ->insert(['goods_id'=>$good->id,'user_id'=>$user->id
+            ,'created_at'=>date('Y-m-d H:i:s')]);
+        return $goods;
+       /* $goods->goods_id = $data['goods_id'];
+        $goods->goodsname = $data['goodsname'];
+         $g= Exange::where('id','=',$id)->get();*/
+        //$goods->save();
+        //return $good;
+     }
+
+
+
+     //用户积分加10\
+     public static function getUserJifen($data){
+       $user =DB::table('t_user_info')->where('id','=',$data['id'])->first();
+        if($user->qiandao_time == ''){
+            $user->qiandao_time = 0;
+        }
+        if(date('Y-m-d') != 
+            date('Y-m-d',strtotime($user->qiandao_time))){
+            $jifen =$user->jifen+10;
+            $qiandao_time =date('Y-m-d H:i:s');
+            $rs = DB::table('t_user_info')
+             ->where('id','=',$data['id']) 
+             ->update(['jifen'=>$jifen,'qiandao_time'=>$qiandao_time]); 
+
+             $user->jifen = $user->jifen+10;
+
+             $user =  json_decode( json_encode( $user),true);
+             $rs = ['code'=>true,'user'=>$user];
+             return $rs;
+
+        }else{
+            $user =  json_decode( json_encode( $user),true);
+            $rs = ['code'=>false,'user'=>$user];
+            return $rs;
+        }
+        
+     }
+
     /*获取积分规则
    * By yinyue
    *2017-12-7
@@ -105,6 +186,14 @@ class UserManager
 //        $hrs = DB::table('t_housing_resources')->leftJoin('t_house_detail','t_housing_resources.id','=','t_house_detail.house_id')->find($id);
         $rules = DB::table('t_client_data')->join('t_reception_evaluation','t_client_data.id','=','t_reception_evaluation.kehu_id')->get();
         return $rules;
+    }
+
+    public static function getHezuo(){
+        $user = DB::table('t_cooperation_rules')
+        ->where('state','=',0)
+        ->get();
+        return $user;
+
     }
 
 /*获取成交客户的房贷信息
@@ -200,6 +289,10 @@ class UserManager
         if (array_key_exists('yongjin', $data)) {
             $user->yongjin = array_get($data, 'yongjin');
         }
+        if (array_key_exists('role', $data)) {
+            $user->role = array_get($data, 'role');
+        }
+
 
 
 
