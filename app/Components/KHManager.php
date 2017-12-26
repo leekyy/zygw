@@ -62,24 +62,29 @@ class KHManager
      */
 
     public  static  function  getBKH($data){
-        $bkh = new KH;
-        $bkh->kehu_name = $data['kehu_name'];
-        $bkh->telephone = $data['telephone'];
-        $bkh->cartID = $data['cartID'];
-        $bkh->area = $data['area'];
-        $bkh->way = $data['way'];
-        $bkh->intent = $data['intent'];
-        $bkh->size = $data['size'];
-        $bkh->purpose = $data['purpose'];
+        $bkhs = new KH;
+//        $bkh = DB::table('t_user_info')
+//            ->leftjoin('t_client_data','t_user_info.id','=','t_client_data.user_id')
+//           // ->where('t_user_info.id','=','t_client_data.user_id')
+//            ->get();
+       $bkhs->kehu_name = $data['kehu_name'];
+        //$bkhs->user_id = $data['id'];
+       $bkhs->telephone = $data['telephone'];
+        $bkhs->cartID = $data['cartID'];
+        $bkhs->area = $data['area'];
+        $bkhs->way = $data['way'];
+        $bkhs->intent = $data['intent'];
+        $bkhs->size = $data['size'];
+        $bkhs->purpose = $data['purpose'];
 //        $bkh->visitingstate = $data['visitingstate'];
 //        $bkh->transactionstate = $data['transactionstate'];
 //        $bkh->signingstate = $data['signingstate'];
 //        $bkh->transactionmethod = $data['transactionmethod'];
-        $bkh->care = $data['care'];
-        $bkh->remark = $data['remark'];
-        $bkh->order = $data['order'];
-        $bkh->save();
-        return $bkh;
+        $bkhs->care = $data['care'];
+        $bkhs->remark = $data['remark'];
+        $bkhs->order = $data['order'];
+       $bkhs->save();
+        return $bkhs;
     }
  /*修改客户资料
   *
