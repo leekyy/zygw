@@ -50,6 +50,15 @@ class KHManager
             $kh = $kh->where('kehu_name','like','%'.$data['kehu_name'].'%');
         }
 
+        // if(array_key_exists('visitingstate', $data)){
+        //     if($data->visitingstate == 0){
+        //         $kh->get();
+        //     }
+            
+        //  }
+         // var_dump($kh);
+
+
         $kh = $kh->get();
 
         return $kh;
@@ -76,10 +85,10 @@ class KHManager
         $bkhs->intent = $data['intent'];
         $bkhs->size = $data['size'];
         $bkhs->purpose = $data['purpose'];
-//        $bkh->visitingstate = $data['visitingstate'];
-//        $bkh->transactionstate = $data['transactionstate'];
-//        $bkh->signingstate = $data['signingstate'];
-//        $bkh->transactionmethod = $data['transactionmethod'];
+       $bkh->visitingstate = $data['visitingstate'];
+       $bkh->transactionstate = $data['transactionstate'];
+       $bkh->signingstate = $data['signingstate'];
+       $bkh->transactionmethod = $data['transactionmethod'];
         $bkhs->care = $data['care'];
         $bkhs->remark = $data['remark'];
         $bkhs->order = $data['order'];

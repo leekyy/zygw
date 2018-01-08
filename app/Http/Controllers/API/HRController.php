@@ -137,6 +137,20 @@ class HRController extends Controller
          return ApiResponse::makeResponse(true, $hc, ApiResponse::SUCCESS_CODE);
      }
 
+      public function  getHouseReview(Request $request){
+        $data = $request->all();
+        $requestValidationResult = RequestValidator::validator($data, [
+            //'user_id' => 'required',
+//            'kehu_name' => 'required',
+        ]);
+        if (!$requestValidationResult) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $hr = HRManager::getHouseReview($data);
+        return ApiResponse::makeResponse(true, $hr, ApiResponse::SUCCESS_CODE);
+    }
+
+
 
 
 }

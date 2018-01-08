@@ -53,6 +53,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('hx/getHXById','API\HRController@getHXById');
     //根据小区id获取相对应的用户评论
     Route::get('hc/getHCById','API\HRController@getHCById');
+    Route::post('hrr/getHouseReview','API\HRController@getHouseReview');
     //接收前台提交的信息
     Route::post('kh/getBKH','API\KHController@getBKH');
     //修改客户的资料传到后台
@@ -77,6 +78,8 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('user/getExchange','API\UserController@getExchange');
     //获取合作细则
     Route::get('user/getHezuo','API\UserController@getHezuo');
+
+    Route::get('user/getWhitebook','API\UserController@getWhitebook');
     //获取积分规则
     Route::get('rules/getRules','API\UserController@getRules');
     //获取客户对我的接待评价

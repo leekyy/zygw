@@ -257,6 +257,11 @@ class UserController extends Controller
         $hezuo = UserManager::getHezuo();
         return ApiResponse::makeResponse(true, $hezuo, ApiResponse::SUCCESS_CODE);
     }   
+
+     public function getWhitebook(){
+        $hezuo = UserManager::getWhitebook();
+        return ApiResponse::makeResponse(true, $hezuo, ApiResponse::SUCCESS_CODE);
+    }   
    
 
     //获取积分规则

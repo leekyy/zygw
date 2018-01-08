@@ -195,6 +195,15 @@ class UserManager
         return $user;
 
     }
+   
+    public static function getWhitebook(){
+        $user = DB::table('t_white_book')
+        ->where('state','=',0)
+        ->get();
+        return $user;
+
+    }
+
 
 /*获取成交客户的房贷信息
  * By yinyue

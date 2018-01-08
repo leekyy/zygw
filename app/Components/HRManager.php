@@ -11,6 +11,7 @@ namespace App\Components;
 
 use App\Models\HR;
 use App\Models\HRD;
+use App\Models\HRR;
 use App\Models\HX;
 use Illuminate\Support\Facades\DB;
 
@@ -81,6 +82,18 @@ class HRManager
         $hr = $hr->get();
 
         return $hr;
+    }
+
+
+    public static function getHouseReview($data){
+        $bkhs = new HRR(); 
+         // $bkh = HR::find($id);  
+         //  $bkhs = HRR::find($bkh->id);    
+       $bkhs->comment = $data['comment'];
+        $bkhs->user_id = $data['user_id'];
+         $bkhs->house_id = $data['house_id'];
+       $bkhs->save();
+         return $bkhs;
     }
 
 
