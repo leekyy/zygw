@@ -30,7 +30,7 @@ class KHManager
      */
     public static function  getKHs(){
         $hrs =DB::table('t_client_data')
-            ->select('id','kehu_name','telephone','visitingstates','created_at')
+            ->select('id','kehu_name','telephone','visitingstate','created_at')
             ->get();
         return $hrs;
     }
@@ -87,8 +87,8 @@ class KHManager
         $bkhs->purpose = $data['purpose'];
        $bkhs->visitingstates = $data['visitingstates'];
        $bkhs->transactionstate = $data['transactionstate'];
-       $bkhs->signingstate = $data['signingstate'];
-       $bkhs->transactionmethod = $data['transactionmethod'];
+       $bkhs->signingstate = $data['signitransactionmethodngstate'];
+       $bkhs->transactionmethod = $data[''];
         $bkhs->care = $data['care'];
         $bkhs->remark = $data['remark'];
         $bkhs->order = $data['order'];
