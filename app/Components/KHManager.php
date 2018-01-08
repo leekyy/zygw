@@ -77,7 +77,7 @@ class KHManager
 //           // ->where('t_user_info.id','=','t_client_data.user_id')
 //            ->get();
        $bkhs->kehu_name = $data['kehu_name'];
-        //$bkhs->user_id = $data['id'];
+
        $bkhs->telephone = $data['telephone'];
         $bkhs->cartID = $data['cartID'];
         $bkhs->area = $data['area'];
@@ -85,10 +85,10 @@ class KHManager
         $bkhs->intent = $data['intent'];
         $bkhs->size = $data['size'];
         $bkhs->purpose = $data['purpose'];
-       $bkh->visitingstate = $data['visitingstate'];
-       $bkh->transactionstate = $data['transactionstate'];
-       $bkh->signingstate = $data['signingstate'];
-       $bkh->transactionmethod = $data['transactionmethod'];
+       $bkhs->visitingstates = $data['visitingstates'];
+       $bkhs->transactionstate = $data['transactionstate'];
+       $bkhs->signingstate = $data['signingstate'];
+       $bkhs->transactionmethod = $data['transactionmethod'];
         $bkhs->care = $data['care'];
         $bkhs->remark = $data['remark'];
         $bkhs->order = $data['order'];

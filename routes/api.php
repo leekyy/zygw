@@ -85,5 +85,5 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //获取客户对我的接待评价
     Route::get('pingjia/getPingjia','API\UserController@getPingjia');
     //获取客户的房贷计算器
-    Route::get('loan/getJisuanqi','API\UserController@getJisuanqi');
+    
 });
