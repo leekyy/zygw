@@ -197,10 +197,10 @@ class UserManager
     }
    
     public static function getWhitebook(){
-        $user = DB::table('t_white_book')
+        $wb = DB::table('t_white_book')
         ->where('state','=',0)
         ->get();
-        return $user;
+        return $wb;
 
     }
 
