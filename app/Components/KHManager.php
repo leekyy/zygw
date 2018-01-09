@@ -87,7 +87,7 @@ class KHManager
         $bkhs->purpose = $data['purpose'];
        $bkhs->visitingstates = $data['visitingstates'];
        $bkhs->transactionstate = $data['transactionstate'];
-       $bkhs->signingstate = $data['signitransactionmethodngstate'];
+       $bkhs->signingstate = $data['signingstate'];
        $bkhs->transactionmethod = $data[''];
         $bkhs->care = $data['care'];
         $bkhs->remark = $data['remark'];
