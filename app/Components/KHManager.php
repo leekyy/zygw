@@ -129,7 +129,7 @@ class KHManager
              $xkh ->purpose = $data['purpose'];
         }
         if(array_key_exists('visitingstate', $data)){
-            $xkh ->visitingstate = $data['visitingstate'];
+            $xkh ->visitingstate = $data['state'];
         }
         if(array_key_exists('transactionstate', $data)){
              $xkh ->transactionstate = $data['transactionstate'];
