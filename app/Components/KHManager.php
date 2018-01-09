@@ -43,8 +43,8 @@ class KHManager
     public static  function  getSearchKh($data){
         $kh = DB::table('t_client_data');
 
-        if (array_key_exists('visitingstate', $data)) {
-            $kh = $kh->where('visitingstate','like','%'.$data['visitingstate'].'%');
+        if (array_key_exists('visitingstates', $data)) {
+            $kh = $kh->where('visitingstates','like','%'.$data['visitingstates'].'%');
         }
         if (array_key_exists('kehu_name', $data)) {
             $kh = $kh->where('kehu_name','like','%'.$data['kehu_name'].'%');
