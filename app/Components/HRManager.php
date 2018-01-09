@@ -133,7 +133,7 @@ class HRManager
 
    public static function  getHCById($house_id){
 //       $hrs = DB::table('t_housing_resources')->leftJoin('t_house_detail','t_housing_resources.id','=','t_house_detail.house_id')->find($id);
-      $hc = DB::table('t_house_review')->where('house_id','=',$house_id)->get();
+      $hc = DB::table('t_house_review')->get();
       return $hc;
    }
 

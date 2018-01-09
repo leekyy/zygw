@@ -128,12 +128,12 @@ class HRController extends Controller
      public function  getHCById(Request $request){
         $data = $request->all();
          $requestValidationResult = RequestValidator::validator($data, [
-             'house_id' => 'required',
+            // 'house_id' => 'required',
          ]);
          if (!$requestValidationResult) {
              return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
          }
-         $hc = HRManager::getHCById($data['house_id']);
+         $hc = HRManager::getHCById($data);
          return ApiResponse::makeResponse(true, $hc, ApiResponse::SUCCESS_CODE);
      }
 
