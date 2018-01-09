@@ -30,7 +30,7 @@ class KHManager
      */
     public static function  getKHs(){
         $hrs =DB::table('t_client_data')
-            ->select('id','kehu_name','telephone','visitingstate','created_at')
+            ->select('id','kehu_name','telephone','visitingstates','created_at')
             ->get();
         return $hrs;
     }
