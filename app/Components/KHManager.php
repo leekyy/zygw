@@ -64,6 +64,25 @@ class KHManager
         return $kh;
     }
 
+    /*2017-1-15
+     * By Yinyue
+     * 在客户列表页可以根据楼盘搜索客户
+     */
+
+    public static  function getSearchKhs($data){
+
+        $kh  =DB::table('t_client_data')->where('t_client_data.intent','like','%'.$data['intent'].'%')->get();
+        return $kh;
+
+    }
+    public static  function getKhIntent(){
+
+        $kh  =DB::table('t_client_data')->select('intent')->get();
+        return $kh;
+
+    }
+
+
     /*获取前台提交传送过来的数据
      *
      * By yinyue
@@ -197,46 +216,7 @@ class KHManager
         $hr = KH::find($id);
         return $hr;
     }
-////根据id获取小区楼盘参数信息
-///*By yinyue
-// *
-// * 2017-11-28
-// */
-//    public static function getHDById($id){
-////       $hrs = DB::table('t_housing_resources')->leftJoin('t_house_detail','t_housing_resources.id','=','t_house_detail.house_id')->find($id);
-//
-//        $hrs = HR::find($id);
-//
-//        $hrd = HRD::find($hrs->id);
-//
-//       // $hrs = HR::join()
-//        return $hrd;
-//    }
-//
-//    /*根据小区楼盘获取相对应的户型推荐
-//     * By yinhue
-//     * 2017-11-29
-//     */
-//
-//    public  static  function getHXById($house_id){
-////
-//        $hx = DB::table('t_apartment_building')->where('house_id','=',$house_id)->get();
-//     return  $hx;
-//
-//    }
-//
-    /*根据房源小区id以及客户的id获取客户对小区的评价
-     * By yinyue
-     *
-     * 2017-11-30
-     */
 
-//   public static function  getHCById($house_id){
-////       $hrs = DB::table('t_housing_resources')->leftJoin('t_house_detail','t_housing_resources.id','=','t_house_detail.house_id')->find($id);
-//      $hc = DB::table('t_house_review')->where('house_id','=',$house_id)->get();
-//      return $hc;
-//   }
-//
 
     /*
      * 设置广告信息，用于编辑、

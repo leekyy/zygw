@@ -55,6 +55,34 @@ class KHController extends Controller
         return ApiResponse::makeResponse(true, $hr, ApiResponse::SUCCESS_CODE);
     }
 
+    /*2017-1-15
+     * By Yinyue
+     * 在客户列表页可以根据楼盘搜索客户
+     */
+    public  function  getSearchKhs(Request $request){
+        $data = $request->all();
+        $requestValidationResult = RequestValidator::validator($data, [
+          ' intent'=>'required',
+        ]);
+        if (!$requestValidationResult) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $hr = KHManager::getSearchKhs($data);
+        return ApiResponse::makeResponse(true, $hr, ApiResponse::SUCCESS_CODE);
+    }
+
+    public  function  getKhIntent(Request $request){
+        $data = $request->all();
+        $requestValidationResult = RequestValidator::validator($data, [
+           // ' intent'=>'required',
+        ]);
+        if (!$requestValidationResult) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $hr = KHManager::getKhIntent();
+        return ApiResponse::makeResponse(true, $hr, ApiResponse::SUCCESS_CODE);
+    }
+
 
     public function  getBKH(Request $request){
         $data = $request->all();
@@ -122,47 +150,6 @@ class KHController extends Controller
 
         return ApiResponse::makeResponse(true, $kh, ApiResponse::SUCCESS_CODE);
     }
-//
-//    //根据指定的房源小区id获得指定的楼盘参数
-//    public function getHDById(Request $request){
-//        $data = $request->all();
-//        $requestValidationResult = RequestValidator::validator($data, [
-//            'id' => 'required',
-//        ]);
-//        if (!$requestValidationResult) {
-//            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
-//        }
-//        $hrs = HRManager::getHDById($data['id']);
-//        return ApiResponse::makeResponse(true, $hrs, ApiResponse::SUCCESS_CODE);
-//
-//    }
-//
-//    //根据指定的小区id获得相对应的户型推荐
-//    public function  getHXById(Request $request){
-//        $data = $request->all();
-//        $requestValidationResult = RequestValidator::validator($data, [
-//            'house_id' => 'required',
-//        ]);
-//        if (!$requestValidationResult) {
-//            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
-//        }
-//        $hx = HRManager::getHXById($data['house_id']);
-//
-//        return ApiResponse::makeResponse(true, $hx, ApiResponse::SUCCESS_CODE);
-//    }
-//
-//    //根据指定的小区获取相对应的用户评论
-//     public function  getHCById(Request $request){
-//        $data = $request->all();
-//         $requestValidationResult = RequestValidator::validator($data, [
-//             'house_id' => 'required',
-//         ]);
-//         if (!$requestValidationResult) {
-//             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
-//         }
-//         $hc = HRManager::getHCById($data['house_id']);
-//         return ApiResponse::makeResponse(true, $hc, ApiResponse::SUCCESS_CODE);
-//     }
 
 
 

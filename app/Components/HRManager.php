@@ -64,7 +64,16 @@ class HRManager
             ->get();
         return  $hr;
     }
-   
+    /*2017-1-15
+     * By Yinyue
+     * 在客户列表页可以根据楼盘搜索客户
+     */
+//    public static  function getHouse($data){
+//      $house =DB::table('t_housing_resources')
+//          ->where('t_housing_resources.title','like','%'.$data['title'].'%')
+//          ->get();
+//      return $house;
+//    }
 
     public static function getSearchHr($data){
         $hr = DB::table('t_house_type')

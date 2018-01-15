@@ -52,6 +52,20 @@ class HRController extends Controller
         return ApiResponse::makeResponse(true, $hr, ApiResponse::SUCCESS_CODE);
     }
 
+//    public function getHouse(Request $request)
+//    {
+//        $data = $request->all();
+//        $requestValidationResult = RequestValidator::validator($data, [
+//            'title' => 'required',
+//        ]);
+//        if (!$requestValidationResult) {
+//            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+//        }
+//        $hr = HRManager::getHouse($data);
+//        return ApiResponse::makeResponse(true, $hr, ApiResponse::SUCCESS_CODE);
+//    }
+
+
     /*根据区域 面积 价钱搜索小区
      * By yinyue
      * 2017-12-12
