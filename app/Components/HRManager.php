@@ -102,7 +102,7 @@ class HRManager
          //  $bkhs = HRR::find($bkh->id);    
        $bkhs->comment = $data['comment'];
         $bkhs->user_id = $data['user_id'];
-         $bkhs->house_id = $data['house_id'];
+         $bkhs->house_id = $data['commentid'];
        $bkhs->save();
          return $bkhs;
     }
