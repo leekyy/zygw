@@ -29,8 +29,9 @@ class HRManager
      *
      */
     public static function  getHRs(){
-//        $hrs = HR::where('state','=', '0')->get();
-        $hrs = DB::table('t_house_type')->join('t_housing_resources','t_house_type.id','=','t_housing_resources.type_id')->get();
+        $hrs = HR::where('state','=', '0')->get();
+//        $hrs = DB::table('t_house_type')->join('t_housing_resources','t_house_type.id','=','t_housing_resources.type_id')
+//            ->get();
         return $hrs;
     }
 
@@ -63,6 +64,7 @@ class HRManager
             ->get();
         return  $hr;
     }
+   
 
     public static function getSearchHr($data){
         $hr = DB::table('t_house_type')
@@ -133,7 +135,7 @@ class HRManager
 
    public static function  getHCById($house_id){
 //       $hrs = DB::table('t_housing_resources')->leftJoin('t_house_detail','t_housing_resources.id','=','t_house_detail.house_id')->find($id);
-      $hc = DB::table('t_house_review')->get();
+      $hc = DB::table('t_house_review')->where('house_id','=',$house_id)->get();
       return $hc;
    }
 
