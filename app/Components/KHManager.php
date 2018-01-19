@@ -142,8 +142,8 @@ class KHManager
            $xkh ->way = $data['way'];
         }
 
-        if(array_key_exists('intent', $data)){
-           $xkh ->intent = $data['intent'];
+        if(array_key_exists('title', $data)){
+           $xkh ->title = $data['house_title'];
         }
         if(array_key_exists('size', $data)){
             $xkh ->size = $data['size'];
