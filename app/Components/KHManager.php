@@ -94,7 +94,9 @@ class KHManager
 
         $bkhs = DB::table('t_client_data')
             ->where('kehu_name',$data['kehu_name'])
-            ->where('title',$data['house_title'])
+            ->where('telephone',$data['telephone'])
+            ->where('house_id',$data['house_id'])
+//            ->where('title',$data['house_title'])
             ->first();
         if($bkhs){
             $data['ret']=$bkhs;
@@ -108,7 +110,8 @@ class KHManager
 
             $bkhs->telephone = $data['telephone'];
 
-            $bkhs->title = $data['house_title'];
+//            $bkhs->title = $data['house_title'];
+            $bkhs->house_id = $data['house_id'];
             $bkhs->visitingstates = $data['visitingstates'];
             $bkhs->save();
             $data['ret']=$bkhs;
