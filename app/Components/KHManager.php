@@ -12,6 +12,7 @@ namespace App\Components;
 use App\Models\HR;
 use App\Models\HRD;
 use App\Models\KH;
+use App\Models\BKH;
 use App\Models\NEWs;
 use Illuminate\Support\Facades\DB;
 
@@ -90,29 +91,32 @@ class KHManager
      */
 
     public  static  function  getBKH($data){
-        $bkhs = new KH;
-//        $bkh = DB::table('t_user_info')
-//            ->leftjoin('t_client_data','t_user_info.id','=','t_client_data.user_id')
-//           // ->where('t_user_info.id','=','t_client_data.user_id')
-//            ->get();
-       $bkhs->kehu_name = $data['kehu_name'];
 
-       $bkhs->telephone = $data['telephone'];
-        $bkhs->cartID = $data['cartID'];
-        $bkhs->area = $data['area'];
-        $bkhs->way = $data['way'];
-        $bkhs->intent = $data['intent'];
-        $bkhs->size = $data['size'];
-        $bkhs->purpose = $data['purpose'];
-       $bkhs->visitingstates = $data['visitingstates'];
-       $bkhs->transactionstate = $data['transactionstate'];
-       $bkhs->signingstate = $data['signingstate'];
-       $bkhs->transactionmethod = $data['transactionmethod'];
-        $bkhs->care = $data['care'];
-        $bkhs->remark = $data['remark'];
-        $bkhs->order = $data['order'];
-       $bkhs->save();
-        return $bkhs;
+        $bkhs = DB::table('t_client_data')
+            ->where('kehu_name',$data['kehu_name'])
+            ->where('title',$data['house_title'])
+            ->first();
+        if($bkhs){
+            $data['ret']=$bkhs;
+            $data['baobei']=1;
+            return $data;
+        }else{
+            $bkhs = new KH;
+            $bkhs->user_id = $data['user_id'];
+
+            $bkhs->kehu_name = $data['kehu_name'];
+
+            $bkhs->telephone = $data['telephone'];
+
+            $bkhs->title = $data['house_title'];
+            $bkhs->visitingstates = $data['visitingstates'];
+            $bkhs->save();
+            $data['ret']=$bkhs;
+            $data['baobei']=0;
+            return $data;
+        }
+
+
     }
  /*修改客户资料
   *
