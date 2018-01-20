@@ -25,14 +25,21 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/index', 'Admin\IndexController@index');  //首页
     Route::get('/dashboard/index', 'Admin\IndexController@index');    //首页
 
-
     //错误页面
     Route::get('/error/500', 'Admin\IndexController@error');  //错误页面
+
+    //轮播管理
+    Route::get('/ad/index', 'Admin\ADController@index');  //轮播管理首页
+    Route::get('/ad/setStatus/{id}', 'Admin\ADController@setStatus');  //设置轮播状态
+    Route::get('/ad/del/{id}', 'Admin\ADController@del');  //删除轮播
+    Route::get('/ad/edit', 'Admin\ADController@edit');  //新建或编辑轮播
+    Route::post('/ad/edit', 'Admin\ADController@editPost');  //新建或编辑轮播
 
     //管理员管理
     Route::get('/admin/index', 'Admin\AdminController@index');  //管理员管理首页
     Route::get('/admin/del/{id}', 'Admin\AdminController@del');  //删除管理员
     Route::get('/admin/edit', 'Admin\AdminController@edit');  //新建或编辑管理员
     Route::post('/admin/edit', 'Admin\AdminController@editPost');  //新建或编辑管理员
+
 
 });

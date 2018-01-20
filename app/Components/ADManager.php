@@ -14,59 +14,69 @@ use Qiniu\Auth;
 
 class ADManager
 {
-
     /*
-     * 获取广告图片
+     * 获取首页生效的广告轮播图信息
      *
-     * By yinyue
+     * By TerryQi
      *
-     * 2017-11-21
-     *
+     * 2017-11-27
      *
      */
-    public static function  getADs(){
-        $ads = AD::where('state','=','0')->get();
+    public static function getADsForIndex()
+    {
+        $ads = AD::where('status', '=', '1')->orderby('seq', 'desc')->get();
         return $ads;
     }
 
-    /*根据轮播图的id获取详细信息
+    /*
+     * 根据id获取轮播图
      *
-     * By yinyue
+     * By TerryQi
+     *
      * 2017-12-13
+     *
      */
+    public static function getADById($id)
+    {
+        $ad = AD::where('id', '=', $id)->first();
+        return $ad;
+    }
 
-    public static function getADsInfo($id){
-        $ads = AD::where('id','=',$id)->get();
+    /*
+     * 获取全部未删除的广告图
+     *
+     * By TerryQI
+     *
+     * 2017-12-04
+     *
+     */
+    public static function getAllADs()
+    {
+        $ads = AD::orderBy('seq', 'desc')->orderBy('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $ads;
     }
 
 
     /*
-     * 设置房源信息，用于编辑、
+     * 设置广告信息，用于编辑、
      *
      * By TerryQi
      *
      */
-    public static function setAD($ads, $data)
+    public static function setAD($ad, $data)
     {
-        if (array_key_exists('title', $data)) {
-            $ads->title = array_get($data, 'title');
+        if (array_key_exists('admin_id', $data)) {
+            $ad->admin_id = array_get($data, 'admin_id');
         }
         if (array_key_exists('img', $data)) {
-            $ads->image = array_get($data, 'image');
+            $ad->image = array_get($data, 'img');
         }
-        if (array_key_exists('url', $data)) {
-            $ads->url = array_get($data, 'url');
-        }
-        if (array_key_exists('type', $data)) {
-            $ads->label = array_get($data, 'label');
-        }
-        if (array_key_exists('seq', $data)) {
-            $ads->seq = array_get($data, 'seq');
+        if (array_key_exists('title', $data)) {
+            $ad->title = array_get($data, 'title');
         }
         if (array_key_exists('status', $data)) {
-            $ads->status = array_get($data, 'status');
+            $ad->status = array_get($data, 'status');
         }
-        return $ads;
+        return $ad;
     }
 }
