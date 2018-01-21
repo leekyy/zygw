@@ -35,11 +35,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/ad/edit', 'Admin\ADController@edit');  //新建或编辑轮播
     Route::post('/ad/edit', 'Admin\ADController@editPost');  //新建或编辑轮播
 
+
     //管理员管理
     Route::get('/admin/index', 'Admin\AdminController@index');  //管理员管理首页
     Route::get('/admin/del/{id}', 'Admin\AdminController@del');  //删除管理员
     Route::get('/admin/edit', 'Admin\AdminController@edit');  //新建或编辑管理员
     Route::post('/admin/edit', 'Admin\AdminController@editPost');  //新建或编辑管理员
+    Route::get('/admin/getById', 'Admin\AdminController@getById');  //根据id获取管理员信息
 
 
 });
