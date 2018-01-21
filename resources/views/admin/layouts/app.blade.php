@@ -226,7 +226,7 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>加盟审核</a></li>
+                        <li><a href="{{url('admin/userUp/index')}}"><i class="fa fa-circle-o"></i>升级审核</a></li>
                         <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
                         <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>

@@ -39,7 +39,8 @@ class UserManager
      *
      * 2018-01-20
      */
-    public static function getListByRolePaginate(){
+    public static function getListByRolePaginate()
+    {
 
     }
 

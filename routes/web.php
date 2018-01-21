@@ -43,5 +43,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/admin/edit', 'Admin\AdminController@editPost');  //新建或编辑管理员
     Route::get('/admin/getById', 'Admin\AdminController@getById');  //根据id获取管理员信息
 
+    //中介申请成为案场负责人管理
+    Route::get('/userUp/index', 'Admin\UserUpController@index');  //管理员管理首页
+    Route::get('/userUp/setStatus/{id}', 'Admin\UserUpController@setStatus');  //设置轮播状态
+    Route::post('/userUp/search', 'Admin\UserUpController@search');  //设置轮播状态
 
 });
