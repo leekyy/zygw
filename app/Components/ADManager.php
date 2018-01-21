@@ -24,7 +24,7 @@ class ADManager
      */
     public static function getADsForIndex()
     {
-        $ads = AD::where('status', '=', '1')->orderby('seq', 'desc')->get();
+        $ads = AD::where('status', '=', '0')->orderby('seq', 'desc')->get();
         return $ads;
     }
 
