@@ -43,7 +43,8 @@ class HRController extends Controller
     {
         $data = $request->all();
         $requestValidationResult = RequestValidator::validator($data, [
-            'type_name' => 'required',
+//            'type_name' => 'required',
+            'title' => 'required',
         ]);
         if (!$requestValidationResult) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);

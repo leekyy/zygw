@@ -9,10 +9,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HR extends Model
 {
-    protected $table = 't_housing_resources';
-
+    use SoftDeletes;    //使用软删除
+    protected $table = 't_house_info';
     public $timestamps = true;
+    protected $dates = ['deleted_at'];  //软删除
 }

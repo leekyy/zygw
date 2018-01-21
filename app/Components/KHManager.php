@@ -10,7 +10,7 @@
 namespace App\Components;
 
 use App\Models\HR;
-use App\Models\HRD;
+use App\Models\HouseDetail;
 use App\Models\KH;
 use App\Models\BKH;
 use App\Models\NEWs;

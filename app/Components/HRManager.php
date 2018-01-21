@@ -10,9 +10,9 @@
 namespace App\Components;
 
 use App\Models\HR;
-use App\Models\HRD;
-use App\Models\HRR;
-use App\Models\HX;
+use App\Models\HouseDetail;
+use App\Models\HouseReview;
+use App\Models\Huxing;
 use Illuminate\Support\Facades\DB;
 
 
@@ -29,7 +29,7 @@ class HRManager
      *
      */
     public static function  getHRs(){
-        $hrs = HR::where('state','=', '0')->get();
+        $hrs = HR::where('status','=', '0')->get();
 //        $hrs = DB::table('t_house_type')->join('t_housing_resources','t_house_type.id','=','t_housing_resources.type_id')
 //            ->get();
         return $hrs;
@@ -58,9 +58,9 @@ class HRManager
     public static  function getSearch($data){
 
 
-        $hr = DB::table('t_house_type')
-            ->leftjoin('t_housing_resources','t_house_type.id','=','t_housing_resources.type_id')
-            ->where('t_house_type.type_name','like','%'.$data['type_name']  .'%')
+        $hr = DB::table('t_house_info')
+//            ->leftjoin('t_housing_resources','t_house_type.id','=','t_housing_resources.type_id')
+            ->where('t_house_info.title','like','%'.$data['title']  .'%')
             ->get();
         return  $hr;
     }
@@ -76,8 +76,8 @@ class HRManager
 //    }
 
     public static function getSearchHr($data){
-        $hr = DB::table('t_house_type')
-            ->leftjoin('t_housing_resources','t_house_type.id','=','t_housing_resources.type_id');
+        $hr = DB::table('t_house_info');
+//            ->leftjoin('t_housing_resources','t_house_type.id','=','t_housing_resources.type_id');
 
         if (array_key_exists('address', $data)) {
             $hr = $hr->where('address','like','%'.$data['address'].'%');
@@ -95,9 +95,9 @@ class HRManager
         return $hr;
     }
 
-
+//用户对相应的楼盘进行评价
     public static function getHouseReview($data){
-        $bkhs = new HRR(); 
+        $bkhs = new HouseReview();
          // $bkh = HR::find($id);  
          //  $bkhs = HRR::find($bkh->id);    
        $bkhs->comment = $data['comment'];
@@ -118,7 +118,7 @@ class HRManager
 
         $hrs = HR::find($id);
 
-        $hrd = HRD::find($hrs->id);
+        $hrd = HouseDetail::find($hrs->id);
 
        // $hrs = HR::join()
         return $hrd;
@@ -131,7 +131,7 @@ class HRManager
 
     public  static  function getHXById($house_id){
 //
-        $hx = DB::table('t_apartment_building')->where('house_id','=',$house_id)->get();
+        $hx = DB::table('t_house_huxing')->where('house_id','=',$house_id)->get();
      return  $hx;
 
     }
