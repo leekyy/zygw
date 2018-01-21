@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BKH extends Model
 {
-    protected $table = 't_user_baobei';
+    protected $table = 't_client_baobei';
 
     public $timestamps = true;
 }
