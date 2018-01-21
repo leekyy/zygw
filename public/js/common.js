@@ -24,90 +24,11 @@ function ajaxRequest(url, param, method, callBack) {
 function getADById(url, param, callBack) {
     ajaxRequest(url + "api/ad/getById", param, "GET", callBack);
 }
+
 //根据id获取轮播图信息
-function getLBById(url, param, callBack) {
-    ajaxRequest(url + "api/lb/getById", param, "GET", callBack);
+function getAdminById(url, param, callBack) {
+    ajaxRequest(url + "admin/admin/getById", param, "GET", callBack);
 }
-
-//根据id获取康复模板信息
-function getKFMBById(url, param, callBack) {
-    ajaxRequest(url + "api/kfmb/getKFMBById", param, "GET", callBack);
-}
-
-//根据id获取患者信息
-function getUserById(url, param, callBack) {
-    ajaxRequest(url + "api/user/getById", param, "GET", callBack);
-}
-
-//根据id获取患者病例信息
-function getUserCaseById(url, param, callBack) {
-    ajaxRequest(url + "api/userCase/getUserCaseById", param, "GET", callBack);
-}
-
-//编辑患者病例
-function editUserCaseKFJH(url, param, callBack) {
-    ajaxRequest(url + "admin/user/editUserCaseKFJH", param, "POST", callBack);
-}
-
-//根据id获取医生信息
-function getDoctorById(url, param, callBack) {
-    ajaxRequest(url + "api/doctor/getById", param, "GET", callBack);
-}
-
-//根据id获取数据项
-function getSJXById(url, param, callBack) {
-    ajaxRequest(url + "admin/sjx/edit", param, "GET", callBack);
-}
-
-//获取全部生效宣教信息
-function getAllXJs(url, param, callBack) {
-    ajaxRequest(url + "api/xj/getAll", param, "GET", callBack);
-}
-
-//获取宣教类别信息
-function getXJTypeById(url, param, callBack) {
-    ajaxRequest(url + "api/xj/getXJTypeById", param, "GET", callBack);
-}
-
-//根据id获取宣教
-function getXJInfoById(url, param, callBack) {
-    ajaxRequest(url + "api/xj/getXJInfoById", param, "get", callBack);
-}
-
-//根据id获取量表
-function getLBById(url, param, callBack) {
-    ajaxRequest(url + "api/lb/getById", param, "get", callBack);
-}
-
-function editLB(url, param, callBack) {
-    ajaxRequest(url + "admin/lb/editLB", param, "post", callBack);
-}
-
-//编辑宣教
-function editXJ(url, param, callBack) {
-    ajaxRequest(url + "admin/xj/editXJ", param, "post", callBack);
-}
-
-//编辑康复模板
-function editKFMB(url, param, callBack) {
-    ajaxRequest(url + "admin/kfmb/editKFMB", param, "post", callBack);
-}
-
-//根据id获取患处信息
-function getHPosById(url, param, callBack) {
-    ajaxRequest(url + "api/hPos/getById", param, "get", callBack);
-}
-
-//编辑患处信息
-function editHPos(url, param, callBack) {
-    ajaxRequest(url + "admin/hPos/edit", param, "post", callBack);
-}
-
-//手术信息
-function getSurgeryById(url, param, callBack) {
-    ajaxRequest(url + "admin/surgery/edit", param, "get", callBack);
-}
-
 
 //测试接口
 function test(url, param, callBack) {

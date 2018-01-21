@@ -207,6 +207,11 @@
                         <i class="fa fa-bar-chart"></i> <span>业务概览</span>
                     </a>
                 </li>
+                <li class="">
+                    <a href="{{url('/admin/admin/index')}}">
+                        <i class="fa fa-user-md"></i><span>管理员管理</span>
+                    </a>
+                </li>
                 <li>
                     <a href="{{url('/admin/ad/index')}}">
                         <i class="fa fa-photo"></i>
@@ -215,98 +220,53 @@
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-envelope"></i>
-                        <span>消息管理</span>
-                        <small class="label bg-red pull-right">3</small>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="{{url('/admin/doctor/index')}}">
-                        <i class="fa fa-user-md"></i><span>医师/康复师管理</span>
-                    </a>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-user"></i> <span>患者管理</span>
+                        <i class="fa fa-send-o"></i> <span>案场负责人</span>
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>全部患者</a></li>
-                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>我的患者</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>患者数据管理</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>患者综合报表</a></li>
+                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>加盟审核</a></li>
+                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-edit"></i>
-                        <span>量表管理</span>
+                        <i class="fa fa-odnoklassniki"></i> <span>职业顾问</span>
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('/admin/lb/index')}}"><i class="fa fa-circle-o"></i>量表管理</a></li>
-                        <li><a href="#"><i class="fa fa-circle-o"></i>量表综合报表</a></li>
+                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-thermometer-empty"></i> <span>康复模板/数据</span>
+                        <i class="fa  fa-folder-o"></i>
+                        <span>楼盘管理</span>
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('/admin/kfmb/index')}}"><i class="fa fa-circle-o"></i>康复模板管理</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>康复计划综合统计</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>康复数据综合统计</a></li>
+                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>楼盘管理</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-edit"></i>
-                        <span>宣教管理</span>
+                        <i class="fa fa-smile-o"></i>
+                        <span>客户管理</span>
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('/admin/xj/index')}}"><i class="fa fa-circle-o"></i>宣教管理</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-edit"></i>
-                        <span>手术管理</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{url('/admin/surgery/index')}}"><i class="fa fa-circle-o"></i>手术管理</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-database"></i>
-                        <span>配置数据</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{url('/admin/sjx/index')}}"><i class="fa fa-circle-o"></i>数据模板
-                                <small class="label bg-red pull-right">！</small>
-                            </a>
-                        </li>
-                        <li><a href="{{url('/admin/hPos/index')}}"> <i class="fa fa-circle-o"></i>
-                                患处位置
-                                <small class="label bg-red pull-right">！</small>
-                            </a>
-                        </li>
+                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>客户管理</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
             </ul>

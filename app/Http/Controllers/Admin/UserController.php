@@ -19,6 +19,13 @@ use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
 use Illuminate\Support\Facades\Redirect;
 
+/*
+ * 此处User代表中介和案场负责人
+ *
+ * By TerryQi
+ *
+ * 2018-01-20
+ */
 
 class UserController
 {

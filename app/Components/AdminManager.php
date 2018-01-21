@@ -51,8 +51,8 @@ class AdminManager
      */
     public static function setAdmin($admin, $data)
     {
-        if (array_key_exists('nick_name', $data)) {
-            $admin->nick_name = array_get($data, 'nick_name');
+        if (array_key_exists('name', $data)) {
+            $admin->name = array_get($data, 'name');
         }
         if (array_key_exists('avatar', $data)) {
             $admin->avatar = array_get($data, 'avatar');
