@@ -39,7 +39,10 @@ class AdminManager
     public static function getAdminInfoById($id)
     {
         $admin = Admin::find($id);
-        $admin->token = null;       //隐藏管理员token
+        //如果获取管理员信息
+        if ($admin) {
+            $admin->token = null;       //隐藏管理员token
+        }
         return $admin;
     }
 

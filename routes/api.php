@@ -37,6 +37,11 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('user/updateById', 'API\UserController@updateUserById')->middleware('CheckToken');
     //解密encryptedData
     Route::post('user/encryptedData', 'API\UserController@encryptedData');
+    //中介升级为案场负责人表
+    Route::post('user/applyUp', 'API\UserUpController@userUpApply');
+    //获取案场负责人的楼盘
+    Route::get('user/getUserUpHousesByUserId', 'API\UserUpController@getUserUpHousesByUserId');
+
 
     //获取广告图
     Route::get('ad/getADs', 'API\ADController@getADs');

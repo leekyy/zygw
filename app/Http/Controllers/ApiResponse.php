@@ -16,6 +16,8 @@ class ApiResponse
     const UNKNOW_ERROR = 999;
     //缺少参数
     const MISSING_PARAM = 901;
+    //逻辑错误
+    const INNER_ERROR = 902;
 
     //成功
     const SUCCESS_CODE = 200;
@@ -26,11 +28,14 @@ class ApiResponse
     const TOKEN_ERROR = 102;
     //用户编码丢失
     const USER_ID_LOST = 103;
-
     //注册失败
     const REGISTER_FAILED = 104;
     //未找到用户
     const NO_USER = 105;
+    //验证码验证失败
+    const VERTIFY_ERROR = 106;
+    //医师编码丢失
+    const DOCTOR_ID_LOST = 107;
 
     //映射错误信息
     public static $errorMassage = [
