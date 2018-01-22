@@ -25,9 +25,24 @@ function getADById(url, param, callBack) {
     ajaxRequest(url + "api/ad/getById", param, "GET", callBack);
 }
 
+//根据id获取商品信息
+function getGoodsById(url, param, callBack) {
+    ajaxRequest(url + "admin/goods/getById", param, "GET", callBack);
+}
+
 //根据id获取轮播图信息
 function getAdminById(url, param, callBack) {
     ajaxRequest(url + "admin/admin/getById", param, "GET", callBack);
+}
+
+//获取系统配置信息
+function getSystemInfo(url, param, callBack) {
+    ajaxRequest(url + "admin/system/edit", param, "GET", callBack);
+}
+
+//获取签到总体信息
+function getQDRecentDatas(url, param, callBack) {
+    ajaxRequest(url + "admin/userQD/getRecentDatas", param, "GET", callBack);
 }
 
 //测试接口

@@ -26,9 +26,9 @@ class UserManager
      *
      * 2017-09-28
      */
-    public static function getUserInfoByIdWithToken($data)
+    public static function getUserInfoByIdWithToken($user_id)
     {
-        $user = User::find($data['id']);
+        $user = User::find($user_id);
         return $user;
     }
 
@@ -58,6 +58,19 @@ class UserManager
         if ($user) {
             $user->token = null;
         }
+        return $user;
+    }
+
+    /*
+     * 根据手机号获取用户信息
+     *
+     * By TerryQi
+     *
+     * 2018-01-21
+     */
+    public static function getUserInfoByTel($phonenum)
+    {
+        $user = User::where('phonenum', '=', $phonenum)->first();
         return $user;
     }
 

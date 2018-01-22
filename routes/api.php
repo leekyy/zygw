@@ -42,6 +42,10 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //获取案场负责人的楼盘
     Route::get('user/getUserUpHousesByUserId', 'API\UserUpController@getUserUpHousesByUserId');
 
+    //用户签到
+    Route::post('user/userQDToday', 'API\UserQDController@userQDToday')->middleware('CheckToken');        //用户签到接口
+    Route::get('user/getUserQDsByUserId', 'API\UserQDController@getUserQDsByUserId')->middleware('CheckToken');        //根据用户id获取签到列表
+    Route::get('user/getRecentDatas', 'Admin\UserQDController@getRecentDatas');        //获取近几日综合统计数据
 
     //获取广告图
     Route::get('ad/getADs', 'API\ADController@getADs');
@@ -82,11 +86,14 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('news/getNEWs', 'API\KHController@getNEWs');
     //获取用户的佣金
     Route::get('user/getUserYongjin', 'API\UserController@getUserYongjin');
+
     //获取积分商品
-    Route::get('goods/getGoods', 'API\UserController@getGoods');
-    Route::get('goods/getGoodById', 'API\UserController@getGoodById');
-    Route::post('user/getUserJifen', 'API\UserController@getUserJifen');
-    Route::post('user/getExchange', 'API\UserController@getExchange');
+    Route::get('goods/getGoodsList', 'API\GoodsController@getGoodsList');       //获取商品兑换列表
+    Route::get('goods/getGoodsById', 'API\GoodsController@getGoodsById');     //根据id获取商品明细信息
+    Route::post('goods/exchange', 'API\GoodsController@exchange')->middleware('CheckToken');     //兑换商品
+    Route::get('goods/getExchangeListByUserId', 'API\GoodsController@getExchangeListByUserId')->middleware('CheckToken');        //根据id获取商品明细信息
+
+
     //获取合作细则
     Route::get('user/getHezuo', 'API\UserController@getHezuo');
 

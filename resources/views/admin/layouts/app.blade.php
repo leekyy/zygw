@@ -12,8 +12,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ URL::asset('bower_components/font-awesome/css/font-awesome.min.css') }}">
     <!-- Ionicons -->
-{{--<link rel="stylesheet" href="{{ URL::asset('bower_components/Ionicons/css/ionicons.min.css') }}">--}}
-<!-- Theme style -->
+    <link rel="stylesheet" href="{{ URL::asset('bower_components/Ionicons/css/ionicons.min.css') }}">
+    <!-- Theme style -->
     <link rel="stylesheet" href="{{ URL::asset('dist/css/AdminLTE.min.css') }}">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ URL::asset('plugins/iCheck/all.css') }}">
@@ -269,6 +269,48 @@
                         <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa  fa-calendar-plus-o"></i>
+                        <span>签到管理</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('admin/userQD/index')}}"><i class="fa fa-circle-o"></i>签到明细</a></li>
+                        <li><a href="{{url('admin/userQD/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-money"></i>
+                        <span>积分兑换</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('admin/goods/index')}}"><i class="fa fa-circle-o"></i>商品管理</a></li>
+                        <li><a href="{{url('admin/goods/order')}}"><i class="fa fa-circle-o"></i>兑换订单</a></li>
+                        <li><a href="{{url('admin/goods/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-database"></i>
+                        <span>配置数据</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('/admin/system/index')}}"><i class="fa fa-circle-o"></i>积分规则
+                                <small class="label bg-red pull-right">！</small>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -358,6 +400,8 @@
 <script src="{{ URL::asset('js/plupload/moxie.js') }}"></script>
 <!-- common -->
 <script src="{{ URL::asset('js/common.js') }}"></script>
+<!-- common -->
+<script src="{{ URL::asset('js/echarts.common.min.js') }}"></script>
 <!-- doT -->
 <script src="{{ URL::asset('js/dateFormateTool.js') }}"></script>
 <!-- doT -->
