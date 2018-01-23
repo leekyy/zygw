@@ -11,10 +11,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Goods extends Model
+class GoodsExchange extends Model
 {
     use SoftDeletes;    //使用软删除
-    protected $table = 't_goods_info';
+    protected $table = 't_goods_exchange';
     public $timestamps = true;
     protected $dates = ['deleted_at'];  //软删除
 }

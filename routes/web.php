@@ -35,7 +35,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/ad/edit', 'Admin\ADController@edit');  //新建或编辑轮播
     Route::post('/ad/edit', 'Admin\ADController@editPost');  //新建或编辑轮播
 
-
     //管理员管理
     Route::get('/admin/index', 'Admin\AdminController@index');  //管理员管理首页
     Route::get('/admin/del/{id}', 'Admin\AdminController@del');  //删除管理员
@@ -47,8 +46,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/userUp/index', 'Admin\UserUpController@index');  //管理员管理首页
     Route::get('/userUp/setStatus/{id}', 'Admin\UserUpController@setStatus');  //设置轮播状态
     Route::post('/userUp/search', 'Admin\UserUpController@search');  //设置轮播状态
-
-
+    
     //楼盘管理
     Route::get('/house/index','Admin\HouseController@index');//楼盘管理首页
     Route::get('/house/setStatus/{id}', 'Admin\HouseController@setStatus');  //设置楼盘状态
@@ -57,4 +55,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/house/edit','Admin\HouseController@editPost');//新建或编辑楼盘
     Route::get('/house/getById','Admin\HouseController@getById');//根据id获取楼盘信息
 
+
+    //系统配置信息相关
+    Route::get('/system/index', 'Admin\SystemController@index');  //系统配置首页信息
+    Route::get('/system/edit', 'Admin\SystemController@edit');  //设置系统页面
+    Route::post('/system/edit', 'Admin\SystemController@editPost');  //设置系统页面-post
+
+    //签到相关
+    Route::get('/userQD/index', 'Admin\UserQDController@index');  //系统配置首页信息
+    Route::get('/userQD/stmt', 'Admin\UserQDController@stmt');  //系统配置首页信息
+    Route::post('/userQD/search', 'Admin\UserQDController@search');  //系统配置首页信息
+    Route::get('/userQD/getRecentDatas', 'Admin\UserQDController@getRecentDatas');        //获取近几日综合统计数据
+
+    //换商品管理
+    Route::get('/goods/index', 'Admin\GoodsController@index');  //商品管理首页
+    Route::get('/goods/setStatus/{id}', 'Admin\GoodsController@setStatus');  //设置商品状态
+    Route::get('/goods/del/{id}', 'Admin\GoodsController@del');  //删除商品
+    Route::get('/goods/getById', 'Admin\GoodsController@getById');  //根据id获取商品信息
+    Route::post('/goods/edit', 'Admin\GoodsController@editPost');  //新建或编辑商品
 });

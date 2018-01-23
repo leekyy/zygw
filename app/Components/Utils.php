@@ -30,6 +30,24 @@ class Utils
     }
 
     /*
+     * 判断一个字符串是不是电话号码
+     *
+     * By TerryQi
+     *
+     * 2018-1-21
+     *
+     */
+    public static function isPhonenum($phonenum)
+    {
+        if (preg_match("/^1[34578]{1}\d{9}$/", $phonenum)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /*
      * 判断一个宣教数据集的id是否在数组中的id，即用于新建宣教步骤时，判断是否需要删除该步骤
      *
      * By TerryQi

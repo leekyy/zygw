@@ -48,7 +48,7 @@ class ADController extends Controller
     public function getADById(Request $request)
     {
         $data = $request->all();
-        //合规校验account_type
+        //合规校验
         $requestValidationResult = RequestValidator::validator($request->all(), [
             'id' => 'required',
         ]);
