@@ -40,6 +40,11 @@ function test(url, param, callBack) {
     ajaxRequest(url + "api/test", param, "post", callBack);
 }
 
+//获取签到总体信息
+function getQDRecentDatas(url, param, callBack) {
+    ajaxRequest(url + "admin/userQD/getRecentDatas", param, "GET", callBack);
+}
+
 
 /*
  * 校验手机号js
