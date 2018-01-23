@@ -48,4 +48,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/userUp/setStatus/{id}', 'Admin\UserUpController@setStatus');  //设置轮播状态
     Route::post('/userUp/search', 'Admin\UserUpController@search');  //设置轮播状态
 
+
+    //楼盘管理
+    Route::get('/house/index','Admin\HouseController@index');//楼盘管理首页
+    Route::get('/house/setStatus/{id}', 'Admin\HouseController@setStatus');  //设置楼盘状态
+    Route::get('/house/del/{id}','Admin\HouseController@del');//删除楼盘
+    Route::post('/house/edit','Admin\HouseController@edit');//新建或编辑楼盘
+    Route::post('/house/edit','Admin\HouseController@editPost');//新建或编辑楼盘
+    Route::get('/house/getById','Admin\HouseController@getById');//根据id获取楼盘信息
+
 });

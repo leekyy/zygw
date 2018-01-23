@@ -25,7 +25,12 @@ function getADById(url, param, callBack) {
     ajaxRequest(url + "api/ad/getById", param, "GET", callBack);
 }
 
-//根据id获取轮播图信息
+//根据id获取楼盘信息
+function getHouseById(url, param, callBack) {
+    ajaxRequest(url + "admin/house/getById", param, "GET", callBack);
+}
+
+//根据id获取管理员信息
 function getAdminById(url, param, callBack) {
     ajaxRequest(url + "admin/admin/getById", param, "GET", callBack);
 }
