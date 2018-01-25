@@ -7,12 +7,12 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">楼盘管理</li>
+                    <li class="active">房源管理</li>
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
                 <button type="button" class="btn btn-primary" onclick="clickAdd();">
-                    +新建楼盘
+                    +新建房源
                 </button>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 <!-- Horizontal Form -->
                 <div class="">
                     <!-- form start -->
-                    <form action="{{URL::asset('/admin/house/search')}}" method="post" class="form-horizontal">
+                    <form action="{{URL::asset('/admin/huxing/search')}}" method="post" class="form-horizontal">
                         {{csrf_field()}}
                         <div class="box-body">
                             <div class="form-group">
@@ -62,15 +62,13 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>楼盘图片</th>
-                                <th>楼盘名</th>
-                                <th>楼盘地址</th>
-                                <th>楼盘价格</th>
-                                <th>楼盘类型</th>
-                                <th>楼盘面积</th>
-                                <th>楼盘标签</th>
-                                <th>结算周期</th>
-                                <th>佣金</th>
+                                <th>房源图片</th>
+                                <th>房源类型</th>
+                                <th>房源面积</th>
+                                <th>房源价格</th>
+                                <th>房源优点</th>
+                                <th>房源朝向</th>
+                                <th>购买理由</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -89,21 +87,6 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->title}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->address}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->price}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
                                             {{$data->type}}
                                         </div>
                                     </td>
@@ -114,17 +97,23 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->label}}
+                                            {{$data->price}}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="line-height-30">
+                                            {{$data->benefit}}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->period}}
+                                            {{$data->orientation}}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->yongjin}}
+                                            {{$data->reason}}
                                         </div>
                                     </td>
 
@@ -138,35 +127,30 @@
                                     </td>
                                     <td class="opt-th-width-m">
                                         <span class="line-height-30">
-                                              <a href="{{URL::asset('/admin/house/setStatus')}}/{{$data->id}}?opt=0"
+                                              <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=0"
                                                  class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                  data-toggle="tooltip"
-                                                 data-placement="top" title="在小程序页面中展示该轮楼盘">
+                                                 data-placement="top" title="在小程序页面中展示该轮房源">
                                                 <i class="fa fa-eye opt-btn-i-size"></i>
                                             </a>
-                                            <a href="{{URL::asset('/admin/house/setStatus')}}/{{$data->id}}?opt=1"
+                                            <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=1"
                                                class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
-                                               data-placement="top" title="在小程序页面中隐藏该楼盘">
+                                               data-placement="top" title="在小程序页面中隐藏该房源">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
-                                            <a href="{{URL::asset('/admin/house/getHouseById')}}/?house_id={{$data->id}}"
-                                               class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
-                                               data-toggle="tooltip"
-                                               data-placement="top" title="查看该楼盘下房源">
-                                                <i class="fa fa-eye-slash opt-btn-i-size"></i>
-                                            </a>
+
                                             <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
                                                   onclick="clickEdit({{$data->id}})"
-                                                  title="编辑该楼盘">
+                                                  title="编辑该房源">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
                                             <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
-                                                  title="删除该楼盘"
+                                                  title="删除该房源"
                                                   onclick="clickDel({{$data->id}})">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </span>
@@ -189,7 +173,7 @@
 
             </div>
             <div class="col-sm-7 text-right">
-                {!! $datas->links() !!}
+                {{--{!! $datas->links() !!}--}}
             </div>
         </div>
     </section>
@@ -201,9 +185,9 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理楼盘</h4>
+                    <h4 class="modal-title">管理房源</h4>
                 </div>
-                <form id="editHouse" action="{{URL::asset('/admin/house/edit')}}" method="post" class="form-horizontal"
+                <form id="editHouse" action="{{URL::asset('/admin/huxing/edit')}}" method="post" class="form-horizontal"
                       onsubmit="return checkValid();">
                     <div class="modal-body">
                         {{csrf_field()}}
@@ -212,6 +196,13 @@
                                 <label for="id" class="col-sm-2 control-label">id</label>
                                 <div class="col-sm-10">
                                     <input id="id" name="id" type="text" class="form-control"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <label for="house_id" class="col-sm-2 control-label">id</label>
+                                <div class="col-sm-10">
+                                    <input id="house_id" name="house_id" type="text" class="form-control"
                                            value="">
                                 </div>
                             </div>
@@ -230,7 +221,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="image" class="col-sm-2 control-label">楼盘图片</label>
+                                <label for="image" class="col-sm-2 control-label">房源图片</label>
 
                                 <div class="col-sm-10">
                                     <input id="image" name="image" type="text" class="form-control"
@@ -239,77 +230,61 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">楼盘名</label>
-
-                                <div class="col-sm-10">
-                                    <input id="title" name="title" type="text" class="form-control"
-                                           placeholder="楼盘名"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="address" class="col-sm-2 control-label">楼盘地址</label>
-
-                                <div class="col-sm-10">
-                                    <input id="address" name="address" type="text" class="form-control"
-                                           placeholder="楼盘地址"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="price" class="col-sm-2 control-label">楼盘价格</label>
-
-                                <div class="col-sm-10">
-                                    <input id="price" name="price" type="text" class="form-control"
-                                           placeholder="楼盘价格"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="type" class="col-sm-2 control-label">楼盘类型</label>
+                                <label for="type" class="col-sm-2 control-label">房源类型</label>
 
                                 <div class="col-sm-10">
                                     <input id="type" name="type" type="text" class="form-control"
-                                           placeholder="楼盘类型"
+                                           placeholder="房源类型"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="size" class="col-sm-2 control-label">楼盘面积</label>
+                                <label for="size" class="col-sm-2 control-label">房源面积</label>
 
                                 <div class="col-sm-10">
                                     <input id="size" name="size" type="text" class="form-control"
-                                           placeholder="楼盘面积"
+                                           placeholder="房源面积"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="label" class="col-sm-2 control-label">楼盘标签</label>
+                                <label for="price" class="col-sm-2 control-label">房源价格</label>
 
                                 <div class="col-sm-10">
-                                    <input id="label" name="label" type="text" class="form-control"
-                                           placeholder="楼盘标签"
+                                    <input id="price" name="price" type="text" class="form-control"
+                                           placeholder="房源价格"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="period" class="col-sm-2 control-label">结算周期</label>
+                                <label for="benefit" class="col-sm-2 control-label">房源优点</label>
 
                                 <div class="col-sm-10">
-                                    <input id="period" name="period" type="text" class="form-control"
-                                           placeholder="结算周期"
+                                    <input id="benefit" name="benefit" type="text" class="form-control"
+                                           placeholder="房源优点"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="yongjin" class="col-sm-2 control-label">佣金</label>
+                                <label for="orientation" class="col-sm-2 control-label">房源朝向</label>
 
                                 <div class="col-sm-10">
-                                    <input id="yongjin" name="yongjin" type="text" class="form-control"
-                                           placeholder="佣金"
+                                    <input id="orientation" name="orientation" type="text" class="form-control"
+                                           placeholder="房源朝向"
                                            value="">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="reason" class="col-sm-2 control-label">购买理由</label>
+
+                                <div class="col-sm-10">
+                                    <input id="reason" name="reason" type="text" class="form-control"
+                                           placeholder="购买理由"
+                                           value="">
+                                </div>
+                            </div>
+
+
                             <div style="margin-top: 10px;" class="text-center">
                                 <div id="container">
                                     <img id="pickfiles"
@@ -362,14 +337,28 @@
 
 @section('script')
     <script type="application/javascript">
+        var house_id ;
         //入口函数
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip()
             //获取七牛token
             initQNUploader();
+            house_id=GetRequest().house_id;
         });
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for(var i = 0; i < strs.length; i ++) {
+                    theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
 
-        //点击删除楼盘
+        //点击删除房源
         function clickDel(admin_id) {
             console.log("clickDel admin_id:" + admin_id);
             //为删除按钮赋值
@@ -377,43 +366,44 @@
             $("#delConfrimModal").modal('show');
         }
 
-        //删除楼盘
+        //删除房源
         function delAdmin() {
             var admin_id = $("#delConfrimModal_confirm_btn").attr("data-value");
             console.log("delAdmin admin_id:" + admin_id);
             //进行tr隐藏
             $("#tr_" + admin_id).fadeOut();
             //进行页面跳转
-            window.location.href = "{{URL::asset('/admin/house/del')}}/" + admin_id;
+            //var huxing =window.location.search
+            window.location.href = "{{URL::asset('/admin/huxing/del')}}/" + admin_id+"/?house_id="+house_id;
         }
 
         //点击新建楼盘
         function clickAdd() {
             //清空模态框
             $("#editHouse")[0].reset();
+            $("#house_id").val(house_id);
             $("#admin_id").val("{{$admin->id}}");
             $("#pickfiles").attr("src", '{{URL::asset('/img/upload.png')}}');
             $("#addHouseModal").modal('show');
         }
 
         //点击编辑
-        function clickEdit(house_id) {
-            console.log("clickEdit house_id:" + house_id);
-            getHouseById("{{URL::asset('')}}", {id: house_id, _token: "{{ csrf_token() }}"}, function (ret) {
+        function clickEdit(id) {
+            console.log("clickEdit id:" + id);
+            getHuxingById("{{URL::asset('')}}", {id: id, _token: "{{ csrf_token() }}"}, function (ret) {
                 if (ret.result) {
                     var msgObj = ret.ret;
                     //对象配置
                     $("#id").val(msgObj.id);
-                    $("#title").val(msgObj.title);
-                    $("#address").val(msgObj.address);
+                    $("#house_id").val(msgObj.house_id);
+                    $("#type").val(msgObj.type);
+                    $("#size").val(msgObj.size);
                     $("#image").val(msgObj.image)
                     $("#pickfiles").attr("src", msgObj.image);
                     $("#price").val(msgObj.price);
-                    $("#size").val(msgObj.size);
-                    $("#type").val(msgObj.type);
-                    $("#label").val(msgObj.label);
-                    $("#period").val(msgObj.period);
-                    $("#yongjin").val(msgObj.yongjin);
+                    $("#reason").val(msgObj.reason);
+                    $("#orientation").val(msgObj.orientation);
+                    $("#benefit").val(msgObj.benefit);
 
                     //展示modal
                     $("#addHouseModal").modal('show');
@@ -425,9 +415,9 @@
         //合规校验
         function checkValid() {
             //合规校验
-            var title = $("#title").val();
-            if (judgeIsNullStr(title)) {
-                $("#title").focus();
+            var type = $("#type").val();
+            if (judgeIsNullStr(type)) {
+                $("#type").focus();
                 return false;
             }
             var price = $("#price").val();
@@ -440,37 +430,28 @@
                 $("#image").focus();
                 return false;
             }
-            var type = $("#type").val();
-            if (judgeIsNullStr(type)) {
-                $("#type").focus();
-                return false;
-            }
-
             var size = $("#size").val();
             if (judgeIsNullStr(size)) {
                 $("#size").focus();
                 return false;
             }
-            var address = $("#address").val();
-            if (judgeIsNullStr(address)) {
-                $("#address").focus();
+
+            var benefit = $("#benefit").val();
+            if (judgeIsNullStr(benefit)) {
+                $("#benefit").focus();
                 return false;
             }
-            var label = $("#label").val();
-            if (judgeIsNullStr(label)) {
-                $("#label").focus();
+            var reason = $("#reason").val();
+            if (judgeIsNullStr(reason)) {
+                $("#reason").focus();
                 return false;
             }
-            var period = $("#period").val();
-            if (judgeIsNullStr(period)) {
-                $("#period").focus();
+            var orientation = $("#orientation").val();
+            if (judgeIsNullStr(orientation)) {
+                $("#orientation").focus();
                 return false;
             }
-            var yongjin = $("#yongjin").val();
-            if (judgeIsNullStr(yongjin)) {
-                $("#yongjin").focus();
-                return false;
-            }
+
 
             return true;
         }

@@ -55,7 +55,24 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/house/edit','Admin\HouseController@editPost');//新建或编辑楼盘
     Route::get('/house/getById','Admin\HouseController@getById');//根据id获取楼盘信息
     Route::post('/house/search', 'Admin\HouseController@search');  //设置楼盘状态
+    //楼盘下的房源管理
     Route::get('/house/getHouseById','Admin\HouseController@getHouseById');//根据楼盘id获取相应的房源
+    Route::get('/huxing/del/{id}','Admin\HuxingController@del');//删除房源
+    Route::post('/huxing/edit','Admin\HuxingController@edit');//新建或编辑楼盘
+    Route::post('/huxing/edit','Admin\HuxingController@editPost');//新建或编辑楼盘
+    Route::get('/huxing/getById','Admin\HuxingController@getById');//根据id获取楼盘信息
+    Route::get('/huxing/getHouseById','Admin\HuxingController@getById');//根据id获取楼盘信息
+    Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置房源状态
+    Route::post('/huxing/search', 'Admin\HuxingController@search');  //系统配置首页信息
+
+    //客户管理
+
+    Route::get('/kehu/index', 'Admin\KeHuController@index');  //客户管理首页
+    Route::get('/kehu/del/{id}', 'Admin\KeHuController@del');  //删除客户
+    Route::get('/kehu/edit', 'Admin\KeHuController@edit');  //新建或编辑客户
+    Route::post('/kehu/edit', 'Admin\KeHuController@editPost');  //新建或编辑客户
+    Route::get('/kehu/getById', 'Admin\KeHuController@getById');  //根据id获取客户信息
+
 
 
     //系统配置信息相关

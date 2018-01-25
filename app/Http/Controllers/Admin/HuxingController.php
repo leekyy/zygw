@@ -17,6 +17,7 @@ use App\Components\QNManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
 use App\Components\HouseManager;
+use App\Components\HuxingManager;
 use App\Http\Controllers\ApiResponse;
 use App\Components\Utils;
 use App\Components\XJManager;
@@ -31,7 +32,7 @@ use App\Components\RequestValidator;
 use Illuminate\Support\Facades\Redirect;
 
 
-class HouseController
+class HuxingController
 {
 
     //首页
@@ -48,13 +49,16 @@ class HouseController
     //删除楼盘
     public function del(Request $request, $id)
     {
+
         //广告位id非数字
         if (!is_numeric($id)) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数广告id$id']);
         }
-        $ad = House::find($id);
+        $ad = Huxing::find($id);
         $ad->delete();
-        return redirect('/admin/house/index');
+       // $huxing =$request->all()['search'];
+        $data=$request->all();
+        return redirect('/admin/house/getHouseById?house_id='.$data['house_id']);
     }
 
 
@@ -62,14 +66,14 @@ class HouseController
     public function edit(Request $request)
     {
         $data = $request->all();
-        $house = new House();
+        $huxing = new Huxing();
         if (array_key_exists('id', $data)) {
-            $house = House::find($data['id']);
+            $huxing = Huxing::find($data['id']);
         }
         $admin = $request->session()->get('admin');
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.house.edit', ['admin' => $admin, 'data' => $house, 'upload_token' => $upload_token]);
+        return view('admin.huxing.edit', ['admin' => $admin, 'data' => $huxing, 'upload_token' => $upload_token]);
     }
 
 
@@ -79,14 +83,18 @@ class HouseController
 
         $data = $request->all();
 //        dd($data);
-        $house = new House();
+        $house = new Huxing();
         //存在id是保存
         if (array_key_exists('id', $data) && $data['id'] != null) {
-            $house = House::find($data['id']);
+            $house = Huxing::find($data['id']);
         }
-        $house = HouseManager::setHouse($house, $data);
+        $house = HuxingManager::setHuxing($house, $data);
         $house->save();
-        return redirect('/admin/house/index');
+        $house_id=0;
+        if (array_key_exists('house_id', $data)) {
+            $house_id = array_get($data, 'house_id');
+        }
+        return redirect('/admin/house/getHouseById?house_id='.$house_id);
     }
 
     //进行楼盘的搜索
@@ -98,11 +106,11 @@ class HouseController
 //        dd($data['search_status']);
         //如果不存在search_status，代表搜索全部
         if (!array_key_exists('search_status', $data) || Utils::isObjNull($data['search_status'])) {
-            $house = HouseManager::getListByStatusPaginate(["0", "1",]);
+            $house = HuxingManager::getListByStatusPaginate(["0", "1",]);
         } else {
-            $house = HouseManager::getListByStatusPaginate([$data['search_status']]);
+            $house = HuxingManager::getListByStatusPaginate([$data['search_status']]);
         }
-        return view('admin.house.index', ['admin' => $admin, 'datas' => $house]);
+        return view('admin.house.getHouseById', ['admin' => $admin, 'datas' => $house]);
     }
 
 
@@ -116,7 +124,7 @@ class HouseController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        $admin = HouseManager::getById($data['id']);
+        $admin = HuxingManager::getById($data['id']);
         return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
 
     }
@@ -133,7 +141,7 @@ class HouseController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        $house = HouseManager::getHouseById($data['house_id']);
+        $house = HuxingManager::getHouseById($data['house_id']);
         $upload_token = QNManager::uploadToken();
         return view('admin.house.getHouseById', ['admin' => $admin, 'datas' => $house, 'upload_token' => $upload_token]);
 
@@ -155,12 +163,34 @@ class HouseController
         if (!($opt == '0' || $opt == '1')) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数,opt必须为0或者1，现值为' . $opt]);
         }
-        $house = House::where('id', '=', $id)->first();
+        $house = Huxing::where('id', '=', $id)->first();
         $house->status = $opt;
         $house->save();
-        return redirect('/admin/house/index');
+        return redirect('/admin/house/getHouseById');
     }
 
 
-
+//    //设置状态
+//    public function setStatus(Request $request, $id)
+//    {
+//        $data = $request->all();
+//        //合规校验
+//        $requestValidationResult = RequestValidator::validator($request->all(), [
+//            'status' => 'required',
+//        ]);
+//        if ($requestValidationResult !== true) {
+//            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
+//        }
+//        //opt必须为0或者1
+//        $status = $data['status'];
+//        if (!($status == '1' || $status == '2')) {
+//            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数,opt必须为0或者1，现值为' . $opt]);
+//        }
+//        $house = HouseManager::getById($id);
+//        $house->status = $status;
+//        $house->admin_id = $data['admin_id'];
+////        $userUp->sh_time = DateTool::getCurrentTime();
+//        $house->save();
+//        return redirect('/admin/house/index');
+//    }
 }

@@ -10,11 +10,7 @@
                     <li class="active">积分商品兑换管理</li>
                 </ol>
             </div>
-            <div class="col-lg-6 text-right">
-                <button type="button" class="btn btn-primary" onclick="clickAdd();">
-                    +新建订单
-                </button>
-            </div>
+
         </div>
     </section>
 
@@ -104,13 +100,7 @@
                                                data-placement="top" title="暂未成功兑换">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
-                                            <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
-                                                  data-toggle="tooltip"
-                                                  data-placement="top"
-                                                  title="编辑该订单"
-                                                  onclick="clickEdit({{$data->id}})">
-                                                <i class="fa fa-edit opt-btn-i-size"></i>
-                                            </span>
+
                                             <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
@@ -143,74 +133,7 @@
     </section>
 
 
-    {{--新建对话框--}}
-    <div class="modal fade -m" id="addGoodsModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content message_align">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理楼盘</h4>
-                </div>
-                <form id="editGoodsExchange" action="{{URL::asset('/admin/goodsexchange/edit')}}" method="post" class="form-horizontal"
-                      onsubmit="return checkValid();">
-                    <div class="modal-body">
-                        {{csrf_field()}}
-                        <div class="box-body">
-                            <div class="form-group hidden">
-                                <label for="id" class="col-sm-2 control-label">id</label>
-                                <div class="col-sm-10">
-                                    <input id="id" name="id" type="text" class="form-control"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group hidden">
-                                <label for="admin_id" class="col-sm-2 control-label">录入人id</label>
-                                <div class="col-sm-10">
-                                    <input id="admin_id" name="admin_id" type="text" class="form-control"
-                                           value="{{$admin->id}}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">录入人</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control"
-                                           value="{{$admin->name}}" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="real_name" class="col-sm-2 control-label">兑换用户</label>
 
-                                <div class="col-sm-10">
-                                    <input id="real_name" name="real_name" type="text" class="form-control"
-                                           placeholder="用户名"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="phonenum" class="col-sm-2 control-label">用户电话</label>
-
-                                <div class="col-sm-10">
-                                    <input id="phonenum" name="phonenum" type="text" class="form-control"
-                                           placeholder="用户电话"
-                                           value="">
-                                </div>
-                            </div>
-
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" id="url"/>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="submit" id="addHouseModal_confirm_btn" data-value=""
-                                class="btn btn-success">确定
-                        </button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
 
     {{--删除对话框--}}
@@ -266,74 +189,8 @@
             window.location.href = "{{URL::asset('/admin/goodsexchange/del')}}/" + goods_id;
         }
 
-        //点击新建楼盘
-        function clickAdd() {
-            //清空模态框
-            $("#editGoodsExchange")[0].reset();
-            $("#admin_id").val("{{$admin->id}}");
-            $("#pickfiles").attr("src", '{{URL::asset('/img/upload.png')}}');
-            $("#addGoodsModal").modal('show');
-        }
 
 
-        //点击编辑
-        function clickEdit(goods_id) {
-            console.log("clickEdit goods_id:" + goods_id);
-            getGoodsExchangeById("{{URL::asset('')}}", {id: goods_id, _token: "{{ csrf_token() }}"}, function (ret) {
-                if (ret.result) {
-                    var msgObj = ret.ret;
-                    //对象配置
-                    $("#id").val(msgObj.id);
-                    $("#real_name").val(msgObj.real_name);
-                    $("#phonenum").val(msgObj.phonenum);
-//                    $("#name").val(msgObj.name);
-//                    $("#jifen").val(msgObj.jifen);
-//                    $("#dh_time").val(msgObj.dh_time);
-//                    $("#image").val(msgObj.image);
-//                    $("#pickfiles").attr("src", msgObj.image);
-                    //展示modal
-                    $("#addGoodsModal").modal('show');
-                }
-            })
-        }
-
-        //合规校验
-        function checkValid() {
-            console.log("checkValid");
-            var real_name = $("#real_name").val();
-            //合规校验
-            if (judgeIsNullStr(real_name)) {
-                $("#real_name").focus();
-                return false;
-            }
-            var phonenum = $("#phonenum").val();
-            if (judgeIsNullStr(phonenum)) {
-                $("#phonenum").focus();
-                return false;
-            }
-//            var name = $("#name").val();
-//            if (judgeIsNullStr(name)) {
-//                $("#name").focus();
-//                return false;
-//            }
-//            var dh_time = $("#dh_time").val();
-//            if (judgeIsNullStr(dh_time)) {
-//                $("#dh_time").focus();
-//                return false;
-//            }
-//
-//            var jifen = $("#jifen").val();
-//            if (judgeIsNullStr(jifen)) {
-//                $("#jifen").focus();
-//                return false;
-//            }
-//            var image = $("#image").val();
-//            if (judgeIsNullStr(image)) {
-//                $("#image").focus();
-//                return false;
-//            }
-            return true;
-        }
 
 
 
