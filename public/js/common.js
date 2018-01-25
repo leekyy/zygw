@@ -30,6 +30,15 @@ function getHouseById(url, param, callBack) {
     ajaxRequest(url + "admin/house/getById", param, "GET", callBack);
 }
 
+//根据id获取商品信息
+function getGoodsById(url, param, callBack) {
+    ajaxRequest(url + "admin/goods/getById", param, "GET", callBack);
+}
+//根据id获取订单信息
+function getGoodsExchangeById(url, param, callBack) {
+    ajaxRequest(url + "admin/goodsexchange/getById", param, "GET", callBack);
+}
+
 //根据id获取管理员信息
 function getAdminById(url, param, callBack) {
     ajaxRequest(url + "admin/admin/getById", param, "GET", callBack);
@@ -43,6 +52,11 @@ function test(url, param, callBack) {
 //获取签到总体信息
 function getQDRecentDatas(url, param, callBack) {
     ajaxRequest(url + "admin/userQD/getRecentDatas", param, "GET", callBack);
+}
+
+//获取签到总体信息
+function getDDRecentDatas(url, param, callBack) {
+    ajaxRequest(url + "admin/goodsexchange/getRecentDatas", param, "GET", callBack);
 }
 
 

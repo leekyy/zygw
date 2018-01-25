@@ -37,7 +37,7 @@ class HouseController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $house = HouseManager::getListByStatusPaginate(["0"]);
+        $house = HouseManager::getListPaginate();
 //        dd($userUps);
         $upload_token = QNManager::uploadToken();
         return view('admin.house.index', ['admin' => $admin, 'datas' => $house, 'upload_token' => $upload_token]);
@@ -96,7 +96,7 @@ class HouseController
 //        dd($data['search_status']);
         //如果不存在search_status，代表搜索全部
         if (!array_key_exists('search_status', $data) || Utils::isObjNull($data['search_status'])) {
-            $house = HouseManager::getListByStatusPaginate(["0", "1", "2"]);
+            $house = HouseManager::getListByStatusPaginate(["0", "1",]);
         } else {
             $house = HouseManager::getListByStatusPaginate([$data['search_status']]);
         }
@@ -116,6 +116,23 @@ class HouseController
         }
         $admin = HouseManager::getById($data['id']);
         return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
+
+    }
+
+    public function getHouseById(Request $request)
+    {
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'house_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $house = HouseManager::getHouseById($data['house_id']);
+        $upload_token = QNManager::uploadToken();
+        return view('admin.house.getHouseById', ['admin' => $admin, 'data' => $house, 'upload_token' => $upload_token]);
 
     }
 

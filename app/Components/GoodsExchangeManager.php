@@ -13,6 +13,7 @@ use App\Models\AD;
 use App\Models\Goods;
 use App\Models\GoodsExchange;
 use Qiniu\Auth;
+use Illuminate\Support\Facades\DB;
 
 class GoodsExchangeManager
 {
@@ -24,10 +25,16 @@ class GoodsExchangeManager
      * 2017-01-21
      *
      */
-    public static function getListPaginate($status)
+    public static function getListPaginate()
     {
         $goodsExchanges = GoodsExchange::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $goodsExchanges;
+    }
+    public static function getListByStatusPaginate($status)
+    {
+        $userUps = GoodsExchange::wherein('status', $status)->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        //设置用户信息和楼盘信息
+        return $userUps;
     }
 
     /*
@@ -59,6 +66,55 @@ class GoodsExchangeManager
 
 
     /*
+     * 获取总订单数
+     *
+     * By TerryQi
+     */
+    public static function getAllQDRenCiShuNum()
+    {
+        $count = GoodsExchange::all()->count();
+        return $count;
+    }
+
+
+    /*
+    * 获取订单总人数
+    *
+    * By TerryQi
+    */
+    public static function getAllQDRenShuNum()
+    {
+        $count = DB::select('SELECT COUNT(distinct user_id) as rs FROM zygwdb.t_goods_exchange;', []);
+        return $count[0]->rs;
+    }
+
+
+    /*
+     * 获取订单兑换的总积分
+     *
+     * By TerryQi
+     *
+     */
+    public static function getAllPaiSongJiFenNum()
+    {
+        $count = DB::select('SELECT SUM(total_jifen)  as jf FROM zygwdb.t_goods_exchange;', []);
+        return $count[0]->jf;
+    }
+
+    /*
+    * 获取近N日的报表
+    *
+    * By TerryQi
+    *
+    */
+    public static function getRecentDatas($day_num)
+    {
+        $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(total_jifen)  as psjfs FROM zygwdb.t_goods_exchange GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
+        return $data;
+    }
+
+
+    /*
      * 根据用户id获取兑换列表
      *
      * By TerryQi
@@ -69,6 +125,15 @@ class GoodsExchangeManager
     {
         $goodsExchanges = GoodsExchange::where('user_id', '=', $user_id)->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $goodsExchanges;
+    }
+
+//goodsexchange(index.php)
+    public static function getUserUpInfoByLevel($userUp, $level)
+    {
+        $userUp->user = UserManager::getUserInfoById($userUp->user_id);
+        $userUp->goods = GoodsManager::getById($userUp->goods_id);
+        $userUp->admin = AdminManager::getAdminInfoById($userUp->admin_id);
+        return $userUp;
     }
 
 

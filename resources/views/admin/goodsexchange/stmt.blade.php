@@ -24,7 +24,7 @@
                     <div class="inner">
                         <h3>{{$data->zqdrcs}}</h3>
 
-                        <p>总签到次数</p>
+                        <p>总订单数</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
@@ -39,7 +39,7 @@
                     <div class="inner">
                         <h3>{{$data->zqdrs}}</h3>
 
-                        <p>总签到人数</p>
+                        <p>订单总人数</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
@@ -54,7 +54,7 @@
                     <div class="inner">
                         <h3>{{$data->zpsjfs}}</h3>
 
-                        <p>总签到赠出积分数</p>
+                        <p>兑换订单总积分</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
@@ -84,10 +84,10 @@
         //入口函数
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip()
-            getQDRecentDatas("{{URL::asset('')}}", {_token: "{{ csrf_token() }}"}, function (ret) {
+            getDDRecentDatas("{{URL::asset('')}}", {_token: "{{ csrf_token() }}"}, function (ret) {
                 if (ret.result) {
                     var msgObj = ret.ret;
-                    showChart("chart-content", msgObj, '签到统计', '近15日签到人数/派送积分综合统计');
+                    showChart("chart-content", msgObj, '订单统计', '近15日订单总数/兑换积分综合统计');
                 }
             });
         });
@@ -115,7 +115,7 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data: ['签到人数', '派发积分']
+                    data: ['订单人数', '兑换积分']
                 },
                 grid: {
                     left: '3%',
@@ -138,13 +138,13 @@
                 },
                 series: [
                     {
-                        name: '签到人数',
+                        name: '订单人数',
                         type: 'line',
                         stack: '总量',
                         data: rs_arr
                     },
                     {
-                        name: '派发积分',
+                        name: '兑换积分',
                         type: 'line',
                         stack: '总量',
                         data: jf_arr

@@ -17,6 +17,7 @@
             </div>
         </div>
     </section>
+    {{--<div id = 'upload_token' style="display: none;">{{$upload_token}}</div>--}}
 
     <!-- Main content -->
     <section class="content">
@@ -34,8 +35,8 @@
                             <div class="form-group">
                                 <div class="col-sm-10">
                                     <select id="search_status" name="search_status" class="form-control">
-                                        <option value="0">在首页显示</option>
-                                        <option value="1">不在首页显示</option>
+                                        <option value="0">展示</option>
+                                        <option value="1">隐藏</option>
                                         <option value="">全部楼盘</option>
                                     </select>
                                 </div>
@@ -127,17 +128,6 @@
                                         </div>
                                     </td>
 
-                                    {{--<td>--}}
-                                        {{--<div class="line-height-30">--}}
-                                            {{--{{isset($data->house) ? $data->house->title : "--"}}--}}
-                                        {{--</div>--}}
-                                    {{--</td>--}}
-                                    {{--<td>--}}
-                                        {{--<span class="line-height-30">{{isset($data->sh_time)?$data->sh_time:"--"}}</span>--}}
-                                    {{--</td>--}}
-                                    {{--<td>--}}
-                                        {{--{{isset($data->admin) ? $data->admin->name : "--"}}--}}
-                                    {{--</td>--}}
                                     <td>
                                         @if($data->status === '0')
                                             <span class="label label-success line-height-30">展示</span>
@@ -158,6 +148,12 @@
                                                class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top" title="在小程序页面中隐藏该楼盘">
+                                                <i class="fa fa-eye-slash opt-btn-i-size"></i>
+                                            </a>
+                                            <a href="{{URL::asset('/admin/house/getHouseById')}}/{{$data->id}}"
+                                               class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="查看该楼盘下房源">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
                                             <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"

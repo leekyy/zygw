@@ -11,6 +11,7 @@ namespace App\Components;
 
 use App\Models\AD;
 use App\Models\House;
+use App\Models\Huxing;
 use Qiniu\Auth;
 
 class HouseManager
@@ -29,6 +30,11 @@ class HouseManager
         //设置用户信息和楼盘信息
         return $house;
     }
+    public static function getListPaginate()
+    {
+        $house = House::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $house;
+    }
     /*
      * 根据id获取楼盘详细信息
      *
@@ -42,6 +48,17 @@ class HouseManager
         $house = House::where('id', '=', $id)->first();
         return $house;
     }
+    /*根据楼盘id获取该楼盘下的所有房源
+     *
+     * By Yinyue
+     * 2018-1-24
+     */
+    public static function getHouseById($house_id ){
+        $huxing = Huxing::where('house_id','=',$house_id)->get();
+        return $huxing;
+
+    }
+
 
 
 
