@@ -33,15 +33,18 @@ class UserManager
     }
 
     /*
-     * 根据身份获取用户信息-分页
+     * 根据搜索关键字和身份获取用户信息-分页
+     *
      *
      * By TerryQi
      *
      * 2018-01-20
      */
-    public static function getListByRolePaginate()
+    public static function getListByRoleAndSearchWordPaginate($search_word, $role)
     {
-
+        $users = User::where('role', '=', $role)->orderby('id', 'desc')
+            ->where('phonenum', 'like', '%' . $search_word . '%')->paginate(Utils::PAGE_SIZE);
+        return $users;
     }
 
 
@@ -257,4 +260,5 @@ class UserManager
             return $uuid;
         }
     }
+
 }

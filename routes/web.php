@@ -44,18 +44,28 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 
     //中介申请成为案场负责人管理
     Route::get('/userUp/index', 'Admin\UserUpController@index');  //管理员管理首页
-    Route::get('/userUp/setStatus/{id}', 'Admin\UserUpController@setStatus');  //设置轮播状态
-    Route::post('/userUp/search', 'Admin\UserUpController@search');  //设置轮播状态
+    Route::get('/userUp/setStatus/{id}', 'Admin\UserUpController@setStatus');  //设置升级状态
+    Route::post('/userUp/search', 'Admin\UserUpController@search');  //搜索申请记录
+
+    //案场负责人
+    Route::get('/acfzr/index', 'Admin\UserACFZRController@index');  //案场负责人管理首页
+    Route::post('/acfzr/search', 'Admin\UserACFZRController@search');  //搜索案场负责人
+    Route::get('/acfzr/setStatus/{id}', 'Admin\UserACFZRController@setStatus');  //设置状态
+
+    //中介
+    Route::get('/zhongjie/index', 'Admin\UserZJController@index');  //中介管理首页
+    Route::get('/zhongjie/search', 'Admin\UserZJController@search');  //搜索中介
+    Route::get('/zhongjie/setStatus/{id}', 'Admin\UserZJController@setStatus');  //设置状态
 
     //楼盘管理
-    Route::get('/house/index','Admin\HouseController@index');//楼盘管理首页
+    Route::get('/house/index', 'Admin\HouseController@index');//楼盘管理首页
     Route::get('/house/setStatus/{id}', 'Admin\HouseController@setStatus');  //设置楼盘状态
-    Route::get('/house/del/{id}','Admin\HouseController@del');//删除楼盘
-    Route::post('/house/edit','Admin\HouseController@edit');//新建或编辑楼盘
-    Route::post('/house/edit','Admin\HouseController@editPost');//新建或编辑楼盘
-    Route::get('/house/getById','Admin\HouseController@getById');//根据id获取楼盘信息
+    Route::get('/house/del/{id}', 'Admin\HouseController@del');//删除楼盘
+    Route::post('/house/edit', 'Admin\HouseController@edit');//新建或编辑楼盘
+    Route::post('/house/edit', 'Admin\HouseController@editPost');//新建或编辑楼盘
+    Route::get('/house/getById', 'Admin\HouseController@getById');//根据id获取楼盘信息
     Route::post('/house/search', 'Admin\HouseController@search');  //设置楼盘状态
-    Route::get('/house/getHouseById','Admin\HouseController@getHouseById');//根据楼盘id获取相应的房源
+    Route::get('/house/getHouseById', 'Admin\HouseController@getHouseById');//根据楼盘id获取相应的房源
 
 
     //系统配置信息相关
@@ -77,11 +87,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/goods/edit', 'Admin\GoodsController@editPost');  //新建或编辑商品
 
     //兑换订单管理
-    Route::get('/goodsexchange/index','Admin\GoodsExchangeController@index');//订单管理首页
+    Route::get('/goodsexchange/index', 'Admin\GoodsExchangeController@index');//订单管理首页
     Route::get('/goodsexchange/setStatus/{id}', 'Admin\GoodsExchangeController@setStatus');  //设置订单状态
     Route::get('/goodsexchange/del/{id}', 'Admin\GoodsExchangeController@del');  //删除订单
     Route::get('/goodsexchange/stmt', 'Admin\GoodsExchangeController@stmt');  //系统配置首页信息
-    Route::get('/goodsexchange/getById','Admin\GoodsExchangeController@getById');//根据id获取订单信息
+    Route::get('/goodsexchange/getById', 'Admin\GoodsExchangeController@getById');//根据id获取订单信息
     Route::get('/goodsexchange/getRecentDatas', 'Admin\GoodsExchangeController@getRecentDatas');        //获取近几日综合统计数据
     Route::get('/goodsexchange/edit', 'Admin\GoodsExchangeController@edit');  //新建或编辑管理员
     Route::post('/goodsexchange/edit', 'Admin\GoodsExchangeController@editPost');  //新建或编辑商品

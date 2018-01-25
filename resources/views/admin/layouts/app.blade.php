@@ -227,13 +227,25 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/userUp/index')}}"><i class="fa fa-circle-o"></i>升级审核</a></li>
-                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
+                        <li><a href="{{url('admin/acfzr/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
                         <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-odnoklassniki"></i> <span>职业顾问</span>
+                        <i class="fa fa-odnoklassniki"></i> <span>中介管理</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('admin/zhongjie/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-odnoklassniki"></i> <span>置业顾问</span>
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
