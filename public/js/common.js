@@ -39,11 +39,11 @@ function getHuxingById(url, param, callBack) {
 function getGoodsById(url, param, callBack) {
     ajaxRequest(url + "admin/goods/getById", param, "GET", callBack);
 }
-//根据id获取订单信息
-function getGoodsExchangeById(url, param, callBack) {
-    ajaxRequest(url + "admin/goodsexchange/getById", param, "GET", callBack);
-}
 
+//根据id获取订单信息
+    function getGoodsExchangeById(url, param, callBack) {
+        ajaxRequest(url + "admin/goodsexchange/getById", param, "GET", callBack);
+    }
 //根据id获取管理员信息
 function getAdminById(url, param, callBack) {
     ajaxRequest(url + "admin/admin/getById", param, "GET", callBack);
@@ -62,6 +62,26 @@ function getQDRecentDatas(url, param, callBack) {
 //获取签到总体信息
 function getDDRecentDatas(url, param, callBack) {
     ajaxRequest(url + "admin/goodsexchange/getRecentDatas", param, "GET", callBack);
+}
+//获取楼盘信息
+function getLPRecentDatas(url, param, callBack) {
+    ajaxRequest(url + "admin/house/getRecentDatas", param, "GET", callBack);
+}
+
+
+//根据id获合作细则信息
+function getHeZuoById(url, param, callBack) {
+    ajaxRequest(url + "admin/hezuo/getById", param, "GET", callBack);
+}
+
+//根据id获取行业白皮书信息
+function getWhiteBookById(url, param, callBack) {
+    ajaxRequest(url + "admin/whitebook/getById", param, "GET", callBack);
+}
+
+//根据id获取积分兑换信息
+function getRuleById(url, param, callBack) {
+    ajaxRequest(url + "admin/rule/getById", param, "GET", callBack);
 }
 
 

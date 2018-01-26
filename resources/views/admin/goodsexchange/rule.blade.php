@@ -7,12 +7,12 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">客户管理</li>
+                    <li class="active">积分兑换规则管理</li>
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
                 <button type="button" class="btn btn-primary" onclick="clickAdd();">
-                    +新建客户
+                    +新建积分兑换规则
                 </button>
             </div>
         </div>
@@ -29,9 +29,11 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>客户名字</th>
-                                <th>客户电话</th>
-                                <th>录入时间</th>
+                                <th>内容</th>
+                                <th>积分奖励</th>
+                                <th>积分扣除</th>
+                                <th>积分兑换</th>
+                                <th>时间</th>
                                 <th>录入人</th>
                                 <th>状态</th>
                                 <th>操作</th>
@@ -46,13 +48,23 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="line-height-30 text-info text-oneline con-th-width-ll">
-                                            {{$data->kehu_name}}
+                                        <div class="line-height-30 ">
+                                            {{$data->content}}
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="line-height-30 text-info text-oneline con-th-width-ll">
-                                            {{$data->telephone}}
+                                        <div class="line-height-30 ">
+                                            {{$data->jiangli}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="line-height-30 ">
+                                            {{$data->kouchu}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="line-height-30 ">
+                                            {{$data->duihuan}}
                                         </div>
                                     </td>
                                     <td><span class="line-height-30">{{$data->created_at_str}}</span>
@@ -67,22 +79,38 @@
                                         </span>
                                     </td>
                                     <td>
-                                        @if($data->status === '0')
-                                            <span class="label label-default line-height-30">未到访</span>
+                                        @if($data->status === '1')
+                                            <span class="label label-default line-height-30">隐藏</span>
                                         @else
-                                            <span class="label label-success line-height-30">到访可持续跟进</span>
+                                            <span class="label label-success line-height-30">展示</span>
                                         @endif
 
                                     </td>
                                     <td>
                                         <span class="line-height-30">
-
-
-
+                                            <a href="{{URL::asset('/admin/rule/setStatus')}}/{{$data->id}}?opt=0"
+                                               class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="在小程序页面中展示该积分规则">
+                                                <i class="fa fa-eye opt-btn-i-size"></i>
+                                            </a>
+                                            <a href="{{URL::asset('/admin/rule/setStatus')}}/{{$data->id}}?opt=1"
+                                               class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="在小程序页面中隐藏该积分规则">
+                                                <i class="fa fa-eye-slash opt-btn-i-size"></i>
+                                            </a>
+                                            <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
+                                                  data-toggle="tooltip"
+                                                  data-placement="top"
+                                                  title="编辑该积分规则"
+                                                  onclick="clickEdit({{$data->id}})">
+                                                <i class="fa fa-edit opt-btn-i-size"></i>
+                                            </span>
                                             <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
-                                                  title="删除该客户"
+                                                  title="删除该积分规则"
                                                   onclick="clickDel({{$data->id}})">
                                                 <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </span>
@@ -116,9 +144,9 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理轮播图</h4>
+                    <h4 class="modal-title">管理积分规则</h4>
                 </div>
-                <form id="editAD" action="{{URL::asset('/admin/ad/edit')}}" method="post" class="form-horizontal"
+                <form id="editAD" action="{{URL::asset('/admin/rule/edit')}}" method="post" class="form-horizontal"
                       onsubmit="return checkValid();">
                     <div class="modal-body">
                         {{csrf_field()}}
@@ -144,44 +172,46 @@
                                            value="{{$admin->name}}" disabled>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">说明*</label>
+                            <div class="form-group" >
+                                <label for="content" class="col-sm-2 control-label">内容</label>
 
                                 <div class="col-sm-10">
-                                    <input id="title" name="title" type="text" class="form-control"
-                                           placeholder="轮播图说明"
+                                    <input id="content" name="content" type="text" class="form-control"
+                                           placeholder="内容"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="seq" class="col-sm-2 control-label">排序*</label>
+                                <label for="jiangli" class="col-sm-2 control-label">奖励</label>
 
                                 <div class="col-sm-10">
-                                    <input id="seq" name="seq" type="number" class="form-control"
-                                           placeholder="值越大越靠前"
-                                           value="0">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="img" class="col-sm-2 control-label">图片*</label>
-
-                                <div class="col-sm-10">
-                                    <input id="img" name="img" type="text" class="form-control"
-                                           placeholder="图片网路链接地址"
+                                    <input id="jiangli" name="jiangli" type="text" class="form-control"
+                                           placeholder="奖励"
                                            value="">
                                 </div>
                             </div>
-                            <div style="margin-top: 10px;" class="text-center">
-                                <div id="container">
-                                    <img id="pickfiles"
-                                         src="{{URL::asset('/img/upload.png')}}"
-                                         style="width: 350px;">
-                                </div>
-                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传350*200尺寸图片
+                            <div class="form-group">
+                                <label for="kouchu" class="col-sm-2 control-label">扣除</label>
+
+                                <div class="col-sm-10">
+                                    <input id="kouchu" name="kouchu" type="text" class="form-control"
+                                           placeholder="扣除"
+                                           value="">
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.box-body -->
+                            <div class="form-group">
+                                <label for="duihuan" class="col-sm-2 control-label">兑换</label>
+
+                                <div class="col-sm-10">
+                                    <input id="duihuan" name="duihuan" type="text" class="form-control"
+                                           placeholder="兑换"
+                                           value="">
+                                </div>
+                            </div>
+
+
+
+                            <!-- /.box-body -->
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" id="url"/>
@@ -245,7 +275,7 @@
             //进行tr隐藏
             $("#tr_" + ad_id).fadeOut();
             //进行页面跳转
-            window.location.href = "{{URL::asset('/admin/kehu/del')}}/" + ad_id;
+            window.location.href = "{{URL::asset('/admin/rule/del')}}/" + ad_id;
         }
 
         //点击新建轮播图
@@ -260,13 +290,15 @@
         //点击编辑
         function clickEdit(ad_id) {
             console.log("clickEdit ad_id:" + ad_id);
-            getADById("{{URL::asset('')}}", {id: ad_id}, function (ret) {
+            getRuleById("{{URL::asset('')}}", {id: ad_id}, function (ret) {
                 if (ret.result) {
                     var msgObj = ret.ret;
                     //对象配置
                     $("#id").val(msgObj.id);
                     $("#content").val(msgObj.content);
-                    $("#img").val(msgObj.image);
+                    $("#jiangli").val(msgObj.jiangli);
+                    $("#kouchu").val(msgObj.kouchu);
+                    $("#duihuan").val(msgObj.duihuan);
                     $("#pickfiles").attr("src", msgObj.image);
                     //展示modal
                     $("#addADModal").modal('show');
@@ -277,15 +309,25 @@
         //合规校验
         function checkValid() {
             console.log("checkValid");
-            var title = $("#title").val();
-            //合规校验
-            if (judgeIsNullStr(title)) {
-                $("#title").focus();
+
+            var content = $("#content").val();
+            if (judgeIsNullStr(content)) {
+                $("#content").focus();
                 return false;
             }
-            var img = $("#img").val();
-            if (judgeIsNullStr(img)) {
-                $("#img").focus();
+            var jiangli = $("#jiangli").val();
+            if (judgeIsNullStr(jiangli)) {
+                $("#jiangli").focus();
+                return false;
+            }
+            var kouchu = $("#kouchu").val();
+            if (judgeIsNullStr(kouchu)) {
+                $("#kouchu").focus();
+                return false;
+            }
+            var duihuan = $("#duihuan").val();
+            if (judgeIsNullStr(duihuan)) {
+                $("#duihuan").focus();
                 return false;
             }
             return true;
@@ -359,7 +401,7 @@
                         var res = JSON.parse(info);
                         //获取上传成功后的文件的Url
                         var sourceLink = domain + res.key;
-                        $("#img").val(sourceLink);
+                        $("#image").val(sourceLink);
                         $("#pickfiles").attr('src', qiniuUrlTool(sourceLink, "ad"));
 //                        console.log($("#pickfiles").attr('src'));
                     },

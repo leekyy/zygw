@@ -227,13 +227,25 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/userUp/index')}}"><i class="fa fa-circle-o"></i>升级审核</a></li>
-                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
+                        <li><a href="{{url('admin/acfzr/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
                         <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-odnoklassniki"></i> <span>职业顾问</span>
+                        <i class="fa fa-odnoklassniki"></i> <span>中介管理</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('admin/zhongjie/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-odnoklassniki"></i> <span>置业顾问</span>
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -253,7 +265,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/house/index')}}"><i class="fa fa-circle-o"></i>楼盘管理</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
+                        <li><a href="{{url('admin/house/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -307,8 +319,21 @@
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/goods/index')}}"><i class="fa fa-circle-o"></i>商品管理</a></li>
                         <li><a href="{{url('admin/goodsexchange/index')}}"><i class="fa fa-circle-o"></i>兑换订单</a></li>
+                        <li><a href="{{url('admin/goodsexchange/rule')}}"><i class="fa fa-circle-o"></i>兑换规则</a></li>
                         <li><a href="{{url('admin/goodsexchange/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
+                </li>
+
+                <li class="">
+                    <a href="{{url('/admin/hezuo/index')}}">
+                        <i class="fa fa-user-md"></i><span>合作细则管理</span>
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="{{url('/admin/whitebook/index')}}">
+                        <i class="fa fa-user-md"></i><span>行业白皮书管理</span>
+                    </a>
                 </li>
                 <li class="treeview">
                     <a href="#">

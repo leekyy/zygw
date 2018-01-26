@@ -12,6 +12,7 @@ namespace App\Components;
 use App\Models\AD;
 use App\Models\House;
 use App\Models\Huxing;
+use Illuminate\Support\Facades\DB;
 use Qiniu\Auth;
 
 class HouseManager
@@ -58,6 +59,53 @@ class HouseManager
         return $huxing;
 
     }
+
+    /*
+     * 获取总楼盘数
+     *
+     * By TerryQi
+     */
+    public static function getAllQDRenCiShuNum()
+    {
+        $count = House::all()->count();
+        return $count;
+    }
+
+    /*
+    * 获取总房源数
+    *
+    * By TerryQi
+    */
+    public static function getAllQDRenShuNum()
+    {
+        $count = DB::select('SELECT COUNT(distinct house_id) as rs FROM zygwdb.t_house_huxing;', []);
+        return $count[0]->rs;
+    }
+
+//    /*
+//    * 获取订单兑换的总积分
+//    *
+//    * By TerryQi
+//    *
+//    */
+//    public static function getAllPaiSongJiFenNum()
+//    {
+//        $count = DB::select('SELECT SUM(total_jifen)  as jf FROM zygwdb.t_goods_exchange;', []);
+//        return $count[0]->jf;
+//    }
+
+    /*
+       * 获取近N日的报表
+       *
+       * By TerryQi
+       *
+       */
+    public static function getRecentDatas($day_num)
+    {
+        $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(title)  as psjfs FROM zygwdb.t_house_info GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
+        return $data;
+    }
+
 
 
 

@@ -73,6 +73,19 @@ class HouseController
     }
 
 
+    public function stmt(Request $request)
+    {
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+        $stmt = collect();
+        $stmt->zqdrs = HouseManager::getAllQDRenShuNum();
+        $stmt->zqdrcs = HouseManager::getAllQDRenCiShuNum();
+       // $stmt->zpsjfs = HouseManager::getAllPaiSongJiFenNum();
+//        dd($stmt);
+        return view('admin.house.stmt', ['admin' => $admin, 'data' => $stmt]);
+    }
+
+
     //新建或编辑楼盘->post
     public function editPost(Request $request)
     {
@@ -159,6 +172,27 @@ class HouseController
         $house->status = $opt;
         $house->save();
         return redirect('/admin/house/index');
+    }
+
+
+    /*
+* 获取近日的数据
+*
+* By Yinyue
+*
+*/
+    public function getRecentDatas(Request $request)
+    {
+        $data = $request->all();
+        $day_num = 15;
+        if (!array_key_exists('day_num', $data) || Utils::isObjNull($data['day_num'])) {
+            $day_num = 15;
+        } else {
+            $day_num = $data['day_num'];
+        }
+        $result = HouseManager::getRecentDatas($day_num);
+
+        return ApiResponse::makeResponse(true, $result, ApiResponse::MISSING_PARAM);
     }
 
 
