@@ -17,7 +17,7 @@ use App\Components\QNManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
 use App\Components\HouseManager;
-use App\Components\HuxingManager;
+use App\Components\ZYGWManager;
 use App\Http\Controllers\ApiResponse;
 use App\Components\Utils;
 use App\Components\XJManager;
@@ -25,14 +25,14 @@ use App\Libs\CommonUtils;
 use App\Models\AD;
 use App\Models\House;
 use App\Models\Doctor;
-use App\Models\Huxing;
+use App\Models\ZYGW;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
 use Illuminate\Support\Facades\Redirect;
 
 
-class HuxingController
+class ZYGWController
 {
     //首页
     public function index(Request $request)
@@ -51,9 +51,9 @@ class HuxingController
         $house = HouseManager::getById($house_id);
         $house = HouseManager::getHouseInfoByLevel($house, "0");
         //获取房源列表
-        $huxings = HuxingManager::getListByHouseId($house_id);
+        $zygws = ZYGWManager::getListByHouseId($house_id);
         $upload_token = QNManager::uploadToken();
-        return view('admin.houseHuxing.index', ['admin' => $admin, 'datas' => $huxings
+        return view('admin.zygw.index', ['admin' => $admin, 'datas' => $zygws
             , 'house' => $house, 'upload_token' => $upload_token]);
     }
 
@@ -65,11 +65,11 @@ class HuxingController
         if (!is_numeric($id)) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数广告id$id']);
         }
-        $huxing = Huxing::find($id);
-        $huxing->delete();
-        // $huxing =$request->all()['search'];
+        $zygw = ZYGW::find($id);
+        $zygw->delete();
+        // $zygw =$request->all()['search'];
         $data = $request->all();
-        return redirect('/admin/huxing/index?house_id=' . $data['house_id']);
+        return redirect('/admin/zygw/index?house_id=' . $data['house_id']);
     }
 
 
@@ -77,31 +77,30 @@ class HuxingController
     public function edit(Request $request)
     {
         $data = $request->all();
-        $huxing = new Huxing();
+        $zygw = new ZYGW();
         if (array_key_exists('id', $data)) {
-            $huxing = Huxing::find($data['id']);
+            $zygw = ZYGW::find($data['id']);
         }
         $admin = $request->session()->get('admin');
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.huxing.edit', ['admin' => $admin, 'data' => $huxing, 'upload_token' => $upload_token]);
+        return view('admin.huxing.edit', ['admin' => $admin, 'data' => $zygw, 'upload_token' => $upload_token]);
     }
 
 
-    //新建或编辑楼盘->post
+    //新建或编辑置业顾问->post
     public function editPost(Request $request)
     {
-
         $data = $request->all();
 //        dd($data);
-        $huxing = new Huxing();
+        $zygw = new ZYGW();
         //存在id是保存
         if (array_key_exists('id', $data) && $data['id'] != null) {
-            $huxing = Huxing::find($data['id']);
+            $zygw = ZYGW::find($data['id']);
         }
-        $huxing = HuxingManager::setHuxing($huxing, $data);
-        $huxing->save();
-        return redirect('/admin/huxing/index?house_id=' . $huxing->house_id);
+        $zygw = ZYGWManager::setZYGW($zygw, $data);
+        $zygw->save();
+        return redirect('/admin/zygw/index?house_id=' . $zygw->house_id);
     }
 
     //进行楼盘的搜索
@@ -113,15 +112,15 @@ class HuxingController
 //        dd($data['search_status']);
         //如果不存在search_status，代表搜索全部
         if (!array_key_exists('search_status', $data) || Utils::isObjNull($data['search_status'])) {
-            $house = HuxingManager::getListByStatusPaginate(["0", "1",]);
+            $house = ZYGWManager::getListByStatusPaginate(["0", "1",]);
         } else {
-            $house = HuxingManager::getListByStatusPaginate([$data['search_status']]);
+            $house = ZYGWManager::getListByStatusPaginate([$data['search_status']]);
         }
-        return view('admin.house.getHouseById', ['admin' => $admin, 'datas' => $house]);
+        return view('admin.zygw.getHouseById', ['admin' => $admin, 'datas' => $house]);
     }
 
     /*
-     * 根据id获取户型信息
+     * 根据id获取顾问信息
      *
      */
     public function getById(Request $request)
@@ -134,8 +133,8 @@ class HuxingController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        $huxing = HuxingManager::getById($data['id']);
-        return ApiResponse::makeResponse(true, $huxing, ApiResponse::SUCCESS_CODE);
+        $zygw = ZYGWManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $zygw, ApiResponse::SUCCESS_CODE);
 
     }
 
@@ -151,9 +150,9 @@ class HuxingController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        $house = HuxingManager::getHouseById($data['house_id']);
+        $house = ZYGWManager::getHouseById($data['house_id']);
         $upload_token = QNManager::uploadToken();
-        return view('admin.house.getHouseById', ['admin' => $admin, 'datas' => $house, 'upload_token' => $upload_token]);
+        return view('admin.zygw.getHouseById', ['admin' => $admin, 'datas' => $house, 'upload_token' => $upload_token]);
 
     }
 
@@ -173,9 +172,9 @@ class HuxingController
         if (!($opt == '0' || $opt == '1')) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数,opt必须为0或者1，现值为' . $opt]);
         }
-        $huxing = HuxingManager::getById($id);
-        $huxing->status = $opt;
-        $huxing->save();
-        return redirect('/admin/huxing/index?house_id=' . $huxing->house_id);
+        $zygw = ZYGWManager::getById($id);
+        $zygw->status = $opt;
+        $zygw->save();
+        return redirect('/admin/zygw/index?house_id=' . $zygw->house_id);
     }
 }

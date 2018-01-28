@@ -12,18 +12,18 @@ namespace App\Http\Controllers\Admin;
 use App\Components\ADManager;
 use App\Components\AdminManager;
 use App\Components\DateTool;
-use App\Components\DoctorManager;
+use App\Components\HouselabelManager;
+use App\Components\HouseTypeManager;
 use App\Components\QNManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
 use App\Components\HouseManager;
 use App\Http\Controllers\ApiResponse;
 use App\Components\Utils;
-use App\Components\XJManager;
 use App\Libs\CommonUtils;
 use App\Models\AD;
 use App\Models\House;
-use App\Models\Doctor;
+use App\Models\HouseType;
 use App\Models\Huxing;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
@@ -38,10 +38,41 @@ class HouseController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $house = HouseManager::getListPaginate();
-//        dd($userUps);
+        $houses = HouseManager::getListPaginate();
+        foreach ($houses as $house) {
+            $house = HouseManager::getHouseInfoByLevel($house, "0");
+        }
+//        dd($house);
         $upload_token = QNManager::uploadToken();
-        return view('admin.house.index', ['admin' => $admin, 'datas' => $house, 'upload_token' => $upload_token]);
+        $houseTypes = HouseTypeManager::getList(); //获取房源类型
+        $houseLabels = HouselabelManager::getList();        //获取房源标签
+
+        return view('admin.house.index', ['admin' => $admin, 'datas' => $houses, 'upload_token' => $upload_token
+            , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels]);
+    }
+
+    //根据名称进行楼盘搜索
+    public function search(Request $request)
+    {
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+        $search_word = "";
+//        dd($data['search_status']);
+        //如果不存在search_status，代表搜索全部
+        if (!array_key_exists('search_word', $data) || Utils::isObjNull($data['search_word'])) {
+            $search_word = "";
+        } else {
+            $search_word = $data['search_word'];
+        }
+        $houses = HouseManager::searchByName($search_word);
+        foreach ($houses as $house) {
+            $house = HouseManager::getHouseInfoByLevel($house, "0");
+        }
+        $upload_token = QNManager::uploadToken();
+        $houseTypes = HouseTypeManager::getList(); //获取房源类型
+        $houseLabels = HouselabelManager::getList();        //获取房源标签
+        return view('admin.house.index', ['admin' => $admin, 'datas' => $houses, 'upload_token' => $upload_token
+            , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels]);
     }
 
 
@@ -64,7 +95,7 @@ class HouseController
         $data = $request->all();
         $house = new House();
         if (array_key_exists('id', $data)) {
-            $house = House::find($data['id']);
+            $house = HouseManager::getById($data['id']);
         }
         $admin = $request->session()->get('admin');
         //生成七牛token
@@ -73,6 +104,13 @@ class HouseController
     }
 
 
+    /*
+     * 获取统计数据
+     *
+     * By TerryQi
+     *
+     * 2018-01-27
+     */
     public function stmt(Request $request)
     {
         $admin = $request->session()->get('admin');
@@ -80,7 +118,7 @@ class HouseController
         $stmt = collect();
         $stmt->zqdrs = HouseManager::getAllQDRenShuNum();
         $stmt->zqdrcs = HouseManager::getAllQDRenCiShuNum();
-       // $stmt->zpsjfs = HouseManager::getAllPaiSongJiFenNum();
+        // $stmt->zpsjfs = HouseManager::getAllPaiSongJiFenNum();
 //        dd($stmt);
         return view('admin.house.stmt', ['admin' => $admin, 'data' => $stmt]);
     }
@@ -97,28 +135,26 @@ class HouseController
         if (array_key_exists('id', $data) && $data['id'] != null) {
             $house = House::find($data['id']);
         }
+        if (!Utils::isObjNull($data['type_ids']) && is_array($data['type_ids'])) {
+            $data['type_ids'] = implode(',', $data['type_ids']);
+        }
+        if (!Utils::isObjNull($data['label_ids']) && is_array($data['label_ids'])) {
+            $data['label_ids'] = implode(',', $data['label_ids']);
+        }
+//        dd($data);
         $house = HouseManager::setHouse($house, $data);
         $house->save();
         return redirect('/admin/house/index');
     }
 
-    //进行楼盘的搜索
-    public function search(Request $request)
-    {
-        $admin = $request->session()->get('admin');
-        $data = $request->all();
-        $house = null;
-//        dd($data['search_status']);
-        //如果不存在search_status，代表搜索全部
-        if (!array_key_exists('search_status', $data) || Utils::isObjNull($data['search_status'])) {
-            $house = HouseManager::getListByStatusPaginate(["0", "1",]);
-        } else {
-            $house = HouseManager::getListByStatusPaginate([$data['search_status']]);
-        }
-        return view('admin.house.index', ['admin' => $admin, 'datas' => $house]);
-    }
 
-
+    /*
+     * 根据id获取房源信息
+     *
+     * By TerryQi
+     *
+     * 2018-01-27
+     */
     public function getById(Request $request)
     {
         $data = $request->all();
@@ -129,26 +165,8 @@ class HouseController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        $admin = HouseManager::getById($data['id']);
-        return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
-
-    }
-
-    public function getHouseById(Request $request)
-    {
-
-        $admin = $request->session()->get('admin');
-        $data = $request->all();
-        //合规校验account_type
-        $requestValidationResult = RequestValidator::validator($request->all(), [
-            'house_id' => 'required',
-        ]);
-        if ($requestValidationResult !== true) {
-            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
-        }
-        $house = HouseManager::getHouseById($data['house_id']);
-        $upload_token = QNManager::uploadToken();
-        return view('admin.house.getHouseById', ['admin' => $admin, 'datas' => $house, 'upload_token' => $upload_token]);
+        $house = HouseManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $house, ApiResponse::SUCCESS_CODE);
 
     }
 
@@ -176,11 +194,11 @@ class HouseController
 
 
     /*
-* 获取近日的数据
-*
-* By Yinyue
-*
-*/
+    * 获取近日的数据
+    *
+    * By Yinyue
+    *
+    */
     public function getRecentDatas(Request $request)
     {
         $data = $request->all();
@@ -194,7 +212,6 @@ class HouseController
 
         return ApiResponse::makeResponse(true, $result, ApiResponse::MISSING_PARAM);
     }
-
 
 
 }

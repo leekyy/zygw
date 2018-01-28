@@ -30,6 +30,23 @@ class Utils
     }
 
     /*
+     * 将id字符串数组转换为int数组
+     *
+     * By TerryQi
+     *
+     * 2018-01-27
+     */
+    public static function strArrToIntArr($str_arr)
+    {
+        $int_arr = array();
+        foreach ($str_arr as $str) {
+            array_push($int_arr, intval($str));
+        }
+        return $int_arr;
+    }
+
+
+    /*
      * 判断一个字符串是不是电话号码
      *
      * By TerryQi

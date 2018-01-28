@@ -18,25 +18,22 @@ class HuxingManager
 {
 
 
-/*获取全部的楼盘信息
- *
- * By Yinyue
- * 2018-1-22
- */
+    /* 根据楼盘id获取户型信息
+     *
+     * By Yinyue
+     *
+     * 2018-1-22
+     */
 
-    public static function getListByStatusPaginate($status)
+    public static function getListByHouseIdPaginate($house_id)
     {
-        $house = Huxing::wherein('status', $status)->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        $huxings = Huxing::where('house_id', $house_id)->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         //设置用户信息和楼盘信息
-        return $house;
+        return $huxings;
     }
-    public static function getListPaginate()
-    {
-        $house = Huxing::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
-        return $house;
-    }
+
     /*
-     * 根据id获取楼盘详细信息
+     * 根据id获取户型详细信息
      *
      * By TerryQi
      *
@@ -45,22 +42,21 @@ class HuxingManager
      */
     public static function getById($id)
     {
-        $house = Huxing::where('id', '=', $id)->first();
-        return $house;
+        $huxing = Huxing::where('id', '=', $id)->first();
+        return $huxing;
     }
+
     /*根据楼盘id获取该楼盘下的所有房源
      *
      * By Yinyue
      * 2018-1-24
      */
-    public static function getHouseById($house_id ){
-        $huxing = Huxing::where('house_id','=',$house_id)->get();
-        return $huxing;
 
+    public static function getListByHouseId($house_id)
+    {
+        $huxings = Huxing::where('house_id', '=', $house_id)->get();
+        return $huxings;
     }
-
-
-
 
 
     public static function setHuxing($house, $data)
