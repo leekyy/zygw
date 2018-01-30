@@ -118,38 +118,6 @@
 
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <!-- Notifications: style can be found in dropdown.less -->
-                    <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">您有<span class="text-danger">10</span>条信息，请尽快查看</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-warning text-danger"></i> 患者藏奇在数据采集时发现问题，其中围度测量数值超标
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-warning text-yellow"></i> 您的患者向您提出了咨询，咨询内容为在弯腿时腿部出现问题
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="#"><span class="text-info">查看全部预警</span></a></li>
-                        </ul>
-                    </li>
-
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -284,7 +252,7 @@
 
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-smile-o"></i>
+                        <i class="fa fa-list"></i>
                         <span>客户报备管理</span>
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
@@ -326,13 +294,13 @@
 
                 <li class="">
                     <a href="{{url('/admin/hezuo/index')}}">
-                        <i class="fa fa-user-md"></i><span>合作细则管理</span>
+                        <i class="fa fa-file-text-o"></i><span>合作细则管理</span>
                     </a>
                 </li>
 
                 <li class="">
                     <a href="{{url('/admin/whitebook/index')}}">
-                        <i class="fa fa-user-md"></i><span>行业白皮书管理</span>
+                        <i class="fa fa-file-text-o"></i><span>行业白皮书管理</span>
                     </a>
                 </li>
                 <li class="treeview">
@@ -345,6 +313,14 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('/admin/system/index')}}"><i class="fa fa-circle-o"></i>积分规则
+                                <small class="label bg-red pull-right">！</small>
+                            </a>
+                        </li>
+                        <li><a href="{{url('/admin/houseLabel/index')}}"><i class="fa fa-circle-o"></i>楼盘标签管理
+                                <small class="label bg-red pull-right">！</small>
+                            </a>
+                        </li>
+                        <li><a href="{{url('/admin/houseType/index')}}"><i class="fa fa-circle-o"></i>楼盘类型管理
                                 <small class="label bg-red pull-right">！</small>
                             </a>
                         </li>

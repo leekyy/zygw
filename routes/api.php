@@ -42,7 +42,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //获取案场负责人的楼盘
     Route::get('user/getUserUpHousesByUserId', 'API\UserUpController@getUserUpHousesByUserId');
 
-    //用户签到
+    //用户签到-By TerryQi
     Route::post('user/userQDToday', 'API\UserQDController@userQDToday')->middleware('CheckToken');        //用户签到接口
     Route::get('user/getUserQDsByUserId', 'API\UserQDController@getUserQDsByUserId')->middleware('CheckToken');        //根据用户id获取签到列表
     Route::get('user/getRecentDatas', 'Admin\UserQDController@getRecentDatas');        //获取近几日综合统计数据
@@ -51,6 +51,9 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('ad/getADs', 'API\ADController@getADs');
     //根据轮播图的id获取相应的信息
     Route::get('ad/getById', 'API\ADController@getADById');
+
+    //楼盘相关
+
 
     //获取房源信息
     Route::get('hr/getHRs', 'API\HRController@getHRs');
@@ -104,4 +107,9 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('pingjia/getPingjia', 'API\UserController@getPingjia');
 
 
+    //微信相关接口
+    //小程序通过code换取openid接口
+    Route::get('wechat/miniProgramLogin', 'API\WechatController@miniProgramLogin');
+    //微信服务号 加入接口
+    Route::any('wechat', 'API\WechatController@serve');
 });

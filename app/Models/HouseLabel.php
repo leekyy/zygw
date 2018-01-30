@@ -11,10 +11,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Loan extends Model
+class HouseLabel extends Model
 {
     use SoftDeletes;    //使用软删除
-    protected $table = 't_house_loan';
+    protected $table = 't_house_label';
     public $timestamps = true;
     protected $dates = ['deleted_at'];  //软删除
 }

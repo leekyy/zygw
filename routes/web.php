@@ -76,25 +76,40 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 
 
     //楼盘下的房源管理
-    Route::get('/house/getHouseById','Admin\HouseController@getHouseById');//根据楼盘id获取相应的房源
-    Route::get('/huxing/del/{id}','Admin\HuxingController@del');//删除房源
-    Route::post('/huxing/edit','Admin\HuxingController@edit');//新建或编辑楼盘
-    Route::post('/huxing/edit','Admin\HuxingController@editPost');//新建或编辑楼盘
-    Route::get('/huxing/getById','Admin\HuxingController@getById');//根据id获取楼盘信息
-    Route::get('/huxing/getHouseById','Admin\HuxingController@getById');//根据id获取楼盘信息
+    Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的房源
+    Route::get('/huxing/del/{id}', 'Admin\HuxingController@del');//删除房源
+    Route::post('/huxing/edit', 'Admin\HuxingController@edit');//新建或编辑楼盘
+    Route::post('/huxing/edit', 'Admin\HuxingController@editPost');//新建或编辑楼盘
+    Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取楼盘信息
     Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置房源状态
-    Route::post('/huxing/search', 'Admin\HuxingController@search');  //系统配置首页信息
+
+    //楼盘下的顾问管理
+    Route::get('/zygw/index', 'Admin\ZYGWController@index');//根据楼盘id获取相应的顾问
+    Route::get('/zygw/del/{id}', 'Admin\ZYGWController@del');//删除顾问
+    Route::get('/zygw/edit', 'Admin\ZYGWController@edit');//新建或编辑楼盘
+    Route::post('/zygw/edit', 'Admin\ZYGWController@editPost');//新建或编辑楼盘
+    Route::get('/zygw/getById', 'Admin\ZYGWController@getById');//根据id获取楼盘信息
+    Route::get('/zygw/setStatus/{id}', 'Admin\ZYGWController@setStatus');  //设置顾问状态
+
+    //楼盘下的房地产客户管理
+    Route::get('/houseClient/index', 'Admin\HouseClientController@index');//根据楼盘id获取相应的房地产客户
+    Route::post('/houseClient/edit', 'Admin\HouseClientController@editPost');//新建或编辑房地产客户
+    Route::get('/houseClient/del/{id}', 'Admin\HouseClientController@del');//删除房地产客户
 
     //客户管理
-
     Route::get('/kehu/index', 'Admin\KeHuController@index');  //客户管理首页
     Route::get('/kehu/del/{id}', 'Admin\KeHuController@del');  //删除客户
     Route::get('/kehu/edit', 'Admin\KeHuController@edit');  //新建或编辑客户
     Route::post('/kehu/edit', 'Admin\KeHuController@editPost');  //新建或编辑客户
     Route::get('/kehu/getById', 'Admin\KeHuController@getById');  //根据id获取客户信息
 
+    //房源标签
+    Route::get('/houseLabel/index', 'Admin\HouseLabelController@index');  //楼盘标签管理首页
+    Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑房源标签
 
-    //Route::get('/house/getHouseById', 'Admin\HouseController@getHouseById');//根据楼盘id获取相应的房源
+    //房源类型
+    Route::get('/houseType/index', 'Admin\HouseTypeController@index');  //楼盘类型管理首页
+    Route::post('/houseType/edit', 'Admin\HouseTypeController@editPost');  //编辑楼盘标签
 
 
     //系统配置信息相关
@@ -134,19 +149,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 
     //合作细则管理
     Route::get('/hezuo/index', 'Admin\HeZuoController@index');  //合作细则管理首页
-    Route::get('/hezuo/del/{id}', 'Admin\HeZuoController@del');  //删除管理员
-    Route::get('/hezuo/setStatus/{id}', 'Admin\HeZuoController@setStatus');  //设置商品状态
-    Route::get('/hezuo/edit', 'Admin\HeZuoController@edit');  //新建或编辑管理员
-    Route::post('/hezuo/edit', 'Admin\HeZuoController@editPost');  //新建或编辑管理员
-    Route::get('/hezuo/getById', 'Admin\HeZuoController@getById');  //根据id获取管理员信息
+    Route::get('/hezuo/del/{id}', 'Admin\HeZuoController@del');  //删除合作细则
+    Route::get('/hezuo/setStatus/{id}', 'Admin\HeZuoController@setStatus');  //设置合作细则状态
+    Route::get('/hezuo/edit', 'Admin\HeZuoController@edit');  //新建或编辑合作细则
+    Route::post('/hezuo/edit', 'Admin\HeZuoController@editPost');  //新建或编辑合作细则
+    Route::get('/hezuo/getById', 'Admin\HeZuoController@getById');  //根据id获取合作细则信息
 
     //行业白皮书管理
-    Route::get('/whitebook/index', 'Admin\WhiteBookController@index');  //合作细则管理首页
-    Route::get('/whitebook/del/{id}', 'Admin\WhiteBookController@del');  //删除管理员
-    Route::get('/whitebook/setStatus/{id}', 'Admin\WhiteBookController@setStatus');  //设置商品状态
-    Route::get('/whitebook/edit', 'Admin\WhiteBookController@edit');  //新建或编辑管理员
-    Route::post('/whitebook/edit', 'Admin\WhiteBookController@editPost');  //新建或编辑管理员
-    Route::get('/whitebook/getById', 'Admin\WhiteBookController@getById');  //根据id获取管理员信息
-
+    Route::get('/whitebook/index', 'Admin\WhiteBookController@index');  //行业白皮书管理首页
+    Route::get('/whitebook/del/{id}', 'Admin\WhiteBookController@del');  //删除行业白皮书
+    Route::get('/whitebook/setStatus/{id}', 'Admin\WhiteBookController@setStatus');  //设置行业白皮书状态
+    Route::get('/whitebook/edit', 'Admin\WhiteBookController@edit');  //新建或编辑行业白皮书
+    Route::post('/whitebook/edit', 'Admin\WhiteBookController@editPost');  //新建或编辑行业白皮书
+    Route::get('/whitebook/getById', 'Admin\WhiteBookController@getById');  //根据id获取行业白皮书信息
 
 });

@@ -22,39 +22,62 @@
     <!-- Main content -->
     <section class="content">
 
-        {{--条件搜索--}}
-        <div class="row">
-            <!-- left column -->
-            <div class="col-md-12">
-                <!-- Horizontal Form -->
-                <div class="">
-                    <!-- form start -->
-                    <form action="{{URL::asset('/admin/huxing/search')}}" method="post" class="form-horizontal">
-                        {{csrf_field()}}
-                        <div class="box-body">
-                            <div class="form-group">
-                                <div class="col-sm-10">
-                                    <select id="search_status" name="search_status" class="form-control">
-                                        <option value="0">展示</option>
-                                        <option value="1">隐藏</option>
-                                        <option value="">全部楼盘</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-2">
-                                    <button type="submit" class="btn btn-info btn-block btn-flat" onclick="">
-                                        搜索
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.box-footer -->
-                    </form>
+        {{--楼盘基本信息--}}
+        <div class="white-bg">
+            <div style="padding: 15px;">
+                <div class="margin-top-10 font-size-14 grey-bg">
+                    <div style="padding: 10px;">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                            <tr>
+                                <td rowspan="3">
+                                    <img src="{{ $house->image ? $house->image.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/upload.png')}}"
+                                         style="width: 80px;height: 80px;">
+                                </td>
+                                <td>楼盘</td>
+                                <td>
+                                    {{ $house->title }}
+                                </td>
+                                <td>地址</td>
+                                <td>
+                                    {{$house->address}}
+                                </td>
+                                <td>价格</td>
+                                <td>{{$house->price}}</td>
+                            </tr>
+                            <tr>
+                                <td>建筑面积</td>
+                                <td>{{$house->size}}㎡</td>
+                                <td>佣金</td>
+                                <td>{{$house->yongjin}}元</td>
+                                <td></td>
+                                <td>--</td>
+                            </tr>
+                            <tr>
+                                <td>标签</td>
+                                <td>
+                                    @foreach($house->labels as $label)
+                                        {{$label->name}}
+                                    @endforeach
+                                </td>
+                                <td>类型</td>
+                                <td>
+                                    @foreach($house->types as $type)
+                                        {{$type->name}}
+                                    @endforeach
+                                </td>
+                                <td></td>
+                                <td>--</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <!-- /.box -->
             </div>
         </div>
+
         <!--列表-->
-        <div class="row">
+        <div class="row margin-top-10">
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-body">
@@ -62,13 +85,11 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>房源图片</th>
-                                <th>房源类型</th>
-                                <th>房源面积</th>
-                                <th>房源价格</th>
-                                <th>房源优点</th>
-                                <th>房源朝向</th>
-                                <th>购买理由</th>
+                                <th>图片</th>
+                                <th>类型</th>
+                                <th>面积/㎡</th>
+                                <th>价格/万元</th>
+                                <th>优点</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -100,40 +121,28 @@
                                             {{$data->price}}
                                         </div>
                                     </td>
-
                                     <td>
                                         <div class="line-height-30">
                                             {{$data->benefit}}
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="line-height-30">
-                                            {{$data->orientation}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->reason}}
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        @if($data->status === '0')
+                                        @if($data->status === '1')
                                             <span class="label label-success line-height-30">展示</span>
                                         @else
                                             <span class="label label-default line-height-30">隐藏</span>
                                         @endif
 
                                     </td>
-                                    <td class="opt-th-width-m">
+                                    <td class="con-th-width-m">
                                         <span class="line-height-30">
-                                              <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=0"
+                                              <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=1"
                                                  class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                  data-toggle="tooltip"
-                                                 data-placement="top" title="在小程序页面中展示该轮房源">
+                                                 data-placement="top" title="在小程序页面中展示该房源">
                                                 <i class="fa fa-eye opt-btn-i-size"></i>
                                             </a>
-                                            <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=1"
+                                            <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=0"
                                                class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top" title="在小程序页面中隐藏该房源">
@@ -220,6 +229,13 @@
                                            value="{{$admin->name}}" disabled>
                                 </div>
                             </div>
+                            <div class="form-group hidden">
+                                <label for="house_id" class="col-sm-2 control-label">楼盘id</label>
+                                <div class="col-sm-10">
+                                    <input type="house_id" name="house_id" id="house_id" class="form-control"
+                                           value="{{$house->id}}">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="image" class="col-sm-2 control-label">房源图片</label>
 
@@ -229,62 +245,6 @@
                                            value="">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="type" class="col-sm-2 control-label">房源类型</label>
-
-                                <div class="col-sm-10">
-                                    <input id="type" name="type" type="text" class="form-control"
-                                           placeholder="房源类型"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="size" class="col-sm-2 control-label">房源面积</label>
-
-                                <div class="col-sm-10">
-                                    <input id="size" name="size" type="text" class="form-control"
-                                           placeholder="房源面积"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="price" class="col-sm-2 control-label">房源价格</label>
-
-                                <div class="col-sm-10">
-                                    <input id="price" name="price" type="text" class="form-control"
-                                           placeholder="房源价格"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="benefit" class="col-sm-2 control-label">房源优点</label>
-
-                                <div class="col-sm-10">
-                                    <input id="benefit" name="benefit" type="text" class="form-control"
-                                           placeholder="房源优点"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="orientation" class="col-sm-2 control-label">房源朝向</label>
-
-                                <div class="col-sm-10">
-                                    <input id="orientation" name="orientation" type="text" class="form-control"
-                                           placeholder="房源朝向"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="reason" class="col-sm-2 control-label">购买理由</label>
-
-                                <div class="col-sm-10">
-                                    <input id="reason" name="reason" type="text" class="form-control"
-                                           placeholder="购买理由"
-                                           value="">
-                                </div>
-                            </div>
-
-
                             <div style="margin-top: 10px;" class="text-center">
                                 <div id="container">
                                     <img id="pickfiles"
@@ -292,6 +252,59 @@
                                          style="width: 350px;">
                                 </div>
                                 <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传350*200尺寸图片
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="type" class="col-sm-2 control-label">类型</label>
+
+                                <div class="col-sm-10">
+                                    <input id="type" name="type" type="text" class="form-control"
+                                           placeholder="例如2室1厅1卫、3室2厅2卫"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="size" class="col-sm-2 control-label">面积/㎡</label>
+
+                                <div class="col-sm-10">
+                                    <input id="size" name="size" type="text" class="form-control"
+                                           placeholder="请输入面积"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="price" class="col-sm-2 control-label">价格/万元</label>
+
+                                <div class="col-sm-10">
+                                    <input id="price" name="price" type="text" class="form-control"
+                                           placeholder="请输入价格"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="benefit" class="col-sm-2 control-label">房源优点</label>
+                                <div class="col-sm-10">
+                                    <input id="benefit" name="benefit" type="text" class="form-control"
+                                           placeholder="请输入房源优点"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="orientation" class="col-sm-2 control-label">朝向</label>
+
+                                <div class="col-sm-10">
+                                    <input id="orientation" name="orientation" type="text" class="form-control"
+                                           placeholder="例如南北、西北、东南"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reason" class="col-sm-2 control-label">推荐理由</label>
+
+                                <div class="col-sm-10">
+                                    <input id="reason" name="reason" type="text" class="form-control"
+                                           placeholder="请输入推荐理由，例如采光效果好、功能齐全等"
+                                           value="">
                                 </div>
                             </div>
                         </div>
@@ -320,7 +333,7 @@
                     <h4 class="modal-title">提示信息</h4>
                 </div>
                 <div class="modal-body">
-                    <p>您确认要删除该楼盘吗？</p>
+                    <p>您确认要删除该房源吗？</p>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" id="url"/>
@@ -337,13 +350,13 @@
 
 @section('script')
     <script type="application/javascript">
-        var house_id ;
+        var house_id;
         //入口函数
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip()
             //获取七牛token
             initQNUploader();
-            house_id=GetRequest().house_id;
+            house_id = getQueryString("house_id");
         });
         function GetRequest() {
             var url = location.search; //获取url中"?"符后的字串
@@ -351,8 +364,8 @@
             if (url.indexOf("?") != -1) {
                 var str = url.substr(1);
                 strs = str.split("&");
-                for(var i = 0; i < strs.length; i ++) {
-                    theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
                 }
             }
             return theRequest;
@@ -374,7 +387,7 @@
             $("#tr_" + admin_id).fadeOut();
             //进行页面跳转
             //var huxing =window.location.search
-            window.location.href = "{{URL::asset('/admin/huxing/del')}}/" + admin_id+"/?house_id="+house_id;
+            window.location.href = "{{URL::asset('/admin/huxing/del')}}/" + admin_id + "/?house_id=" + house_id;
         }
 
         //点击新建楼盘
@@ -404,7 +417,6 @@
                     $("#reason").val(msgObj.reason);
                     $("#orientation").val(msgObj.orientation);
                     $("#benefit").val(msgObj.benefit);
-
                     //展示modal
                     $("#addHouseModal").modal('show');
                 }
@@ -455,7 +467,6 @@
 
             return true;
         }
-
 
 
         //初始化七牛上传模块
@@ -548,11 +559,6 @@
                 }
             });
         }
-
-
-
-
-
 
 
     </script>
