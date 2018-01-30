@@ -165,8 +165,46 @@ class HouseController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
+<<<<<<< HEAD
+        $admin = HouseManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
+
+    }
+
+    public function detail(Request $request)
+    {
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'house_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $admin = HouseManager::detail($data['house_id']);
+        return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
+
+    }
+
+    public function getHouseById(Request $request)
+    {
+
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'house_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $house = HouseManager::getHouseById($data['house_id']);
+        $upload_token = QNManager::uploadToken();
+        return view('admin.house.getHouseById', ['admin' => $admin, 'datas' => $house, 'upload_token' => $upload_token]);
+=======
         $house = HouseManager::getById($data['id']);
         return ApiResponse::makeResponse(true, $house, ApiResponse::SUCCESS_CODE);
+>>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
 
     }
 

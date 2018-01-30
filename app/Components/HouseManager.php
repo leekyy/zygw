@@ -12,7 +12,9 @@ namespace App\Components;
 use App\Models\AD;
 use App\Models\House;
 use App\Models\Huxing;
+use App\Models\HouseDetail;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Object_;
 use Qiniu\Auth;
 
 class HouseManager
@@ -71,6 +73,18 @@ class HouseManager
         return $house;
     }
 
+<<<<<<< HEAD
+    public static function detail($house_id)
+    {
+        $house = HouseDetail::where('house_id', '=', $house_id)->first();
+        return $house;
+    }
+
+
+
+
+    /*根据楼盘id获取该楼盘下的所有房源
+=======
 
     /*
      * 根据级别获取房源详细信息
@@ -82,6 +96,7 @@ class HouseManager
      * $level数组
      *
      * 0：带types和labels信息
+>>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
      *
      */
     public static function getHouseInfoByLevel($house, $level)
@@ -97,6 +112,22 @@ class HouseManager
     }
 
 
+<<<<<<< HEAD
+    /*
+    * 根据级别获取积分兑换订单详情
+    *
+    * By TerryQi
+    *
+    */
+    public static function getInfoByLevel($goodsExchange, $level)
+    {
+        $goodsExchange->admin = UserManager::getUserInfoById($goodsExchange->admin_id);
+        $goodsExchange->house = HouseManager::detail($goodsExchange->house_id);
+        return $goodsExchange;
+    }
+
+=======
+>>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
     /*
      * 获取总楼盘数
      *
@@ -115,8 +146,9 @@ class HouseManager
     */
     public static function getAllFangYuanNum()
     {
-        $count = DB::select('SELECT COUNT(distinct house_id) as rs FROM zygwdb.t_house_huxing;', []);
-        return $count[0]->rs;
+       // $count = DB::select('SELECT COUNT(distinct house_id) as rs FROM zygwdb.t_house_huxing;', []);
+        $count = Huxing::all()->count();
+        return $count;
     }
 
     /*
@@ -127,8 +159,12 @@ class HouseManager
        */
     public static function getRecentDatas($day_num)
     {
-        $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(title)  as psjfs FROM zygwdb.t_house_info GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
+
+
+        $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(type)  as psjfs FROM zygwdb.t_house_info GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
+
         return $data;
+
     }
 
 

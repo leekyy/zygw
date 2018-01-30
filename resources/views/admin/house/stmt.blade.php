@@ -98,11 +98,14 @@
             var date_arr = [];
             var jf_arr = [];
             var rs_arr = [];
+
             //整理数据
             for (var i = 0; i < data_obj.length; i++) {
                 date_arr.push(data_obj[i].tjdate);
+                //楼盘数
                 rs_arr.push(data_obj[i].qdrs);
                 jf_arr.push(data_obj[i].psjfs);
+//                jf_arr.push(data_obj[i].psjfs1);
             }
             //柱状图对象
             var barChart = echarts.init(document.getElementById(dom_id));
@@ -115,7 +118,7 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data: ['订单人数', '兑换积分']
+                    data: [ '楼盘数']
                 },
                 grid: {
                     left: '3%',
@@ -138,17 +141,17 @@
                 },
                 series: [
                     {
-                        name: '订单人数',
+                        name: '楼盘数',
                         type: 'line',
                         stack: '总量',
                         data: rs_arr
                     },
-                    {
-                        name: '兑换积分',
-                        type: 'line',
-                        stack: '总量',
-                        data: jf_arr
-                    }
+//                    {
+//                        name: '楼盘类型',
+//                        type: 'line',
+//                        stack: '总量',
+//                        data: jf_arr
+//                    }
                 ]
             };
             // 使用刚指定的配置项和数据显示图表
