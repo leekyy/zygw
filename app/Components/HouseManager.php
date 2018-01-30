@@ -73,18 +73,6 @@ class HouseManager
         return $house;
     }
 
-<<<<<<< HEAD
-    public static function detail($house_id)
-    {
-        $house = HouseDetail::where('house_id', '=', $house_id)->first();
-        return $house;
-    }
-
-
-
-
-    /*根据楼盘id获取该楼盘下的所有房源
-=======
 
     /*
      * 根据级别获取房源详细信息
@@ -95,8 +83,7 @@ class HouseManager
      *
      * $level数组
      *
-     * 0：带types和labels信息
->>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
+     * 0：带types、labels、areas信息
      *
      */
     public static function getHouseInfoByLevel($house, $level)
@@ -107,27 +94,11 @@ class HouseManager
             $house->types = HouseTypeManager::getListByIds($types);
             $labels = explode(',', $house->label_ids);
             $house->labels = HouselabelManager::getListByIds($labels);
+            $house->area = HouseAreaManager::getById($house->area_id);
         }
         return $house;
     }
 
-
-<<<<<<< HEAD
-    /*
-    * 根据级别获取积分兑换订单详情
-    *
-    * By TerryQi
-    *
-    */
-    public static function getInfoByLevel($goodsExchange, $level)
-    {
-        $goodsExchange->admin = UserManager::getUserInfoById($goodsExchange->admin_id);
-        $goodsExchange->house = HouseManager::detail($goodsExchange->house_id);
-        return $goodsExchange;
-    }
-
-=======
->>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
     /*
      * 获取总楼盘数
      *
@@ -139,32 +110,17 @@ class HouseManager
         return $count;
     }
 
-    /*
-    * 获取总房源数
-    *
-    * By TerryQi
-    */
-    public static function getAllFangYuanNum()
-    {
-       // $count = DB::select('SELECT COUNT(distinct house_id) as rs FROM zygwdb.t_house_huxing;', []);
-        $count = Huxing::all()->count();
-        return $count;
-    }
 
     /*
-       * 获取近N日的报表
-       *
-       * By TerryQi
-       *
-       */
+     * 获取近N日的报表
+     *
+     * By TerryQi
+     *
+     */
     public static function getRecentDatas($day_num)
     {
-
-
         $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(type)  as psjfs FROM zygwdb.t_house_info GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
-
         return $data;
-
     }
 
 
@@ -182,23 +138,32 @@ class HouseManager
         if (array_key_exists('address', $data)) {
             $house->address = array_get($data, 'address');
         }
+        if (array_key_exists('desc', $data)) {
+            $house->desc = array_get($data, 'desc');
+        }
         if (array_key_exists('price', $data)) {
             $house->price = array_get($data, 'price');
         }
         if (array_key_exists('type_ids', $data)) {
             $house->type_ids = array_get($data, 'type_ids');
         }
-        if (array_key_exists('size', $data)) {
-            $house->size = array_get($data, 'size');
+        if (array_key_exists('area_id', $data)) {
+            $house->area_id = array_get($data, 'area_id');
+        }
+        if (array_key_exists('size_min', $data)) {
+            $house->size_min = array_get($data, 'size_min');
+        }
+        if (array_key_exists('size_max', $data)) {
+            $house->size_max = array_get($data, 'size_max');
         }
         if (array_key_exists('label_ids', $data)) {
             $house->label_ids = array_get($data, 'label_ids');
         }
-        if (array_key_exists('period', $data)) {
-            $house->period = array_get($data, 'period');
+        if (array_key_exists('video', $data)) {
+            $house->video = array_get($data, 'video');
         }
-        if (array_key_exists('yongjin', $data)) {
-            $house->yongjin = array_get($data, 'yongjin');
+        if (array_key_exists('count', $data)) {
+            $house->count = array_get($data, 'count');
         }
         return $house;
     }

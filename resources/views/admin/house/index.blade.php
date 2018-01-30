@@ -60,18 +60,10 @@
                             <tr>
                                 <th>ID</th>
                                 <th>楼盘名</th>
-                                HEAD<<<<<<<
-                                <th>楼盘地址</th>
-                                <th>楼盘价格</th>
-                                <th>楼盘类型</th>
-                                <th>楼盘面积</th>
-                                <th>楼盘标签</th>
-                                <th>佣金</th>
-=======
-                                <th>地址</th>
+                                <th>区域</th>
+                                <th>面积(㎡)</th>
                                 <th>价格(元/㎡)</th>
                                 <th>类型</th>
-                                <th>佣金(元)</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -91,7 +83,12 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->address}}
+                                            {{isset($data->area) ? $data->area->name:'--'}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="line-height-30">
+                                            {{$data->size_min}}-{{$data->size_max}}
                                         </div>
                                     </td>
                                     <td>
@@ -101,31 +98,9 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-<<<<<<< HEAD
-                                            {{$data->type}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->size}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->label}}
-                                        </div>
-                                    </td>
-
-=======
                                             @foreach($data->types as $type)
                                                 {{$type->name}}
                                             @endforeach
-                                        </div>
-                                    </td>
->>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->yongjin}}
                                         </div>
                                     </td>
 
@@ -135,14 +110,13 @@
                                         @else
                                             <span class="label label-default line-height-30">隐藏</span>
                                         @endif
-
                                     </td>
                                     <td>
                                         <span class="line-height-30">
                                               <a href="{{URL::asset('/admin/house/setStatus')}}/{{$data->id}}?opt=0"
                                                  class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                  data-toggle="tooltip"
-                                                 data-placement="top" title="在小程序页面中展示该轮楼盘">
+                                                 data-placement="top" title="在小程序页面中展示该楼盘">
                                                 <i class="fa fa-eye opt-btn-i-size"></i>
                                             </a>
                                             <a href="{{URL::asset('/admin/house/setStatus')}}/{{$data->id}}?opt=1"
@@ -151,21 +125,12 @@
                                                data-placement="top" title="在小程序页面中隐藏该楼盘">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
-<<<<<<< HEAD
-                                            <a href="{{URL::asset('/admin/house/getHouseById')}}/?house_id={{$data->id}}"
-                                               class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
-                                               data-toggle="tooltip"
-                                               data-placement="top" title="查看该楼盘下房源">
-                                                <i class="fa fa-eye-slash opt-btn-i-size"></i>
-                                            </a>
                                              <a href="{{URL::asset('/admin/house/detail')}}/{{$data->id}}?house_id={{$data->id}}"
                                                 class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                 data-toggle="tooltip"
                                                 data-placement="top" title="查看该楼盘详细信息">
                                                 <i class="fa fa-eye opt-btn-i-size"></i>
                                             </a>
-=======
->>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
                                             <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
@@ -267,6 +232,18 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="role" class="col-sm-2 control-label">区域</label>
+
+                                <div class="col-sm-10">
+                                    <select id="area_id" name="area_id" class="form-control"
+                                            value="">
+                                        @foreach($houseAreas as $houseArea)
+                                            <option value="{{$houseArea->id}}">{{$houseArea->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="image" class="col-sm-2 control-label">楼盘图片</label>
 
                                 <div class="col-sm-10">
@@ -294,20 +271,24 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="price" class="col-sm-2 control-label">价格/元</label>
+                                <label for="price" class="col-sm-2 control-label">楼盘均价</label>
 
                                 <div class="col-sm-10">
-                                    <input id="price" name="price" type="text" class="form-control"
-                                           placeholder="请输入楼盘价格"
+                                    <input id="price" name="price" type="number" class="form-control"
+                                           placeholder="请输入楼盘价格，例如5000元/㎡"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="size" class="col-sm-2 control-label">面积/㎡</label>
+                                <label for="size" class="col-sm-2 control-label">面积区间</label>
 
                                 <div class="col-sm-10">
-                                    <input id="size" name="size" type="text" class="form-control"
-                                           placeholder="请输入楼盘面积"
+                                    <input id="size_min" name="size_min" type="text" class="form-control"
+                                           placeholder="面积区间左侧边界，例如56.6"
+                                           value="">
+                                    <input id="size_max" name="size_max" type="text"
+                                           class="form-control margin-top-10"
+                                           placeholder="面积区间右侧边界，例如280"
                                            value="">
                                 </div>
                             </div>
@@ -345,25 +326,6 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                </div>
-                            </div>
-
-<<<<<<< HEAD
-=======
-                                <div class="col-sm-10">
-                                    <input id="period" name="period" type="text" class="form-control"
-                                           placeholder="请输入结算周期"
-                                           value="">
-                                </div>
-                            </div>
->>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
-                            <div class="form-group">
-                                <label for="yongjin" class="col-sm-2 control-label">佣金/元</label>
-
-                                <div class="col-sm-10">
-                                    <input id="yongjin" name="yongjin" type="text" class="form-control"
-                                           placeholder="请输入该楼盘佣金分成"
-                                           value="">
                                 </div>
                             </div>
                         </div>
@@ -426,7 +388,9 @@
                     $("#image").val(msgObj.image)
                     $("#pickfiles").attr("src", msgObj.image);
                     $("#price").val(msgObj.price);
-                    $("#size").val(msgObj.size);
+                    $("#size_min").val(msgObj.size_min);
+                    $("#size_max").val(msgObj.size_max);
+                    $("#area_id").val(msgObj.area_id);
                     //设置type
                     var type_arr = [];
                     if (!judgeIsNullStr(msgObj.type_ids)) {
@@ -444,9 +408,6 @@
                     for (var i = 0; i < label_arr.length; i++) {
                         $("#label_id" + label_arr[i]).attr('checked', 'true');
                     }
-                    $("#type").val(msgObj.type);
-                    $("#label").val(msgObj.label);
-                    $("#yongjin").val(msgObj.yongjin);
                     //设置icheck
                     setICheck();
                     //展示modal
@@ -462,44 +423,37 @@
             var title = $("#title").val();
             if (judgeIsNullStr(title)) {
                 $("#title").focus();
+                console.log("title is error");
                 return false;
             }
             var price = $("#price").val();
             if (judgeIsNullStr(price)) {
                 $("#price").focus();
+                console.log("price is error");
                 return false;
             }
             var image = $("#image").val();
             if (judgeIsNullStr(image)) {
                 $("#image").focus();
+                console.log("image is error");
                 return false;
             }
-
-            var size = $("#size").val();
-            if (judgeIsNullStr(size)) {
-                $("#size").focus();
+            var size_min = $("#size_min").val();
+            if (judgeIsNullStr(size_min)) {
+                $("#size_min").focus();
+                console.log("size_min is error");
+                return false;
+            }
+            var size_max = $("#size_max").val();
+            if (judgeIsNullStr(size_max)) {
+                $("#size_max").focus();
+                console.log("size_max is error");
                 return false;
             }
             var address = $("#address").val();
             if (judgeIsNullStr(address)) {
                 $("#address").focus();
-                return false;
-            }
-<<<<<<< HEAD
-            var label = $("#label").val();
-            if (judgeIsNullStr(label)) {
-                $("#label").focus();
-=======
-
-            var period = $("#period").val();
-            if (judgeIsNullStr(period)) {
-                $("#period").focus();
->>>>>>> 6d3a162ad68981c2c1a34fa6d63ec49d1d1a5179
-                return false;
-            }
-            var yongjin = $("#yongjin").val();
-            if (judgeIsNullStr(yongjin)) {
-                $("#yongjin").focus();
+                console.log("address is error");
                 return false;
             }
             return true;
