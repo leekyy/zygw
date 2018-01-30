@@ -12,7 +12,9 @@ namespace App\Components;
 use App\Models\AD;
 use App\Models\House;
 use App\Models\Huxing;
+use App\Models\HouseDetail;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Object_;
 use Qiniu\Auth;
 
 class HouseManager
@@ -49,6 +51,16 @@ class HouseManager
         $house = House::where('id', '=', $id)->first();
         return $house;
     }
+
+    public static function detail($house_id)
+    {
+        $house = HouseDetail::where('house_id', '=', $house_id)->first();
+        return $house;
+    }
+
+
+
+
     /*根据楼盘id获取该楼盘下的所有房源
      *
      * By Yinyue
@@ -58,6 +70,20 @@ class HouseManager
         $huxing = Huxing::where('house_id','=',$house_id)->get();
         return $huxing;
 
+    }
+
+
+    /*
+    * 根据级别获取积分兑换订单详情
+    *
+    * By TerryQi
+    *
+    */
+    public static function getInfoByLevel($goodsExchange, $level)
+    {
+        $goodsExchange->admin = UserManager::getUserInfoById($goodsExchange->admin_id);
+        $goodsExchange->house = HouseManager::detail($goodsExchange->house_id);
+        return $goodsExchange;
     }
 
     /*
@@ -78,8 +104,9 @@ class HouseManager
     */
     public static function getAllQDRenShuNum()
     {
-        $count = DB::select('SELECT COUNT(distinct house_id) as rs FROM zygwdb.t_house_huxing;', []);
-        return $count[0]->rs;
+       // $count = DB::select('SELECT COUNT(distinct house_id) as rs FROM zygwdb.t_house_huxing;', []);
+        $count = Huxing::all()->count();
+        return $count;
     }
 
 //    /*
@@ -102,8 +129,12 @@ class HouseManager
        */
     public static function getRecentDatas($day_num)
     {
-        $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(title)  as psjfs FROM zygwdb.t_house_info GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
+
+
+        $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(type)  as psjfs FROM zygwdb.t_house_info GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
+
         return $data;
+
     }
 
 

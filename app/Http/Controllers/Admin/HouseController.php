@@ -134,6 +134,21 @@ class HouseController
 
     }
 
+    public function detail(Request $request)
+    {
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'house_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $admin = HouseManager::detail($data['house_id']);
+        return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
+
+    }
+
     public function getHouseById(Request $request)
     {
 

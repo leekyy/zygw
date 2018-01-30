@@ -115,7 +115,7 @@ class KHManager
             $bkhs->kehu_name = $data['kehu_name'];
 
             $bkhs->telephone = $data['telephone'];
-            $bkhs->visitingstates = $data['visitingstates'];
+            //$bkhs->visitingstates = $data['visitingstates'];
             $bkhs->save();
 
 //            $bkhs->title = $data['house_title'];
