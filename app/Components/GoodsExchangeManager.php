@@ -30,6 +30,7 @@ class GoodsExchangeManager
         $goodsExchanges = GoodsExchange::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $goodsExchanges;
     }
+
     public static function getListByStatusPaginate($status)
     {
         $userUps = GoodsExchange::wherein('status', $status)->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
@@ -61,6 +62,7 @@ class GoodsExchangeManager
     {
         $goodsExchange->user = UserManager::getUserInfoById($goodsExchange->user_id);
         $goodsExchange->goods = GoodsManager::getById($goodsExchange->goods_id);
+        $goodsExchange->admin = AdminManager::getAdminInfoById($goodsExchange->admin_id);
         return $goodsExchange;
     }
 
@@ -127,15 +129,6 @@ class GoodsExchangeManager
         return $goodsExchanges;
     }
 
-//goodsexchange(index.php)
-    public static function getUserUpInfoByLevel($userUp, $level)
-    {
-        $userUp->user = UserManager::getUserInfoById($userUp->user_id);
-        $userUp->goods = GoodsManager::getById($userUp->goods_id);
-        $userUp->admin = AdminManager::getAdminInfoById($userUp->admin_id);
-        return $userUp;
-    }
-
 
     /*
      * 设置申请成为案场负责人，用于编辑
@@ -159,6 +152,12 @@ class GoodsExchangeManager
         }
         if (array_key_exists('status', $data)) {
             $goodsExchange->status = array_get($data, 'status');
+        }
+        if (array_key_exists('admin_id', $data)) {
+            $goodsExchange->admin_id = array_get($data, 'admin_id');
+        }
+        if (array_key_exists('attach', $data)) {
+            $goodsExchange->attach = array_get($data, 'attach');
         }
         return $goodsExchange;
     }

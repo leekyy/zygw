@@ -165,6 +165,9 @@ class HouseManager
         if (array_key_exists('count', $data)) {
             $house->count = array_get($data, 'count');
         }
+        if (array_key_exists('developer', $data)) {
+            $house->developer = array_get($data, 'developer');
+        }
         return $house;
     }
 

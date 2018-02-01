@@ -11,7 +11,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class HuxingYongjingRecord extends Model
+class HuxingYongjinRecord extends Model
 {
     use SoftDeletes;    //使用软删除
     protected $table = 't_huxing_yongjin_record';     //表名

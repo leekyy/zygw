@@ -172,7 +172,7 @@
                                             <a href="{{URL::asset('/admin/huxingYongjinRecord/index')}}?huxing_id={{$data->id}}"
                                                class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
-                                               data-placement="top" title="查询户型佣金设计记录">
+                                               data-placement="top" title="佣金设置记录">
                                                 <i class="fa fa-align-justify opt-btn-i-size"></i>
                                             </a>
                                         </span>
@@ -217,13 +217,6 @@
                                 <label for="id" class="col-sm-2 control-label">id</label>
                                 <div class="col-sm-10">
                                     <input id="id" name="id" type="text" class="form-control"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group hidden">
-                                <label for="house_id" class="col-sm-2 control-label">id</label>
-                                <div class="col-sm-10">
-                                    <input id="house_id" name="house_id" type="text" class="form-control"
                                            value="">
                                 </div>
                             </div>
@@ -360,7 +353,6 @@
     </div><!-- /.modal -->
 
 
-
     <div class="modal fade -m" id="addHouseYongjinModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
@@ -376,9 +368,9 @@
                         {{csrf_field()}}
                         <div class="box-body">
                             <div class="form-group hidden">
-                                <label for="id" class="col-sm-2 control-label">id</label>
+                                <label for="set_id" class="col-sm-2 control-label">id</label>
                                 <div class="col-sm-10">
-                                    <input id="id" name="id" type="text" class="form-control"
+                                    <input id="set_id" name="set_id" type="text" class="form-control"
                                            value="">
                                 </div>
                             </div>
@@ -396,17 +388,10 @@
                                            value="{{$admin->name}}" disabled>
                                 </div>
                             </div>
-                            <div class="form-group hidden">
-                                <label for="type_id" class="col-sm-2 control-label">楼盘id</label>
-                                <div class="col-sm-10">
-                                    <input type="type_id" name="house_id" id="house_id" class="form-control"
-                                           value="{{$house->id}}">
-                                </div>
-                            </div>
                             <div class="form-group">
-                                <label for="yongjin_type" class="col-sm-2 control-label">佣金类型</label>
+                                <label for="set_yongjin_type" class="col-sm-2 control-label">佣金类型</label>
                                 <div class="col-sm-10">
-                                    <select id="yongjin_type" name="yongjin_type" class="form-control"
+                                    <select id="set_yongjin_type" name="set_yongjin_type" class="form-control"
                                             value="" onchange="changeYongjinType();">
                                         <option value="0">按固定金额</option>
                                         <option value="1">按千分比分成</option>
@@ -414,10 +399,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label id="yongjin_value_text" for="yongjin_value"
+                                <label id="set_yongjin_value_text" for="yongjin_value"
                                        class="col-sm-2 control-label">佣金(元)</label>
                                 <div class="col-sm-10">
-                                    <input id="yongjin_value" name="yongjin_value" type="text" class="form-control"
+                                    <input id="set_yongjin_value" name="set_yongjin_value" type="text"
+                                           class="form-control"
                                            placeholder="请输入佣金结算额/千分比"
                                            value="">
                                 </div>
@@ -513,6 +499,7 @@
                     $("#yongjin_value").val(msgObj.yongjin_value);
                     $("#size_min").val(msgObj.size_min);
                     $("#size_max").val(msgObj.size_max);
+                    $("#huxing").val(msgObj.huxing);
                     $("#image").val(msgObj.image)
                     $("#pickfiles").attr("src", msgObj.image);
                     $("#reason").val(msgObj.reason);
@@ -534,12 +521,11 @@
                 if (ret.result) {
                     var msgObj = ret.ret;
                     //对象配置
-                    $("#id").val(msgObj.id);
-                    $("#house_id").val(msgObj.house_id);
-                    $("#yongjin_type").val(msgObj.yongjin_type);
-                    $("#yongjin_value").val(msgObj.yongjin_value);
+                    $("#set_id").val(msgObj.id);
+                    $("#set_yongjin_type").val(msgObj.yongjin_type);
+                    $("#set_yongjin_value").val(msgObj.yongjin_value);
                     //展示modal
-                    $("#addHouseModal").modal('show');
+                    $("#addHouseYongjinModal").modal('show');
                 }
             })
         }
@@ -547,23 +533,25 @@
         //合规校验佣金设置
         function checkYongjinValid() {
             console.log("checkYongjinValid");
-            var yongjin_type = $("#yongjin_type").val();
-            var yongjin_value = parseFloat($("#yongjin_value").val());
+            var yongjin_type = $("#set_yongjin_type").val();
+            var yongjin_value = parseFloat($("#set_yongjin_value").val());
             if (judgeIsNullStr(yongjin_type) || judgeIsNullStr(yongjin_value)) {
-                $("#yongjin_value").focus();
+                $("#set_yongjin_value").focus();
                 return;
             }
             //如果是固定金额
             if (yongjin_type == 0 && yongjin_value < 100) {
                 $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
                 $("#tipModal").modal('show');
-                return;
+                console.log("yongjin set error");
+                return false;
             }
             //如果是千分比
             if (yongjin_type == 1 && yongjin_value > 5) {
                 $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
                 $("#tipModal").modal('show');
-                return;
+                console.log("yongjin set error");
+                return false;
             }
             return true;
         }
@@ -582,13 +570,13 @@
             if (yongjin_type == 0 && yongjin_value < 100) {
                 $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
                 $("#tipModal").modal('show');
-                return;
+                return false;
             }
             //如果是千分比
             if (yongjin_type == 1 && yongjin_value > 5) {
                 $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
                 $("#tipModal").modal('show');
-                return;
+                return false;
             }
             var image = $("#image").val();
             if (judgeIsNullStr(image)) {
@@ -717,14 +705,14 @@
 
         //监听更改佣金类型
         function changeYongjinType() {
-            var yongjin_type = $("#yongjin_type").val();
+            var yongjin_type = $("#set_yongjin_type").val();
             //如果是固定金额
             if (yongjin_type == "0") {
-                $("#yongjin_value_text").text("金额(元)");
+                $("#set_yongjin_value_text").text("金额(元)");
             }
             //如果是千分比
             if (yongjin_type == "1") {
-                $("#yongjin_value_text").text("千分比(‰)");
+                $("#set_yongjin_value_text").text("千分比(‰)");
             }
         }
 

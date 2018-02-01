@@ -63,6 +63,8 @@ class SystemController
             'admin_id' => 'required',
             'qd_jifen' => 'required',
             'tj_jifen' => 'required',
+            'df_jifen' => 'required',
+            'cj_jifen' => 'required',
         ]);
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
@@ -74,7 +76,8 @@ class SystemController
         //设置记录
         $systemRecord = new SystemRecord();
         $systemRecord->admin_id = $data['admin_id'];
-        $systemRecord->desc = "系统配置 签到积分规则变更为：" . $data['qd_jifen'] . " 推荐积分规则变更为：" . $data['tj_jifen'];
+        $systemRecord->desc = "系统配置 签到积分：" . $data['qd_jifen'] . " 推荐积分："
+            . $data['tj_jifen'] . " 到访积分：" . $data['df_jifen'] . " 成交积分：" . $data['cj_jifen'];
         $systemRecord->save();
         return redirect('/admin/system/index');
     }

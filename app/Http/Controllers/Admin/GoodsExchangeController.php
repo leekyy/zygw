@@ -34,21 +34,26 @@ class GoodsExchangeController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $userUps = GoodsExchangeManager::getListPaginate();
-//        dd($userUps);
-        foreach ($userUps as $userUp) {
-            $userUp = GoodsExchangeManager::getUserUpInfoByLevel($userUp, 0);
+        //生成七牛token
+        $upload_token = QNManager::uploadToken();
+        $goodsexchanges = GoodsExchangeManager::getListPaginate();
+        foreach ($goodsexchanges as $goodsexchange) {
+            $goodsexchange = GoodsExchangeManager::getInfoByLevel($goodsexchange, '0');
         }
-        return view('admin.goodsexchange.index', ['admin' => $admin, 'datas' => $userUps]);
+
+        return view('admin.goodsexchange.index', ['admin' => $admin, 'datas' => $goodsexchanges,
+            'upload_token' => $upload_token]);
     }
 
 
     //设置状态
-    public function setStatus(Request $request, $id)
+    public function setStatus(Request $request)
     {
+        $admin = $request->session()->get('admin');
         $data = $request->all();
         //合规校验
         $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
             'status' => 'required',
         ]);
         if ($requestValidationResult !== true) {
@@ -59,11 +64,13 @@ class GoodsExchangeController
         if (!($status == '0' || $status == '1')) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数,opt必须为0或者1，现值为' . $opt]);
         }
-        $goodsexchange = GoodsExchangeManager::getById($id);
-        $goodsexchange->status = $status;
+        $goodsexchange = GoodsExchangeManager::getById($data['id']);
+        $goodsexchange = GoodsExchangeManager::setGoodsExchange($goodsexchange, $data);
+        $goodsexchange->dh_time = DateTool::getCurrentTime();
         $goodsexchange->save();
         return redirect('/admin/goodsexchange/index');
     }
+
     /*
     * 订单综合统计
     *
@@ -167,8 +174,6 @@ class GoodsExchangeController
         $goodsExchange->save();
         return redirect('/admin/goodsexchange/index');
     }
-
-
 
 
 }

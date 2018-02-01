@@ -246,20 +246,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/kehu/index')}}"><i class="fa fa-circle-o"></i>客户管理</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
-                    </ul>
-                </li>
-
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-list"></i>
-                        <span>客户报备管理</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{url('admin/baobeikehu/index')}}"><i class="fa fa-circle-o"></i>客户报备管理</a></li>
+                        <li><a href="{{url('admin/kehu/index')}}"><i class="fa fa-circle-o"></i>报备管理</a></li>
                         <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>

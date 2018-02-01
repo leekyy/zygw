@@ -13,6 +13,7 @@ use App\Models\AD;
 use App\Models\House;
 use App\Models\Huxing;
 use App\Models\HuxingYongjingRecord;
+use App\Models\HuxingYongjinRecord;
 use Qiniu\Auth;
 
 class HuxingYongjinRecordManager
@@ -28,8 +29,21 @@ class HuxingYongjinRecordManager
 
     public static function getListByHuxingIdPaginate($huxing_id)
     {
-        $huxingYongjinRecords = HuxingYongjingRecord::where('huxing_id', $huxing_id)->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        $huxingYongjinRecords = HuxingYongjinRecord::where('huxing_id', $huxing_id)->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $huxingYongjinRecords;
+    }
+
+    /*
+     * 根据level获取设置详细信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-01
+     */
+    public static function getInfoByLevel($huxingYongjinRecord, $level)
+    {
+        $huxingYongjinRecord->admin = AdminManager::getAdminInfoById($huxingYongjinRecord->admin_id);
+        return $huxingYongjinRecord;
     }
 
 

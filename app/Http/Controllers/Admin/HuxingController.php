@@ -27,6 +27,8 @@ use App\Models\AD;
 use App\Models\House;
 use App\Models\Doctor;
 use App\Models\Huxing;
+use App\Models\HuxingYongjingRecord;
+use App\Models\HuxingYongjinRecord;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
@@ -112,21 +114,27 @@ class HuxingController
     //编辑佣金
     public function editYongjin(Request $request)
     {
+        $admin = $request->session()->get('admin');
         $data = $request->all();
+//        dd($data);
         $huxing = new Huxing();
         //合规校验
         $requestValidationResult = RequestValidator::validator($request->all(), [
-            'id' => 'required',
+            'set_id' => 'required',
         ]);
         if ($requestValidationResult !== true) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
         }
         //存在id是保存
-        if (array_key_exists('id', $data) && $data['id'] != null) {
-            $huxing = Huxing::find($data['id']);
-        }
-        $huxing = HuxingManager::setHuxing($huxing, $data);
+        $huxing = HuxingManager::getById($data['set_id']);
+        $huxing = HuxingManager::setYongjin($huxing, $data);
         $huxing->save();
+        //保存户型佣金设置记录
+        $huxingYongjinRecord = new HuxingYongjinRecord();
+        $huxingYongjinRecord->huxing_id = $huxing->id;
+        $huxingYongjinRecord->admin_id = $admin->id;
+        $huxingYongjinRecord->record = HuxingManager::getSetYongjinText($huxing->yongjin_type, $huxing->yongjin_value);
+        $huxingYongjinRecord->save();
         return redirect('/admin/huxing/index?house_id=' . $huxing->house_id);
     }
 

@@ -287,6 +287,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="developer" class="col-sm-2 control-label">开发商</label>
+
+                                <div class="col-sm-10">
+                                    <input id="developer" name="developer" type="text" class="form-control"
+                                           placeholder="请输入楼盘的开发商"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="type" class="col-sm-2 control-label">楼盘类型</label>
 
                                 <div class="col-sm-10">
@@ -385,6 +394,7 @@
                     $("#size_min").val(msgObj.size_min);
                     $("#size_max").val(msgObj.size_max);
                     $("#area_id").val(msgObj.area_id);
+                    $("#developer").val(msgObj.developer);
                     //设置type
                     var type_arr = [];
                     if (!judgeIsNullStr(msgObj.type_ids)) {

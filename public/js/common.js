@@ -68,11 +68,11 @@ function getQDRecentDatas(url, param, callBack) {
 function getDDRecentDatas(url, param, callBack) {
     ajaxRequest(url + "admin/goodsexchange/getRecentDatas", param, "GET", callBack);
 }
-//获取楼盘信息
-function getLPRecentDatas(url, param, callBack) {
-    ajaxRequest(url + "admin/house/getRecentDatas", param, "GET", callBack);
-}
 
+//获取系统设置信息
+function getSystemInfo(url, param, callBack) {
+    ajaxRequest(url + "admin/system/edit", param, "GET", callBack);
+}
 
 //根据id获合作细则信息
 function getHeZuoById(url, param, callBack) {

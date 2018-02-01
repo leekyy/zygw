@@ -74,7 +74,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/detail/edit', 'Admin\HouseController@edit');//新建或编辑楼盘
     Route::post('/detail/edit', 'Admin\HouseController@editPost');//新建或编辑楼盘
 
-
     //楼盘下的产品管理
     Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的产品
     Route::get('/huxing/del/{id}', 'Admin\HuxingController@del');//删除产品
@@ -83,6 +82,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取产品信息
     Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置产品状态
     Route::post('/huxing/editYongjin', 'Admin\HuxingController@editYongjin');//新建或编辑产品的佣金
+
+    //产品佣金设置记录
+    Route::get('/huxingYongjinRecord/index', 'Admin\HuxingYongjinRecordController@index');//查看佣金记录
 
     //楼盘下的顾问管理
     Route::get('/zygw/index', 'Admin\ZYGWController@index');//根据楼盘id获取相应的顾问
@@ -133,7 +135,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 
     //兑换订单管理
     Route::get('/goodsexchange/index', 'Admin\GoodsExchangeController@index');//订单管理首页
-    Route::get('/goodsexchange/setStatus/{id}', 'Admin\GoodsExchangeController@setStatus');  //设置订单状态
+    Route::post('/goodsexchange/setStatus', 'Admin\GoodsExchangeController@setStatus');  //设置订单状态
     Route::get('/goodsexchange/del/{id}', 'Admin\GoodsExchangeController@del');  //删除订单
     Route::get('/goodsexchange/stmt', 'Admin\GoodsExchangeController@stmt');  //系统配置首页信息
     Route::get('/goodsexchange/getById', 'Admin\GoodsExchangeController@getById');//根据id获取订单信息

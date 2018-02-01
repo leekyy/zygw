@@ -70,6 +70,47 @@ class HuxingManager
         return $huxing;
     }
 
+
+    /*
+     * 设置佣金信息
+     *
+     * By TerryQi
+     *
+     * 2018-01-31
+     *
+     */
+    public static function setYongjin($huxing, $data)
+    {
+        if (array_key_exists('set_yongjin_type', $data)) {
+            $huxing->yongjin_type = array_get($data, 'set_yongjin_type');
+        }
+        if (array_key_exists('set_yongjin_value', $data)) {
+            $huxing->yongjin_value = array_get($data, 'set_yongjin_value');
+        }
+        return $huxing;
+    }
+
+
+    /*
+     * 获取佣金文字说明
+     *
+     * By TerryQi
+     *
+     * 2018-02-01
+     */
+    public static function getSetYongjinText($yongjin_type, $yongjin_value)
+    {
+        $text = "设置为 ";
+        //佣金类型文字
+        if ($yongjin_type == '0') {
+            $text = $text . "按固定金额 " . $yongjin_value . "元";
+        }
+        if ($yongjin_type == '1') {
+            $text = $text . "按千分比 " . $yongjin_value . "‰";
+        }
+        return $text;
+    }
+
     /*
      * 设置户型信息
      *
