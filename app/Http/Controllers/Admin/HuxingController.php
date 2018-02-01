@@ -13,6 +13,7 @@ use App\Components\ADManager;
 use App\Components\AdminManager;
 use App\Components\DateTool;
 use App\Components\DoctorManager;
+use App\Components\HouseTypeManager;
 use App\Components\QNManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
@@ -50,10 +51,15 @@ class HuxingController
         $house_id = $data['house_id'];
         $house = HouseManager::getById($house_id);
         $house = HouseManager::getHouseInfoByLevel($house, "0");
-        //获取房源列表
+        //获取产品列表
         $huxings = HuxingManager::getListByHouseId($house_id);
+        foreach ($huxings as $huxing) {
+            $huxing = HuxingManager::getInfoByLevel($huxing, '0');
+        }
+        //获取产品类型
+        $houseTypes = HouseTypeManager::getList();
         $upload_token = QNManager::uploadToken();
-        return view('admin.houseHuxing.index', ['admin' => $admin, 'datas' => $huxings
+        return view('admin.houseHuxing.index', ['admin' => $admin, 'datas' => $huxings, 'houseTypes' => $houseTypes
             , 'house' => $house, 'upload_token' => $upload_token]);
     }
 
@@ -91,10 +97,30 @@ class HuxingController
     //新建或编辑楼盘->post
     public function editPost(Request $request)
     {
-
         $data = $request->all();
 //        dd($data);
         $huxing = new Huxing();
+        //存在id是保存
+        if (array_key_exists('id', $data) && $data['id'] != null) {
+            $huxing = Huxing::find($data['id']);
+        }
+        $huxing = HuxingManager::setHuxing($huxing, $data);
+        $huxing->save();
+        return redirect('/admin/huxing/index?house_id=' . $huxing->house_id);
+    }
+
+    //编辑佣金
+    public function editYongjin(Request $request)
+    {
+        $data = $request->all();
+        $huxing = new Huxing();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
+        }
         //存在id是保存
         if (array_key_exists('id', $data) && $data['id'] != null) {
             $huxing = Huxing::find($data['id']);
@@ -141,7 +167,6 @@ class HuxingController
 
     public function getHouseById(Request $request)
     {
-
         $admin = $request->session()->get('admin');
         $data = $request->all();
         //合规校验account_type

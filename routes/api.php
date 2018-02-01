@@ -55,11 +55,11 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //楼盘相关
 
 
-    //获取房源信息
+    //获取产品信息
     Route::get('hr/getHRs', 'API\HRController@getHRs');
     //Route::get('hr/getHouse','API\HRController@getHouse');
     Route::get('hr/getIndexPage', 'API\HRController@getIndexPage');
-    //根据id获取房源小区楼盘详情
+    //根据id获取产品小区楼盘详情
     Route::get('hr/getHRById', 'API\HRController@getHRById');
     //根据小区id获取小区的楼盘参数
     Route::get('hrd/getHDById', 'API\HRController@getHDById');
@@ -81,7 +81,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //根据客户id获取客户详细信息
     Route::get('kh/getKHById', 'API\KHController@getKHById');
     Route::post('user/enter', 'API\LoginController@enter');
-    //搜索房源
+    //搜索产品
     Route::post('hr/getSearch', 'API\HRController@getSearch');
     //搜索客户
     Route::post('kh/getSearchKh', 'API\KHController@getSearchKh');

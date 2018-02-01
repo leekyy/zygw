@@ -46,7 +46,7 @@ class HuxingManager
         return $huxing;
     }
 
-    /*根据楼盘id获取该楼盘下的所有房源
+    /*根据楼盘id获取该楼盘下的所有产品
      *
      * By Yinyue
      * 2018-1-24
@@ -58,40 +58,68 @@ class HuxingManager
         return $huxings;
     }
 
+    /*
+     * 获取户型详细信息
+     *
+     * By TerryQi
+     */
+    public static function getInfoByLevel($huxing, $level)
+    {
+        $huxing->admin = AdminManager::getAdminInfoById($huxing->admin_id);
+        $huxing->type = HouseTypeManager::getById($huxing->type_id);
+        return $huxing;
+    }
 
-    public static function setHuxing($house, $data)
+    /*
+     * 设置户型信息
+     *
+     * By TerryQi
+     *
+     * 2018-01-31
+     */
+
+    public static function setHuxing($huxing, $data)
     {
         if (array_key_exists('house_id', $data)) {
-            $house->house_id = array_get($data, 'house_id');
+            $huxing->house_id = array_get($data, 'house_id');
         }
-
         if (array_key_exists('admin_id', $data)) {
-            $house->admin_id = array_get($data, 'admin_id');
+            $huxing->admin_id = array_get($data, 'admin_id');
         }
         if (array_key_exists('image', $data)) {
-            $house->image = array_get($data, 'image');
+            $huxing->image = array_get($data, 'image');
         }
-        if (array_key_exists('type', $data)) {
-            $house->type = array_get($data, 'type');
+        if (array_key_exists('type_id', $data)) {
+            $huxing->type_id = array_get($data, 'type_id');
         }
-        if (array_key_exists('size', $data)) {
-            $house->size = array_get($data, 'size');
+        if (array_key_exists('size_min', $data)) {
+            $huxing->size_min = array_get($data, 'size_min');
         }
-        if (array_key_exists('price', $data)) {
-            $house->price = array_get($data, 'price');
+        if (array_key_exists('size_max', $data)) {
+            $huxing->size_max = array_get($data, 'size_max');
         }
-
+        if (array_key_exists('huxing', $data)) {
+            $huxing->huxing = array_get($data, 'huxing');
+        }
         if (array_key_exists('benefit', $data)) {
-            $house->benefit = array_get($data, 'benefit');
+            $huxing->benefit = array_get($data, 'benefit');
         }
         if (array_key_exists('orientation', $data)) {
-            $house->orientation = array_get($data, 'orientation');
+            $huxing->orientation = array_get($data, 'orientation');
         }
         if (array_key_exists('reason', $data)) {
-            $house->reason = array_get($data, 'reason');
+            $huxing->reason = array_get($data, 'reason');
         }
-
-        return $house;
+        if (array_key_exists('status', $data)) {
+            $huxing->status = array_get($data, 'status');
+        }
+        if (array_key_exists('yongjin_type', $data)) {
+            $huxing->yongjin_type = array_get($data, 'yongjin_type');
+        }
+        if (array_key_exists('yongjin_value', $data)) {
+            $huxing->yongjin_value = array_get($data, 'yongjin_value');
+        }
+        return $huxing;
     }
 
 }

@@ -30,7 +30,7 @@ function getHouseById(url, param, callBack) {
     ajaxRequest(url + "admin/house/getById", param, "GET", callBack);
 }
 
-//根据id获取房源信息
+//根据id获取产品信息
 function getHuxingById(url, param, callBack) {
     ajaxRequest(url + "admin/huxing/getById", param, "GET", callBack);
 }

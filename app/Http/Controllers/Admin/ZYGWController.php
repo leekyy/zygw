@@ -50,7 +50,7 @@ class ZYGWController
         $house_id = $data['house_id'];
         $house = HouseManager::getById($house_id);
         $house = HouseManager::getHouseInfoByLevel($house, "0");
-        //获取房源列表
+        //获取产品列表
         $zygws = ZYGWManager::getListByHouseId($house_id);
         $upload_token = QNManager::uploadToken();
         return view('admin.zygw.index', ['admin' => $admin, 'datas' => $zygws

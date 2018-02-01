@@ -50,7 +50,7 @@ class HouseClientController
         $house_id = $data['house_id'];
         $house = HouseManager::getById($house_id);
         $house = HouseManager::getHouseInfoByLevel($house, "0");
-        //获取房源列表
+        //获取产品列表
         $houseClients = HouseClientManager::getListByHouseIdPaginate($house_id);
         $upload_token = QNManager::uploadToken();
         return view('admin.houseClient.index', ['admin' => $admin, 'datas' => $houseClients,

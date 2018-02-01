@@ -125,12 +125,6 @@
                                                data-placement="top" title="在小程序页面中隐藏该楼盘">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
-                                             <a href="{{URL::asset('/admin/house/detail')}}/{{$data->id}}?house_id={{$data->id}}"
-                                                class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
-                                                data-toggle="tooltip"
-                                                data-placement="top" title="查看该楼盘详细信息">
-                                                <i class="fa fa-eye opt-btn-i-size"></i>
-                                            </a>
                                             <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
@@ -141,7 +135,7 @@
                                             <a href="{{URL::asset('/admin/huxing/index')}}?house_id={{$data->id}}"
                                                class="btn btn-social-icon btn-primary margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
-                                               data-placement="top" title="查看该楼盘下房源">
+                                               data-placement="top" title="查看该楼盘下产品">
                                                 <i class="fa fa-building-o opt-btn-i-size"></i>
                                             </a>
                                             <a href="{{URL::asset('/admin/zygw/index')}}?house_id={{$data->id}}"
@@ -232,7 +226,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="role" class="col-sm-2 control-label">区域</label>
+                                <label for="area_id" class="col-sm-2 control-label">区域</label>
 
                                 <div class="col-sm-10">
                                     <select id="area_id" name="area_id" class="form-control"

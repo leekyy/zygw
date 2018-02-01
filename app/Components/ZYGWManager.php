@@ -46,7 +46,7 @@ class ZYGWManager
         return $zygw;
     }
 
-    /*根据楼盘id获取该楼盘下的所有房源
+    /*根据楼盘id获取该楼盘下的所有产品
      *
      * By Yinyue
      * 2018-1-24

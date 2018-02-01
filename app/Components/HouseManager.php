@@ -75,7 +75,7 @@ class HouseManager
 
 
     /*
-     * 根据级别获取房源详细信息
+     * 根据级别获取产品详细信息
      *
      * By TerryQi
      *

@@ -75,13 +75,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/detail/edit', 'Admin\HouseController@editPost');//新建或编辑楼盘
 
 
-    //楼盘下的房源管理
-    Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的房源
-    Route::get('/huxing/del/{id}', 'Admin\HuxingController@del');//删除房源
+    //楼盘下的产品管理
+    Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的产品
+    Route::get('/huxing/del/{id}', 'Admin\HuxingController@del');//删除产品
     Route::post('/huxing/edit', 'Admin\HuxingController@edit');//新建或编辑楼盘
     Route::post('/huxing/edit', 'Admin\HuxingController@editPost');//新建或编辑楼盘
-    Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取楼盘信息
-    Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置房源状态
+    Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取产品信息
+    Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置产品状态
+    Route::post('/huxing/editYongjin', 'Admin\HuxingController@editYongjin');//新建或编辑产品的佣金
 
     //楼盘下的顾问管理
     Route::get('/zygw/index', 'Admin\ZYGWController@index');//根据楼盘id获取相应的顾问
@@ -103,11 +104,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/kehu/edit', 'Admin\KeHuController@editPost');  //新建或编辑客户
     Route::get('/kehu/getById', 'Admin\KeHuController@getById');  //根据id获取客户信息
 
-    //房源标签
+    //产品标签
     Route::get('/houseLabel/index', 'Admin\HouseLabelController@index');  //楼盘标签管理首页
-    Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑房源标签
+    Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑产品标签
 
-    //房源类型
+    //产品类型
     Route::get('/houseType/index', 'Admin\HouseTypeController@index');  //楼盘类型管理首页
     Route::post('/houseType/edit', 'Admin\HouseTypeController@editPost');  //编辑楼盘标签
 

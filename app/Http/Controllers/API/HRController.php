@@ -21,7 +21,7 @@ class HRController extends Controller
 
 
     /*
-     * 获取房源信息
+     * 获取产品信息
      *
      *
      * By TerryQi
@@ -88,7 +88,7 @@ class HRController extends Controller
 
 
     /*
-        * 获取房源信息
+        * 获取产品信息
         *
         *
         * By TerryQi
@@ -111,7 +111,7 @@ class HRController extends Controller
         return ApiResponse::makeResponse(true, $hrs, ApiResponse::SUCCESS_CODE);
     }
 
-    //根据指定的房源小区id获得指定的楼盘参数
+    //根据指定的产品小区id获得指定的楼盘参数
     public function getHDById(Request $request){
         $data = $request->all();
         $requestValidationResult = RequestValidator::validator($data, [
