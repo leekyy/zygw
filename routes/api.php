@@ -34,6 +34,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('user/encryptedData', 'API\UserController@encryptedData');//解密encryptedData
     Route::post('user/applyUp', 'API\UserUpController@userUpApply');//中介升级为案场负责接口
     Route::get('user/getUserUpHousesByUserId', 'API\UserUpController@getUserUpHousesByUserId');    //获取案场负责人的楼盘
+    Route::get('user/yongjinSummary', 'API\UserController@yongjinSummary');    //获取佣金概要
 
     //微信相关接口
     Route::get('wechat/miniProgramLogin', 'API\WechatController@miniProgramLogin'); //小程序通过code换取openid接口
@@ -62,9 +63,17 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('house/getZYGWs', 'API\HouseController@getZYGWsByHouseId')->middleware('CheckToken');       //获取楼盘下所有生效的置业顾问
 
     //报备相关
-    Route::post('baobei/baobeiClient', 'API\BaobeiController@baobeiClient')->middleware('CheckToken');;     //中介/案场负责人报备客户
     Route::get('baobei/getOptions', 'API\BaobeiController@getBaobeiOption');       //获取报备选项
-    Route::post('baobei/daofang', 'API\BaobeiController@daofang')->middleware('CheckToken');;     //中介/案场负责人报备客户
+    Route::post('baobei/acceptClient', 'API\BaobeiController@acceptClient')->middleware('CheckToken');     //中介/案场负责人报备客户
+    Route::post('baobei/setNormalInfo', 'API\BaobeiController@setNormalInfo')->middleware('CheckToken');     //中介/案场负责人报备客户
+    Route::post('baobei/baobeiClient', 'API\BaobeiController@baobeiClient')->middleware('CheckToken');     //中介/案场负责人报备客户
+    Route::post('baobei/daofang', 'API\BaobeiController@daofang')->middleware('CheckToken');     //中介/案场负责人报备客户
+    Route::post('baobei/deal', 'API\BaobeiController@deal')->middleware('CheckToken');     //案场负责人报备成交信息
+    Route::post('baobei/sign', 'API\BaobeiController@sign')->middleware('CheckToken');     //案场负责人报备签约信息
+    Route::post('baobei/qkdz', 'API\BaobeiController@qkdz')->middleware('CheckToken');     //案场负责人报备全款到账信息
+    Route::post('baobei/canjiesuan', 'API\BaobeiController@canjiesuan')->middleware('CheckToken');     //案场负责人设置报备单可结算
+    Route::get('baobei/getListForZJByStatus', 'API\BaobeiController@getListForZJByStatus')->middleware('CheckToken');   //获取中介维度的报备列表
+    Route::get('baobei/getListForACByStatus', 'API\BaobeiController@getListForACByStatus')->middleware('CheckToken');   //获取案场负责人维度的报备列表
 
 
 });

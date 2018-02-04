@@ -15,6 +15,7 @@ use App\Components\DateTool;
 use App\Components\HomeManager;
 use App\Components\HouseClientManager;
 use App\Components\HouseManager;
+use App\Components\HuxingManager;
 use App\Components\SendMessageManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
@@ -45,6 +46,44 @@ class BaobeiController extends Controller
         return ApiResponse::makeResponse(true, $baobeiOption, ApiResponse::SUCCESS_CODE);
     }
 
+
+    /*
+     * 设置报备通用信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     *
+     */
+    public function setNormalInfo(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'user_id' => 'required',
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //获取报备基本信息
+        $baobei = BaobeiManager::getById($data['id']);
+        //存在报备信息
+        if ($baobei) {
+            //获取楼盘案场负责人
+            $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
+            //用户是报备楼盘的案场负责人
+            if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+                return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
+            }
+            $baobei = BaobeiManager::setBaoBei($baobei, $data);
+            $baobei->save();
+            $baobei = BaobeiManager::getById($baobei->id);
+            return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+        } else {
+            return ApiResponse::makeResponse(false, '未找到报备楼盘', ApiResponse::INNER_ERROR);
+        }
+    }
 
     /*
      * 中介/案场负责人进行客户报备
@@ -99,6 +138,7 @@ class BaobeiController extends Controller
         $baobei = new Baobei();
 //        dd($data);
         $baobei = BaobeiManager::setBaoBei($baobei, $data);
+        $baobei->user_id = $data['user_id'];
         $baobei->client_id = $client->id;
         $baobei->trade_no = Utils::generateTradeNo();   //生成报备流水
         $baobei->save();
@@ -131,16 +171,301 @@ class BaobeiController extends Controller
         //合规校验
         $requestValidationResult = RequestValidator::validator($request->all(), [
             'id' => 'required',
+            'user_id' => 'required',
             'visit_attach' => 'required',
         ]);
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
+        //判断状态是否正确
+        $baobei = BaobeiManager::getById($data['id']);
+        if (!$baobei || $baobei->baobei_status != '0') { //baobei_status==0，代表报备，下一步为到访
+            return ApiResponse::makeResponse(false, '报备记录状态不正确', ApiResponse::INNER_ERROR);
+        }
+        //进行状态保存
         $baobei = BaobeiManager::getById($data['id']);
         $baobei->visit_attach = $data['visit_attach'];
         $baobei->visit_time = DateTool::getCurrentTime();
+        $baobei->baobei_status = "1";
+        //设置案场负责人
+        $user = UserManager::getUserInfoById($data['id']);
+        if ($user->role == '1') { //如果该用户是案场负责人，则要设置案场负责人
+            $baobei->anchang_id = $user->id;
+        }
         $baobei->save();
         $baobei = BaobeiManager::getById($baobei->id);
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+    }
+
+
+    /*
+      * 案场负责人接收客户
+      *
+      * By TerryQi
+      *
+      * 2018-02-04
+      */
+    public function acceptClient(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //获取报备信息
+        $baobei = BaobeiManager::getById($data['id']);
+        $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
+        //如果报备信息里面已经有案场负责人，则不允许接收客户
+        if (!Utils::isObjNull($baobei->anchang_id)) {
+            return ApiResponse::makeResponse(false, '该条报备信息已经有案场负责人', ApiResponse::INNER_ERROR);
+        }
+        //用户不是报备楼盘的案场负责人
+        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+            return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
+        }
+        $baobei->anchang_id = $data['user_id'];
+        $baobei->save();
+        $baobei = BaobeiManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+    }
+
+    /*
+     * 报备成交信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public function deal(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+            'user_id' => 'required',
+            'deal_size' => 'required',
+            'deal_price' => 'required',
+            'deal_huxing_id' => 'required',
+            'pay_way_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //获取报备信息
+        $baobei = BaobeiManager::getById($data['id']);
+        if (!$baobei || $baobei->baobei_status != '1') { //baobei_status==1，代表到访，下一步为成交
+            return ApiResponse::makeResponse(false, '报备记录状态不正确', ApiResponse::INNER_ERROR);
+        }
+        $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
+        //用户不是报备楼盘的案场负责人
+        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+            return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
+        }
+        //获取佣金
+        $huxing = HuxingManager::getById($data['deal_huxing_id']);
+        $yongjin = 0;
+        //获取佣金金额
+        if ($huxing->yongjin_type == '0') { //固定金额
+            $yongjin = $huxing->yongjin_value;
+        }
+        if ($huxing->yongjin_type == "1") {
+            $yongjin = $huxing->yongjin_value * $data['deal_price'] / 1000; //成交额千分比
+        }
+//        dd($yongjin);
+        $baobei = BaobeiManager::setBaoBei($baobei, $data);
+        $baobei->yongjin = $yongjin;
+        $baobei->baobei_status = '2';    //报备状态为成交
+        $baobei->deal_time = DateTool::getCurrentTime();
+        $baobei->save();
+        return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+    }
+
+    /*
+     *  报备签约信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public function sign(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //获取报备信息
+        $baobei = BaobeiManager::getById($data['id']);
+        if (!$baobei || $baobei->baobei_status != '2') { //baobei_status==2，代表成交，下一步为签约
+            return ApiResponse::makeResponse(false, '报备记录状态不正确', ApiResponse::INNER_ERROR);
+        }
+        $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
+        //用户不是报备楼盘的案场负责人
+        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+            return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
+        }
+        $baobei->sign_time = DateTool::getCurrentTime();
+        $baobei->baobei_status = "3";
+        $baobei->save();
+        return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+    }
+
+    /*
+     *  报备全款到账信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public function qkdz(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //获取报备信息
+        $baobei = BaobeiManager::getById($data['id']);
+        if (!$baobei || $baobei->baobei_status != '3') { //baobei_status==3，代表签约，下一步为全款到账
+            return ApiResponse::makeResponse(false, '报备记录状态不正确', ApiResponse::INNER_ERROR);
+        }
+        $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
+        //用户不是报备楼盘的案场负责人
+        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+            return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
+        }
+        $baobei->qkdz_time = DateTool::getCurrentTime();
+        $baobei->baobei_status = "4";
+        $baobei->save();
+        return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+    }
+
+
+    /*
+     * 案场负责人设置可结算状态
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     *
+     */
+    public function canjiesuan(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //获取报备信息
+        $baobei = BaobeiManager::getById($data['id']);
+        if (!$baobei || (int)$baobei->baobei_status < 2) { //baobei_status==2，代表成交，成交之后方可可以进行可结算设置
+            return ApiResponse::makeResponse(false, '报备记录状态不正确', ApiResponse::INNER_ERROR);
+        }
+        $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
+        //用户不是报备楼盘的案场负责人
+        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+            return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
+        }
+        $baobei->can_jiesuan_status = "1";
+        $baobei->can_jiesuan_time = DateTool::getCurrentTime();
+        $baobei->save();
+        return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+    }
+
+
+    /*
+     * 中介维度查看各个状态的报备信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public function getListForZJByStatus(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //报备状态条件
+        $baobei_status = null;
+        if (array_key_exists('baobei_status', $data)) {
+            $baobei_status = $data['baobei_status'];
+        }
+        //是否可以结算条件
+        $can_jiesuan_status = null;
+        if (array_key_exists('can_jiesuan_status', $data)) {
+            $can_jiesuan_status = $data['can_jiesuan_status'];
+        }
+        //是否已经结算条件
+        $pay_zhongie_status = null;
+        if (array_key_exists('pay_zhongie_status', $data)) {
+            $pay_zhongie_status = $data['pay_zhongie_status'];
+        }
+        $baobeis = BaobeiManager::getListForZJByStatusPaginate($data['user_id'],
+            $baobei_status, $can_jiesuan_status, $pay_zhongie_status);
+        foreach ($baobeis as $baobei) {
+            $baobei = BaobeiManager::getInfoByLevel($baobei, '0');
+        }
+        return $baobeis;
+    }
+
+    /*
+     * 案场负责人维度查看各个状态的报备信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public function getListForACByStatus(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'anchang_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //报备状态条件
+        $baobei_status = null;
+        if (array_key_exists('baobei_status', $data)) {
+            $baobei_status = $data['baobei_status'];
+        }
+        //是否可以结算条件
+        $can_jiesuan_status = null;
+        if (array_key_exists('can_jiesuan_status', $data)) {
+            $can_jiesuan_status = $data['can_jiesuan_status'];
+        }
+        //是否已经结算条件
+        $pay_zhongie_status = null;
+        if (array_key_exists('pay_zhongie_status', $data)) {
+            $pay_zhongie_status = $data['pay_zhongie_status'];
+        }
+        $baobeis = BaobeiManager::getListForZJByStatusPaginate($data['anchang_id'],
+            $baobei_status, $can_jiesuan_status, $pay_zhongie_status);
+        foreach ($baobeis as $baobei) {
+            $baobei = BaobeiManager::getInfoByLevel($baobei, '0');
+        }
+        return $baobeis;
     }
 }

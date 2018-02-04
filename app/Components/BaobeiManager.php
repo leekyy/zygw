@@ -29,16 +29,16 @@ class BaobeiManager
      */
     public static function getBaobeiOptions()
     {
-        $pay_way = BaobeiPayWay::where('status', '=', '1')->orderby('id', 'asc')->get();
-        $buy_purpose = BaobeiBuyPurpose::where('status', '=', '1')->orderby('id', 'asc')->get();
-        $know_way = BaobeiKnowWay::where('status', '=', '1')->orderby('id', 'asc')->get();
-        $client_care = BaobeiClientCare::where('status', '=', '1')->orderby('id', 'asc')->get();
+        $pay_ways = BaobeiPayWayManager::getListValid();
+        $buy_purposes = BaobeiBuyPurposeManager::getListValid();
+        $know_ways = BaobeiKnowWayManager::getListValid();
+        $client_cares = BaobeiClientCareManager::getListValid();
 
         $baobeiOption = new Collection([
-            'pay_way' => $pay_way,
-            'buy_purpose' => $buy_purpose,
-            'know_way' => $know_way,
-            'client_care' => $client_care
+            'pay_ways' => $pay_ways,
+            'buy_purposes' => $buy_purposes,
+            'know_ways' => $know_ways,
+            'client_cares' => $client_cares
         ]);
         return $baobeiOption;
     }
@@ -74,6 +74,53 @@ class BaobeiManager
     }
 
     /*
+     * 获取报备详细信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public static function getInfoByLevel($baobei, $level)
+    {
+        $baobei->client = ClientManager::getById($baobei->client_id);
+        $baobei->user = UserManager::getUserInfoById($baobei->user_id);
+        $baobei->house = HouseManager::getById($baobei->house_id);
+        //案场负责人
+        if (!Utils::isObjNull($baobei->anchang_id)) {
+            $baobei->anchang = UserManager::getUserInfoById($baobei->anchang_id);
+        }
+        //置业顾问
+        if (!Utils::isObjNull($baobei->guwen_id)) {
+            $baobei->guwen = ZYGWManager::getById($baobei->guwen_id);
+        }
+        //区域
+        if (!Utils::isObjNull($baobei->area_id)) {
+            $baobei->area = HouseAreaManager::getById($baobei->area_id);
+        }
+        //认知途径
+        if (!Utils::isObjNull($baobei->way_id)) {
+            $baobei->know_way = BaobeiKnowWayManager::getById($baobei->area_id);
+        }
+        //购房目的
+        if (!Utils::isObjNull($baobei->purpose_id)) {
+            $baobei->purpose = BaobeiBuyPurpose::getById($baobei->purpose_id);
+        }
+        //关注点
+        if (!Utils::isObjNull($baobei->care_id)) {
+            $baobei->care = BaobeiClientCareManager::getById($baobei->care_id);
+        }
+        //产品信息
+        if (!Utils::isObjNull($baobei->deal_huxing_id)) {
+            $baobei->deal_huxing = HuxingManager::getById($baobei->deal_huxing_id);
+        }
+        //支付方式
+        if (!Utils::isObjNull($baobei->pay_way_id)) {
+            $baobei->pay_way = BaobeiPayWayManager::getById($baobei->pay_way_id);
+        }
+        return $baobei;
+    }
+
+    /*
      * 判断客户是否已经报备过
      *
      * By TerryQi
@@ -103,9 +150,9 @@ class BaobeiManager
         if (array_key_exists('client_id', $data)) {
             $baobei->client_id = array_get($data, 'client_id');
         }
-        if (array_key_exists('user_id', $data)) {
-            $baobei->user_id = array_get($data, 'user_id');
-        }
+//        if (array_key_exists('user_id', $data)) {         //不能在此处设置user_id，即中介的id，否则多处接口将收到影响
+//            $baobei->user_id = array_get($data, 'user_id');
+//        }
         if (array_key_exists('house_id', $data)) {
             $baobei->house_id = array_get($data, 'house_id');
         }
@@ -198,4 +245,106 @@ class BaobeiManager
         }
         return $baobei;
     }
+
+
+    /*
+     * 根据状态获取中介维度的报备列表-paginate
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     *
+     */
+    public static function getListForZJByStatusPaginate($user_id, $baobei_status, $can_jiesuan_status, $pay_zhongie_status)
+    {
+        $baobeis = Baobei::where('user_id', '=', $user_id);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongie_status', '=', $pay_zhongie_status);
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $baobeis;
+    }
+
+    /*
+     * 根据状态获取案场负责人维度的报备列表-paginate
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public static function getListForACByStatusPaginate($anchang_id, $baobei_status, $can_jiesuan_status, $pay_zhongie_status)
+    {
+        $baobeis = Baobei::where('anchang_id', '=', $anchang_id);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongie_status', '=', $pay_zhongie_status);
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $baobeis;
+    }
+
+    /*
+   * 获取中介佣金总额
+   *
+   * By TerryQi
+   *
+   * 2018-02-04
+   */
+    public static function getTotalYongjinByUserId($user_id)
+    {
+        $total_yongjin = Baobei::where('user_id', '=', $user_id)->sum('yongjin');
+        return $total_yongjin;
+    }
+
+    /*
+     * 获取待确认佣金总额
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     *
+     */
+    public static function getNotCanJiesuanYongjinByUserId($user_id)
+    {
+        $not_can_jiesuan_yongjin = Baobei::where('user_id', '=', $user_id)->where('can_jiesuan_status', '=', '0')->sum('yongjin');
+        return $not_can_jiesuan_yongjin;
+    }
+
+    /*
+     * 获取带结算佣金总额
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public static function getNotPayYongjinByUserId($user_id)
+    {
+        $not_pay_yongjin = Baobei::where('user_id', '=', $user_id)->where('can_jiesuan_status', '=', '1')->where('pay_zhongie_status', '=', '0')->sum('yongjin');
+        return $not_pay_yongjin;
+    }
+
+    /*
+     * 获取已经结算佣金总额
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public static function getAlreadyPayYongjinByUserId($user_id)
+    {
+        $already_pay_yongjin = Baobei::where('user_id', '=', $user_id)->where('can_jiesuan_status', '=', '1')->where('pay_zhongie_status', '=', '1')->sum('yongjin');
+        return $already_pay_yongjin;
+    }
+
 }

@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Components\BaobeiManager;
 use App\Components\HomeManager;
 use App\Components\UserManager;
 use App\Http\Controllers\ApiResponse;
@@ -17,6 +18,7 @@ use App\Libs\wxDecode\WXBizDataCrypt;
 use App\Models\ViewModels\HomeView;
 use Illuminate\Http\Request;
 use App\Components\RequestValidator;
+use Illuminate\Support\Collection;
 use Qiniu\Auth;
 
 class UserController extends Controller
@@ -182,6 +184,31 @@ class UserController extends Controller
         } else {
             return ApiResponse::makeResponse(false, ApiResponse::$errorMassage[ApiResponse::NO_USER], ApiResponse::NO_USER);
         }
+    }
+
+    /*
+     * 获取用户的佣金摘要信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-05
+     */
+    public function yongjinSummary(Request $request)
+    {
+        $data = $request->all();
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $yongjin_summary = new Collection([
+            'total_yongjin' => BaobeiManager::getTotalYongjinByUserId($data['user_id']),
+            'not_can_jiesuan_yongjin' => BaobeiManager::getNotCanJiesuanYongjinByUserId($data['user_id']),
+            'not_pay_yongjin' => BaobeiManager::getNotPayYongjinByUserId($data['user_id']),
+            'already_pay_yongjin' => BaobeiManager::getAlreadyPayYongjinByUserId($data['user_id']),
+        ]);
+        return ApiResponse::makeResponse(true, $yongjin_summary, ApiResponse::SUCCESS_CODE);
     }
 
 }
