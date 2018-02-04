@@ -359,9 +359,6 @@
                 <div class="col-xs-12 margin-top-10 text-oneline">
                     <a href="#">置业顾问功能简述</a>
                 </div>
-                <div class="col-xs-12 margin-top-10 text-oneline">
-                    <a href="#">关于如何建立患者病历及病历如何查看</a>
-                </div>
             </div>
         </div>
     </aside>

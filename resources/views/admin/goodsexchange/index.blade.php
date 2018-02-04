@@ -213,11 +213,11 @@
         //合规校验
         function checkValid() {
             //合规校验
-            var attach = $("#attach").val();
-            if (judgeIsNullStr(attach)) {
-                $("#attach").focus();
-                return false;
-            }
+//            var attach = $("#attach").val();
+//            if (judgeIsNullStr(attach)) {
+//                $("#attach").focus();
+//                return false;
+//            }
             return true;
         }
 

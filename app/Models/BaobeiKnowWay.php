@@ -11,11 +11,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BKH extends Model
+class BaobeiKnowWay extends Model
 {
     use SoftDeletes;    //使用软删除
-    protected $table = 't_client_baobei';
-    public $timestamps = true;
+    protected $table = 't_baobei_client_knowway';     //表名
+    public $timestamps = true;  //自动管理时间戳
     protected $dates = ['deleted_at'];  //软删除
-
 }

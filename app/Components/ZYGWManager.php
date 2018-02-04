@@ -46,7 +46,7 @@ class ZYGWManager
         return $zygw;
     }
 
-    /*根据楼盘id获取该楼盘下的所有产品
+    /*根据楼盘id获取该楼盘下的所有置业顾问
      *
      * By Yinyue
      * 2018-1-24
@@ -58,6 +58,17 @@ class ZYGWManager
         return $zygws;
     }
 
+    /*根据楼盘id获取该楼盘下的生效置业顾问，考虑status==1情况
+     *
+     * By Yinyue
+     * 2018-1-24
+     */
+
+    public static function getListByHouseIdValid($house_id)
+    {
+        $zygws = ZYGW::where('house_id', '=', $house_id)->where('status', '=', '1')->get();
+        return $zygws;
+    }
 
     public static function setZYGW($zygw, $data)
     {

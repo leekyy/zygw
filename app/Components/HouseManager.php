@@ -11,8 +11,10 @@ namespace App\Components;
 
 use App\Models\AD;
 use App\Models\House;
+use App\Models\HouseLabel;
 use App\Models\Huxing;
 use App\Models\HouseDetail;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Cast\Object_;
 use Qiniu\Auth;
@@ -35,7 +37,20 @@ class HouseManager
     }
 
     /*
-     * 根据search_word进行搜索
+     * 根据条件获取楼盘
+     *
+     * By TerryQi
+     *
+     * 2018-02-03
+     *
+     */
+    public static function getListByCon($con)
+    {
+
+    }
+
+    /*
+     * 根据search_word进行搜索，用于管理后台，不需要考虑status==1的情况
      *
      * By TerryQi
      *
@@ -43,9 +58,69 @@ class HouseManager
      */
     public static function searchByName($search_word)
     {
-        $hourses = House::where('title', 'like', '%' . $search_word . '%')->paginate(Utils::PAGE_SIZE);
+        $hourses = House::where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $hourses;
     }
+
+    /*
+     * 根据search_word进行搜索，用于API接口，需要考虑status==1的情况
+     *
+     * By TerryQi
+     *
+     * 2018-02-03
+     *
+     */
+    public static function searchByNameValid($search_word)
+    {
+        $hourses = House::where('status', '=', '1')->where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->get();
+        return $hourses;
+    }
+
+    /*
+     * 根据条件搜索，用于API接口，需要考虑status==1的情况
+     *
+     * By TerryQi
+     *
+     * 2018-02-03
+     *
+     * @con是参数
+     */
+    public static function searchByConValid($con)
+    {
+        $houses = House::where('status', '=', '1');
+        //如果地区的选项不为空
+        if (array_key_exists('area_id', $con) && !Utils::isObjNull($con['area_id'])) {
+            $houses = $houses->where('area_id', '=', $con['area_id']);
+        }
+        //如果楼盘类型的选项不为空
+        if (array_key_exists('type_id', $con) && !Utils::isObjNull($con['type_id'])) {
+            $houses = $houses->where('type_ids', 'like', '%' . $con['type_id'] . '%');
+        }
+        //如果楼盘类型的选项不为空
+        if (array_key_exists('label_id', $con) && !Utils::isObjNull($con['label_id'])) {
+            $houses = $houses->where('label_ids', 'like', '%' . $con['label_id'] . '%');
+        }
+        //如果最小面积不为空
+        if (array_key_exists('size_min', $con) && !Utils::isObjNull($con['size_min'])) {
+            $houses = $houses->where('size_min', '>=', $con['size_min']);
+        }
+        //如果最大面积不为空
+        if (array_key_exists('size_max', $con) && !Utils::isObjNull($con['size_max'])) {
+            $houses = $houses->where('size_max', '<=', $con['size_max']);
+        }
+        //楼盘最低均价不为空
+        if (array_key_exists('price_min', $con) && !Utils::isObjNull($con['price_min'])) {
+            $houses = $houses->where('price', '>=', $con['price_min']);
+        }
+        //楼盘最高均价不为空
+        if (array_key_exists('price_max', $con) && !Utils::isObjNull($con['price_max'])) {
+            $houses = $houses->where('price', '<=', $con['price_max']);
+        }
+        $houses = $houses->orderby('id', 'desc')->get();
+        return $houses;
+
+    }
+
 
     /*
      * 根据状态进行分页
@@ -95,6 +170,13 @@ class HouseManager
             $labels = explode(',', $house->label_ids);
             $house->labels = HouselabelManager::getListByIds($labels);
             $house->area = HouseAreaManager::getById($house->area_id);
+        }
+        if (strpos($level, '1') !== false) {
+            //楼盘下的产品信息
+            $house->huxings = HuxingManager::getListByHouseId($house->id);
+            foreach ($house->huxings as $huxing) {
+                $huxing = HuxingManager::getInfoByLevel($huxing, '0');
+            }
         }
         return $house;
     }
@@ -169,6 +251,27 @@ class HouseManager
             $house->developer = array_get($data, 'developer');
         }
         return $house;
+    }
+
+    /*
+     * 获取楼盘相关属性
+     *
+     * By TerryQi
+     *
+     * 2018-02-03
+     *
+     */
+    public static function getOptions()
+    {
+        $area = HouseAreaManager::getList();
+        $type = HouseTypeManager::getList();
+        $label = HouselabelManager::getList();
+        $houseOptions = new Collection([
+            'area' => $area,
+            'type' => $type,
+            'label' => $label,
+        ]);
+        return $houseOptions;
     }
 
 }

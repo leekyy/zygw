@@ -59,6 +59,19 @@ class HuxingManager
     }
 
     /*
+     * 根据楼盘id获取该楼盘下的所有产品
+     *
+     * By TerryQi
+     *
+     * 2018-02-03
+     */
+    public static function getListByHouseIdValid($house_id)
+    {
+        $huxings = Huxing::where('house_id', '=', $house_id)->where('status', '=', '1')->get();
+        return $huxings;
+    }
+
+    /*
      * 获取户型详细信息
      *
      * By TerryQi

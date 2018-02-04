@@ -105,7 +105,7 @@
                                     </td>
 
                                     <td>
-                                        @if($data->status === '0')
+                                        @if($data->status === '1')
                                             <span class="label label-success line-height-30">展示</span>
                                         @else
                                             <span class="label label-default line-height-30">隐藏</span>
@@ -113,13 +113,13 @@
                                     </td>
                                     <td>
                                         <span class="line-height-30">
-                                              <a href="{{URL::asset('/admin/house/setStatus')}}/{{$data->id}}?opt=0"
+                                              <a href="{{URL::asset('/admin/house/setStatus')}}/{{$data->id}}?opt=1"
                                                  class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                  data-toggle="tooltip"
                                                  data-placement="top" title="在小程序页面中展示该楼盘">
                                                 <i class="fa fa-eye opt-btn-i-size"></i>
                                             </a>
-                                            <a href="{{URL::asset('/admin/house/setStatus')}}/{{$data->id}}?opt=1"
+                                            <a href="{{URL::asset('/admin/house/setStatus')}}/{{$data->id}}?opt=0"
                                                class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top" title="在小程序页面中隐藏该楼盘">

@@ -25,70 +25,28 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //获取七牛token
     Route::get('user/getQiniuToken', 'API\UserController@getQiniuToken');
 
-    //根据id获取用户信息
-    Route::get('user/getById', 'API\UserController@getUserById');
-    //根据id获取用户信息带token
-    Route::get('user/getByIdWithToken', 'API\UserController@getUserInfoByIdWithToken')->middleware('CheckToken');
-    //根据code获取openid
-    Route::get('user/getXCXOpenId', 'API\UserController@getXCXOpenId');
-    //登录/注册
-    Route::post('user/login', 'API\UserController@login');
-    //更新用户信息
-    Route::post('user/updateById', 'API\UserController@updateUserById')->middleware('CheckToken');
-    //解密encryptedData
-    Route::post('user/encryptedData', 'API\UserController@encryptedData');
-    //中介升级为案场负责人表
-    Route::post('user/applyUp', 'API\UserUpController@userUpApply');
-    //获取案场负责人的楼盘
-    Route::get('user/getUserUpHousesByUserId', 'API\UserUpController@getUserUpHousesByUserId');
+    //用户相关
+    Route::get('user/getById', 'API\UserController@getUserById');    //根据id获取用户信息
+    Route::get('user/getByIdWithToken', 'API\UserController@getUserInfoByIdWithToken')->middleware('CheckToken');  //根据id获取用户信息带token
+    Route::get('user/getXCXOpenId', 'API\UserController@getXCXOpenId');//根据code获取openid
+    Route::post('user/login', 'API\UserController@login');    //登录/注册
+    Route::post('user/updateById', 'API\UserController@updateUserById')->middleware('CheckToken');//更新用户信息
+    Route::post('user/encryptedData', 'API\UserController@encryptedData');//解密encryptedData
+    Route::post('user/applyUp', 'API\UserUpController@userUpApply');//中介升级为案场负责接口
+    Route::get('user/getUserUpHousesByUserId', 'API\UserUpController@getUserUpHousesByUserId');    //获取案场负责人的楼盘
+
+    //微信相关接口
+    Route::get('wechat/miniProgramLogin', 'API\WechatController@miniProgramLogin'); //小程序通过code换取openid接口
+    Route::any('wechat', 'API\WechatController@serve');     //微信服务号 加入接口
+
+    //获取广告图
+    Route::get('ad/getADs', 'API\ADController@getADs'); //获取首页轮播图
+    Route::get('ad/getById', 'API\ADController@getADById');   //根据轮播图的id获取相应的信息
 
     //用户签到-By TerryQi
     Route::post('user/userQDToday', 'API\UserQDController@userQDToday')->middleware('CheckToken');        //用户签到接口
     Route::get('user/getUserQDsByUserId', 'API\UserQDController@getUserQDsByUserId')->middleware('CheckToken');        //根据用户id获取签到列表
     Route::get('user/getRecentDatas', 'Admin\UserQDController@getRecentDatas');        //获取近几日综合统计数据
-
-    //获取广告图
-    Route::get('ad/getADs', 'API\ADController@getADs');
-    //根据轮播图的id获取相应的信息
-    Route::get('ad/getById', 'API\ADController@getADById');
-
-    //楼盘相关
-
-
-    //获取产品信息
-    Route::get('hr/getHRs', 'API\HRController@getHRs');
-    //Route::get('hr/getHouse','API\HRController@getHouse');
-    Route::get('hr/getIndexPage', 'API\HRController@getIndexPage');
-    //根据id获取产品小区楼盘详情
-    Route::get('hr/getHRById', 'API\HRController@getHRById');
-    //根据小区id获取小区的楼盘参数
-    Route::get('hrd/getHDById', 'API\HRController@getHDById');
-    //根据小区id获取相对应的户型推荐
-    Route::get('hx/getHXById', 'API\HRController@getHXById');
-    //根据小区id获取相对应的用户评论
-    Route::get('hc/getHCById', 'API\HRController@getHCById');
-    //用户对相应楼盘进行评价
-    Route::post('hrr/getHouseReview', 'API\HRController@getHouseReview');
-    //接收前台提交的信息
-    Route::post('kh/getBKH', 'API\KHController@getBKH');
-    //修改客户的资料传到后台
-    Route::post('kh/getXKH', 'API\KHController@getXKH');
-    //获取客户信息
-    Route::get('kh/getKHs', 'API\KHController@getKHs');
-
-    Route::post('kh/getSearchKhs', 'API\KHController@getSearchKhs');
-    Route::get('kh/getKhIntent', 'API\KHController@getKhIntent');
-    //根据客户id获取客户详细信息
-    Route::get('kh/getKHById', 'API\KHController@getKHById');
-    Route::post('user/enter', 'API\LoginController@enter');
-    //搜索产品
-    Route::post('hr/getSearch', 'API\HRController@getSearch');
-    //搜索客户
-    Route::post('kh/getSearchKh', 'API\KHController@getSearchKh');
-    Route::post('hr/getSearchHr', 'API\HRController@getSearchHr');
-    Route::get('news/getNEWs', 'API\KHController@getNEWs');
-    //获取用户的佣金
-    Route::get('user/getUserYongjin', 'API\UserController@getUserYongjin');
 
     //获取积分商品
     Route::get('goods/getGoodsList', 'API\GoodsController@getGoodsList');       //获取商品兑换列表
@@ -96,20 +54,17 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('goods/exchange', 'API\GoodsController@exchange')->middleware('CheckToken');     //兑换商品
     Route::get('goods/getExchangeListByUserId', 'API\GoodsController@getExchangeListByUserId')->middleware('CheckToken');        //根据id获取商品明细信息
 
+    //楼盘相关
+    Route::get('house/getOptions', 'API\HouseController@getOptions');       //获取楼盘相关选项
+    Route::post('house/searchByName', 'API\HouseController@searchByName');       //根据名称获取楼盘列表
+    Route::post('house/searchByCon', 'API\HouseController@searchByCon');       //根据名称获取楼盘列表
+    Route::get('house/getHuxings', 'API\HouseController@getHuxingsByHouseId')->middleware('CheckToken');       //获取楼盘下所有生效的产品（户型）
+    Route::get('house/getZYGWs', 'API\HouseController@getZYGWsByHouseId')->middleware('CheckToken');       //获取楼盘下所有生效的置业顾问
 
-    //获取合作细则
-    Route::get('user/getHezuo', 'API\UserController@getHezuo');
-
-    Route::get('user/getWhitebook', 'API\UserController@getWhitebook');
-    //获取积分规则
-    Route::get('rules/getRules', 'API\UserController@getRules');
-    //获取客户对我的接待评价
-    Route::get('pingjia/getPingjia', 'API\UserController@getPingjia');
+    //报备相关
+    Route::post('baobei/baobeiClient', 'API\BaobeiController@baobeiClient')->middleware('CheckToken');;     //中介/案场负责人报备客户
+    Route::get('baobei/getOptions', 'API\BaobeiController@getBaobeiOption');       //获取报备选项
+    Route::post('baobei/daofang', 'API\BaobeiController@daofang')->middleware('CheckToken');;     //中介/案场负责人报备客户
 
 
-    //微信相关接口
-    //小程序通过code换取openid接口
-    Route::get('wechat/miniProgramLogin', 'API\WechatController@miniProgramLogin');
-    //微信服务号 加入接口
-    Route::any('wechat', 'API\WechatController@serve');
 });
