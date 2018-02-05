@@ -12,7 +12,6 @@ namespace App\Http\Controllers\Admin;
 use App\Components\ADManager;
 use App\Components\AdminManager;
 use App\Components\DateTool;
-use App\Components\HouseAreaManager;
 use App\Components\HouselabelManager;
 use App\Components\HouseTypeManager;
 use App\Components\QNManager;
@@ -45,12 +44,11 @@ class HouseController
         }
 //        dd($house);
         $upload_token = QNManager::uploadToken();
-        $houseTypes = HouseTypeManager::getList(); //获取楼盘类型
-        $houseLabels = HouselabelManager::getList();        //获取楼盘标签
-        $houseAreas = HouseAreaManager::getList();  //获取楼盘区域
+        $houseTypes = HouseTypeManager::getList(); //获取房源类型
+        $houseLabels = HouselabelManager::getList();        //获取房源标签
 
         return view('admin.house.index', ['admin' => $admin, 'datas' => $houses, 'upload_token' => $upload_token
-            , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels, 'houseAreas' => $houseAreas]);
+            , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels]);
     }
 
     //根据名称进行楼盘搜索
@@ -71,8 +69,8 @@ class HouseController
             $house = HouseManager::getHouseInfoByLevel($house, "0");
         }
         $upload_token = QNManager::uploadToken();
-        $houseTypes = HouseTypeManager::getList(); //获取楼盘类型
-        $houseLabels = HouselabelManager::getList();        //获取楼盘标签
+        $houseTypes = HouseTypeManager::getList(); //获取房源类型
+        $houseLabels = HouselabelManager::getList();        //获取房源标签
         return view('admin.house.index', ['admin' => $admin, 'datas' => $houses, 'upload_token' => $upload_token
             , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels]);
     }
@@ -151,7 +149,7 @@ class HouseController
 
 
     /*
-     * 根据id获取楼盘信息
+     * 根据id获取房源信息
      *
      * By TerryQi
      *
@@ -167,6 +165,7 @@ class HouseController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
+
         $admin = HouseManager::getById($data['id']);
         return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
 
@@ -187,6 +186,26 @@ class HouseController
 
     }
 
+    public function getHouseById(Request $request)
+    {
+
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'house_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $house = HouseManager::getHouseById($data['house_id']);
+        $upload_token = QNManager::uploadToken();
+        return view('admin.house.getHouseById', ['admin' => $admin, 'datas' => $house, 'upload_token' => $upload_token]);
+        //$house = HouseManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $house, ApiResponse::SUCCESS_CODE);
+
+
+    }
 
     //设置状态
     public function setStatus(Request $request, $id)
@@ -230,5 +249,6 @@ class HouseController
 
         return ApiResponse::makeResponse(true, $result, ApiResponse::MISSING_PARAM);
     }
+
 
 }

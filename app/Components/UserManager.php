@@ -13,7 +13,6 @@ use App\Models\Exange;
 use App\Models\User;
 use App\Models\Goods;
 use App\Models\Rules;
-use App\Models\UserUp;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pingjia;
 
@@ -260,42 +259,6 @@ class UserManager
                 . substr($charid, 20, 12);
             return $uuid;
         }
-    }
-
-    /*
-     * 根据house_id获取全部生效的案场负责人列表
-     *
-     * By TerryQi
-     *
-     * 2018-02-03
-     */
-    public static function getValidACFZRsByHouseId($house_id)
-    {
-        $user_ids = array();
-        $userUps = UserUp::where('house_id', '=', $house_id)->where('status', '=', '1')->get();
-        foreach ($userUps as $userUp) {
-            array_push($user_ids, $userUp->user_id);
-        }
-        $users = User::where('status', '=', '1')->where('role', '=', '1')->wherein('id', $user_ids)->get();
-        return $users;
-    }
-
-
-    /*
-     * 用户是否在案场负责人列表中
-     *
-     * By TerryQi
-     *
-     * 2018-02-04
-     */
-    public static function isUserInACFZRs($user_id, $acfzrs)
-    {
-        foreach ($acfzrs as $acfzr) {
-            if ($acfzr->id == $user_id) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

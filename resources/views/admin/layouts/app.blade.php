@@ -246,7 +246,20 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/kehu/index')}}"><i class="fa fa-circle-o"></i>客户管理</a></li>
-                        <li><a href="{{url('admin/kehu/index')}}"><i class="fa fa-circle-o"></i>报备管理</a></li>
+                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-list"></i>
+                        <span>客户报备管理</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('admin/baobeikehu/index')}}"><i class="fa fa-circle-o"></i>客户报备管理</a></li>
                         <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
@@ -274,7 +287,7 @@
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/goods/index')}}"><i class="fa fa-circle-o"></i>商品管理</a></li>
                         <li><a href="{{url('admin/goodsexchange/index')}}"><i class="fa fa-circle-o"></i>兑换订单</a></li>
-                        <li><a href="{{url('admin/goodsexchange/rule')}}"><i class="fa fa-circle-o"></i>兑换规则</a></li>
+                        <li><a href="{{url('admin/rule/index')}}"><i class="fa fa-circle-o"></i>兑换规则</a></li>
                         <li><a href="{{url('admin/goodsexchange/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
@@ -358,6 +371,9 @@
                 </div>
                 <div class="col-xs-12 margin-top-10 text-oneline">
                     <a href="#">置业顾问功能简述</a>
+                </div>
+                <div class="col-xs-12 margin-top-10 text-oneline">
+                    <a href="#">关于如何建立患者病历及病历如何查看</a>
                 </div>
             </div>
         </div>

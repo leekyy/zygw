@@ -270,7 +270,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="image" class="col-sm-2 control-label">产品图片</label>
+                                <label for="image" class="col-sm-2 control-label">房源图片</label>
 
                                 <div class="col-sm-10">
                                     <input id="image" name="image" type="text" class="form-control"
@@ -279,47 +279,47 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="type" class="col-sm-2 control-label">产品类型</label>
+                                <label for="type" class="col-sm-2 control-label">房源类型</label>
 
                                 <div class="col-sm-10">
                                     <input id="type" name="type" type="text" class="form-control"
-                                           placeholder="产品类型"
+                                           placeholder="房源类型"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="size" class="col-sm-2 control-label">产品面积</label>
+                                <label for="size" class="col-sm-2 control-label">房源面积</label>
 
                                 <div class="col-sm-10">
                                     <input id="size" name="size" type="text" class="form-control"
-                                           placeholder="产品面积"
+                                           placeholder="房源面积"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="price" class="col-sm-2 control-label">产品价格</label>
+                                <label for="price" class="col-sm-2 control-label">房源价格</label>
 
                                 <div class="col-sm-10">
                                     <input id="price" name="price" type="text" class="form-control"
-                                           placeholder="产品价格"
+                                           placeholder="房源价格"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="benefit" class="col-sm-2 control-label">产品优点</label>
+                                <label for="benefit" class="col-sm-2 control-label">房源优点</label>
 
                                 <div class="col-sm-10">
                                     <input id="benefit" name="benefit" type="text" class="form-control"
-                                           placeholder="产品优点"
+                                           placeholder="房源优点"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="orientation" class="col-sm-2 control-label">产品朝向</label>
+                                <label for="orientation" class="col-sm-2 control-label">房源朝向</label>
 
                                 <div class="col-sm-10">
                                     <input id="orientation" name="orientation" type="text" class="form-control"
-                                           placeholder="产品朝向"
+                                           placeholder="房源朝向"
                                            value="">
                                 </div>
                             </div>
@@ -407,7 +407,7 @@
             return theRequest;
         }
 
-        //点击删除产品
+        //点击删除房源
         function clickDel(admin_id) {
             console.log("clickDel admin_id:" + admin_id);
             //为删除按钮赋值
@@ -415,7 +415,7 @@
             $("#delConfrimModal").modal('show');
         }
 
-        //删除产品
+        //删除房源
         function delAdmin() {
             var admin_id = $("#delConfrimModal_confirm_btn").attr("data-value");
             console.log("delAdmin admin_id:" + admin_id);

@@ -30,7 +30,7 @@ function getHouseById(url, param, callBack) {
     ajaxRequest(url + "admin/house/getById", param, "GET", callBack);
 }
 
-//根据id获取产品信息
+//根据id获取房源信息
 function getHuxingById(url, param, callBack) {
     ajaxRequest(url + "admin/huxing/getById", param, "GET", callBack);
 }
@@ -68,15 +68,44 @@ function getQDRecentDatas(url, param, callBack) {
 function getDDRecentDatas(url, param, callBack) {
     ajaxRequest(url + "admin/goodsexchange/getRecentDatas", param, "GET", callBack);
 }
-
-//获取系统设置信息
-function getSystemInfo(url, param, callBack) {
-    ajaxRequest(url + "admin/system/edit", param, "GET", callBack);
+//获取楼盘信息
+function getLPRecentDatas(url, param, callBack) {
+    ajaxRequest(url + "admin/house/getRecentDatas", param, "GET", callBack);
 }
 
-//根据id获合作细则信息
-function getHeZuoById(url, param, callBack) {
-    ajaxRequest(url + "admin/hezuo/getById", param, "GET", callBack);
+
+//根据id获取合作细则
+function getXJInfoById(url, param, callBack) {
+    ajaxRequest(url + "api/hezuo/getXJInfoById", param, "get", callBack);
+}
+
+
+//编辑合作细则
+function editHeZuo(url, param, callBack) {
+    ajaxRequest(url + "admin/hezuo/editHeZuo", param, "post", callBack);
+}
+
+//根据id获取积分兑换规则
+function getRuleInfoById(url, param, callBack) {
+    ajaxRequest(url + "api/rule/getRuleInfoById", param, "get", callBack);
+}
+
+
+//编辑积分兑换规则
+function editRule(url, param, callBack) {
+    ajaxRequest(url + "admin/rule/editRule", param, "post", callBack);
+}
+
+
+//根据id获取行业白皮书
+function getWhiteBookInfoById(url, param, callBack) {
+    ajaxRequest(url + "api/whitebook/getWhiteBookInfoById", param, "get", callBack);
+}
+
+
+//编辑行业白皮书
+function editWhiteBook(url, param, callBack) {
+    ajaxRequest(url + "admin/whitebook/editWhiteBook", param, "post", callBack);
 }
 
 //根据id获取行业白皮书信息

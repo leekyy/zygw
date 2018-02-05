@@ -20,7 +20,7 @@ class HouseAreaManager
 {
 
 
-    /*获取全部的楼盘区域信息
+    /*获取全部的楼盘标签信息
      *
      * By Yinyue
      * 2018-1-22
@@ -28,12 +28,12 @@ class HouseAreaManager
 
     public static function getList()
     {
-        $houseAreas = HouseArea::orderby('id', 'asc')->get();
-        return $houseAreas;
+        $houseLabels = HouseArea::orderby('id', 'asc')->get();
+        return $houseLabels;
     }
 
     /*
-     * 根据id获取楼盘区域信息
+     * 根据id获取楼盘标签信息
      *
      * By TerryQi
      *
@@ -42,9 +42,11 @@ class HouseAreaManager
      */
     public static function getById($id)
     {
-        $houseArea = HouseArea::where('id', '=', $id)->first();
-        return $houseArea;
+        $houseLabel = HouseArea::where('id', '=', $id)->first();
+        return $houseLabel;
     }
+
+
 
 
     /*
@@ -56,26 +58,26 @@ class HouseAreaManager
      */
     public static function getListByIds($ids)
     {
-        $houseTypes = HouseLabel::wherein('id', $ids)->get();
+        $houseTypes = HouseArea::wherein('id', $ids)->get();
         return $houseTypes;
     }
 
     /*
-     * 设置楼盘区域
+     * 设置楼盘标签
      *
      * By TerryQi
      *
      * 2018-01-27
      */
-    public static function setHouseLabel($houseArea, $data)
+    public static function setHouseLabel($houseLabel, $data)
     {
         if (array_key_exists('admin_id', $data)) {
-            $houseArea->admin_id = array_get($data, 'admin_id');
+            $houseLabel->admin_id = array_get($data, 'admin_id');
         }
         if (array_key_exists('name', $data)) {
-            $houseArea->name = array_get($data, 'name');
+            $houseLabel->name = array_get($data, 'name');
         }
-        return $houseArea;
+        return $houseLabel;
     }
 
 }

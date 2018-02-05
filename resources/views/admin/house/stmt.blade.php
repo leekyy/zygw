@@ -39,7 +39,7 @@
                     <div class="inner">
                         <h3>{{$data->zqdrs}}</h3>
 
-                        <p>总产品</p>
+                        <p>总房源</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-person-add"></i>

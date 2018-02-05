@@ -7,12 +7,12 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">产品管理</li>
+                    <li class="active">房源管理</li>
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
                 <button type="button" class="btn btn-primary" onclick="clickAdd();">
-                    +新建产品
+                    +新建房源
                 </button>
             </div>
         </div>
@@ -42,14 +42,14 @@
                                 <td>
                                     {{$house->address}}
                                 </td>
-                                <td>楼盘均价</td>
-                                <td>{{$house->price}}元</td>
+                                <td>价格</td>
+                                <td>{{$house->price}}</td>
                             </tr>
                             <tr>
-                                <td>面积区间</td>
-                                <td>{{$house->size_min}}㎡</td>
-                                <td>面积区间</td>
-                                <td>{{$house->size_max}}㎡</td>
+                                <td>建筑面积</td>
+                                <td>{{$house->size}}㎡</td>
+                                <td>佣金</td>
+                                <td>{{$house->yongjin}}元</td>
                                 <td></td>
                                 <td>--</td>
                             </tr>
@@ -88,9 +88,8 @@
                                 <th>图片</th>
                                 <th>类型</th>
                                 <th>面积/㎡</th>
-                                <th>佣金类型</th>
-                                <th>佣金额度</th>
-                                <th>管理员</th>
+                                <th>价格/万元</th>
+                                <th>优点</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -109,27 +108,22 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->type->name}}
+                                            {{$data->type}}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->size_min}}-{{$data->size_max}}
+                                            {{$data->size}}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->yongjin_type == '0'?'按固定金额':'按千分比'}}
+                                            {{$data->price}}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->yongjin_value}}{{$data->yongjin_type == '0'?'元':'‰'}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->admin->name}}
+                                            {{$data->benefit}}
                                         </div>
                                     </td>
                                     <td>
@@ -145,13 +139,13 @@
                                               <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=1"
                                                  class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                  data-toggle="tooltip"
-                                                 data-placement="top" title="在小程序页面中展示该产品">
+                                                 data-placement="top" title="在小程序页面中展示该房源">
                                                 <i class="fa fa-eye opt-btn-i-size"></i>
                                             </a>
                                             <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=0"
                                                class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
-                                               data-placement="top" title="在小程序页面中隐藏该产品">
+                                               data-placement="top" title="在小程序页面中隐藏该房源">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
 
@@ -159,22 +153,16 @@
                                                   data-toggle="tooltip"
                                                   data-placement="top"
                                                   onclick="clickEdit({{$data->id}})"
-                                                  title="编辑该产品">
+                                                  title="编辑该房源">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
-                                            <span class="btn btn-social-icon btn-danger opt-btn-size margin-right-10"
+                                            <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"
-                                                  title="设置佣金分成"
-                                                  onclick="clickSetYongjing({{$data->id}})">
-                                                <i class="fa fa-cny opt-btn-i-size"></i>
+                                                  title="删除该房源"
+                                                  onclick="clickDel({{$data->id}})">
+                                                <i class="fa fa-trash-o opt-btn-i-size"></i>
                                             </span>
-                                            <a href="{{URL::asset('/admin/huxingYongjinRecord/index')}}?huxing_id={{$data->id}}"
-                                               class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
-                                               data-toggle="tooltip"
-                                               data-placement="top" title="佣金设置记录">
-                                                <i class="fa fa-align-justify opt-btn-i-size"></i>
-                                            </a>
                                         </span>
                                     </td>
                                 </tr>
@@ -206,7 +194,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理产品</h4>
+                    <h4 class="modal-title">管理房源</h4>
                 </div>
                 <form id="editHouse" action="{{URL::asset('/admin/huxing/edit')}}" method="post" class="form-horizontal"
                       onsubmit="return checkValid();">
@@ -217,6 +205,13 @@
                                 <label for="id" class="col-sm-2 control-label">id</label>
                                 <div class="col-sm-10">
                                     <input id="id" name="id" type="text" class="form-control"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <label for="house_id" class="col-sm-2 control-label">id</label>
+                                <div class="col-sm-10">
+                                    <input id="house_id" name="house_id" type="text" class="form-control"
                                            value="">
                                 </div>
                             </div>
@@ -235,45 +230,14 @@
                                 </div>
                             </div>
                             <div class="form-group hidden">
-                                <label for="type_id" class="col-sm-2 control-label">楼盘id</label>
+                                <label for="house_id" class="col-sm-2 control-label">楼盘id</label>
                                 <div class="col-sm-10">
-                                    <input type="type_id" name="house_id" id="house_id" class="form-control"
+                                    <input type="house_id" name="house_id" id="house_id" class="form-control"
                                            value="{{$house->id}}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="type_id" class="col-sm-2 control-label">产品类型</label>
-
-                                <div class="col-sm-10">
-                                    <select id="type_id" name="type_id" class="form-control"
-                                            value="">
-                                        @foreach($houseTypes as $houseType)
-                                            <option value="{{$houseType->id}}">{{$houseType->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="yongjin_type" class="col-sm-2 control-label">佣金类型</label>
-                                <div class="col-sm-10">
-                                    <select id="yongjin_type" name="yongjin_type" class="form-control"
-                                            value="" onchange="changeYongjinType();">
-                                        <option value="0">按固定金额</option>
-                                        <option value="1">按千分比分成</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label id="yongjin_value_text" for="yongjin_value"
-                                       class="col-sm-2 control-label">佣金(元)</label>
-                                <div class="col-sm-10">
-                                    <input id="yongjin_value" name="yongjin_value" type="text" class="form-control"
-                                           placeholder="请输入佣金结算额/千分比"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="image" class="col-sm-2 control-label">产品图片</label>
+                                <label for="image" class="col-sm-2 control-label">房源图片</label>
 
                                 <div class="col-sm-10">
                                     <input id="image" name="image" type="text" class="form-control"
@@ -291,31 +255,37 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="size" class="col-sm-2 control-label">面积区间</label>
+                                <label for="type" class="col-sm-2 control-label">类型</label>
 
                                 <div class="col-sm-10">
-                                    <input id="size_min" name="size_min" type="text" class="form-control"
-                                           placeholder="面积区间左侧边界，例如56.6"
-                                           value="">
-                                    <input id="size_max" name="size_max" type="text"
-                                           class="form-control margin-top-10"
-                                           placeholder="面积区间右侧边界，例如280"
+                                    <input id="type" name="type" type="text" class="form-control"
+                                           placeholder="例如2室1厅1卫、3室2厅2卫"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="benefit" class="col-sm-2 control-label">产品优点</label>
+                                <label for="size" class="col-sm-2 control-label">面积/㎡</label>
+
+                                <div class="col-sm-10">
+                                    <input id="size" name="size" type="text" class="form-control"
+                                           placeholder="请输入面积"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="price" class="col-sm-2 control-label">价格/万元</label>
+
+                                <div class="col-sm-10">
+                                    <input id="price" name="price" type="text" class="form-control"
+                                           placeholder="请输入价格"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="benefit" class="col-sm-2 control-label">房源优点</label>
                                 <div class="col-sm-10">
                                     <input id="benefit" name="benefit" type="text" class="form-control"
-                                           placeholder="请输入产品优点"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="huxing" class="col-sm-2 control-label">户型描述</label>
-                                <div class="col-sm-10">
-                                    <input id="huxing" name="huxing" type="text" class="form-control"
-                                           placeholder="请输入户型描述，例如三室一厅、二室一厅、一室一厅等"
+                                           placeholder="请输入房源优点"
                                            value="">
                                 </div>
                             </div>
@@ -353,78 +323,8 @@
     </div><!-- /.modal -->
 
 
-    <div class="modal fade -m" id="addHouseYongjinModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content message_align">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理产品佣金</h4>
-                </div>
-                <form id="editHouse" action="{{URL::asset('/admin/huxing/editYongjin')}}" method="post"
-                      class="form-horizontal"
-                      onsubmit="return checkYongjinValid();">
-                    <div class="modal-body">
-                        {{csrf_field()}}
-                        <div class="box-body">
-                            <div class="form-group hidden">
-                                <label for="set_id" class="col-sm-2 control-label">id</label>
-                                <div class="col-sm-10">
-                                    <input id="set_id" name="set_id" type="text" class="form-control"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group hidden">
-                                <label for="admin_id" class="col-sm-2 control-label">录入人id</label>
-                                <div class="col-sm-10">
-                                    <input id="admin_id" name="admin_id" type="text" class="form-control"
-                                           value="{{$admin->id}}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">录入人</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control"
-                                           value="{{$admin->name}}" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="set_yongjin_type" class="col-sm-2 control-label">佣金类型</label>
-                                <div class="col-sm-10">
-                                    <select id="set_yongjin_type" name="set_yongjin_type" class="form-control"
-                                            value="" onchange="changeYongjinType();">
-                                        <option value="0">按固定金额</option>
-                                        <option value="1">按千分比分成</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label id="set_yongjin_value_text" for="yongjin_value"
-                                       class="col-sm-2 control-label">佣金(元)</label>
-                                <div class="col-sm-10">
-                                    <input id="set_yongjin_value" name="set_yongjin_value" type="text"
-                                           class="form-control"
-                                           placeholder="请输入佣金结算额/千分比"
-                                           value="">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" id="url"/>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="submit" id="addHouseModal_confirm_btn" data-value=""
-                                class="btn btn-success">确定
-                        </button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    {{--提示Modal--}}
-    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
+    {{--删除对话框--}}
+    <div class="modal fade " id="delConfrimModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">
@@ -432,11 +332,13 @@
                                 aria-hidden="true">×</span></button>
                     <h4 class="modal-title">提示信息</h4>
                 </div>
-                <div class="modal-body" id="tipModalBody">
-
+                <div class="modal-body">
+                    <p>您确认要删除该房源吗？</p>
                 </div>
                 <div class="modal-footer">
-                    <button id="delConfrimModal_confirm_btn" data-value=""
+                    <input type="hidden" id="url"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="delConfrimModal_confirm_btn" data-value="" onclick="delAdmin();"
                             class="btn btn-success"
                             data-dismiss="modal">确定
                     </button>
@@ -444,8 +346,6 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-
 @endsection
 
 @section('script')
@@ -471,6 +371,24 @@
             return theRequest;
         }
 
+        //点击删除房源
+        function clickDel(admin_id) {
+            console.log("clickDel admin_id:" + admin_id);
+            //为删除按钮赋值
+            $("#delConfrimModal_confirm_btn").attr("data-value", admin_id);
+            $("#delConfrimModal").modal('show');
+        }
+
+        //删除房源
+        function delAdmin() {
+            var admin_id = $("#delConfrimModal_confirm_btn").attr("data-value");
+            console.log("delAdmin admin_id:" + admin_id);
+            //进行tr隐藏
+            $("#tr_" + admin_id).fadeOut();
+            //进行页面跳转
+            //var huxing =window.location.search
+            window.location.href = "{{URL::asset('/admin/huxing/del')}}/" + admin_id + "/?house_id=" + house_id;
+        }
 
         //点击新建楼盘
         function clickAdd() {
@@ -479,9 +397,6 @@
             $("#house_id").val(house_id);
             $("#admin_id").val("{{$admin->id}}");
             $("#pickfiles").attr("src", '{{URL::asset('/img/upload.png')}}');
-            //将佣金设置为可编辑
-            $("#yongjin_type").attr("disabled", false);
-            $("#yongjin_value").attr("disabled", false);
             $("#addHouseModal").modal('show');
         }
 
@@ -494,88 +409,32 @@
                     //对象配置
                     $("#id").val(msgObj.id);
                     $("#house_id").val(msgObj.house_id);
-                    $("#type_id").val(msgObj.type_id);
-                    $("#yongjin_type").val(msgObj.yongjin_type);
-                    $("#yongjin_value").val(msgObj.yongjin_value);
-                    $("#size_min").val(msgObj.size_min);
-                    $("#size_max").val(msgObj.size_max);
-                    $("#huxing").val(msgObj.huxing);
+                    $("#type").val(msgObj.type);
+                    $("#size").val(msgObj.size);
                     $("#image").val(msgObj.image)
                     $("#pickfiles").attr("src", msgObj.image);
+                    $("#price").val(msgObj.price);
                     $("#reason").val(msgObj.reason);
                     $("#orientation").val(msgObj.orientation);
                     $("#benefit").val(msgObj.benefit);
                     //展示modal
                     $("#addHouseModal").modal('show');
-                    //将佣金设置为不可编辑
-                    $("#yongjin_type").attr("disabled", true);
-                    $("#yongjin_value").attr("disabled", true);
                 }
             })
-        }
-
-        //点击设置佣金
-        function clickSetYongjing(id) {
-            console.log("clickSetYongjing id:" + id);
-            getHuxingById("{{URL::asset('')}}", {id: id, _token: "{{ csrf_token() }}"}, function (ret) {
-                if (ret.result) {
-                    var msgObj = ret.ret;
-                    //对象配置
-                    $("#set_id").val(msgObj.id);
-                    $("#set_yongjin_type").val(msgObj.yongjin_type);
-                    $("#set_yongjin_value").val(msgObj.yongjin_value);
-                    //展示modal
-                    $("#addHouseYongjinModal").modal('show');
-                }
-            })
-        }
-
-        //合规校验佣金设置
-        function checkYongjinValid() {
-            console.log("checkYongjinValid");
-            var yongjin_type = $("#set_yongjin_type").val();
-            var yongjin_value = parseFloat($("#set_yongjin_value").val());
-            if (judgeIsNullStr(yongjin_type) || judgeIsNullStr(yongjin_value)) {
-                $("#set_yongjin_value").focus();
-                return;
-            }
-            //如果是固定金额
-            if (yongjin_type == 0 && yongjin_value < 100) {
-                $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
-                $("#tipModal").modal('show');
-                console.log("yongjin set error");
-                return false;
-            }
-            //如果是千分比
-            if (yongjin_type == 1 && yongjin_value > 5) {
-                $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
-                $("#tipModal").modal('show');
-                console.log("yongjin set error");
-                return false;
-            }
-            return true;
         }
 
 
         //合规校验
         function checkValid() {
             //合规校验
-            var yongjin_type = $("#yongjin_type").val();
-            var yongjin_value = parseFloat($("#yongjin_value").val());
-            if (judgeIsNullStr(yongjin_type) || judgeIsNullStr(yongjin_value)) {
-                $("#yongjin_value").focus();
-                return;
-            }
-            //如果是固定金额
-            if (yongjin_type == 0 && yongjin_value < 100) {
-                $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
-                $("#tipModal").modal('show');
+            var type = $("#type").val();
+            if (judgeIsNullStr(type)) {
+                $("#type").focus();
                 return false;
             }
-            //如果是千分比
-            if (yongjin_type == 1 && yongjin_value > 5) {
-                $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
-                $("#tipModal").modal('show');
+            var price = $("#price").val();
+            if (judgeIsNullStr(price)) {
+                $("#price").focus();
                 return false;
             }
             var image = $("#image").val();
@@ -583,16 +442,12 @@
                 $("#image").focus();
                 return false;
             }
-            var size_min = $("#size_min").val();
-            if (judgeIsNullStr(size_min)) {
-                $("#size_min").focus();
+            var size = $("#size").val();
+            if (judgeIsNullStr(size)) {
+                $("#size").focus();
                 return false;
             }
-            var size_max = $("#size_max").val();
-            if (judgeIsNullStr(size_max)) {
-                $("#size_max").focus();
-                return false;
-            }
+
             var benefit = $("#benefit").val();
             if (judgeIsNullStr(benefit)) {
                 $("#benefit").focus();
@@ -608,6 +463,8 @@
                 $("#orientation").focus();
                 return false;
             }
+
+
             return true;
         }
 
@@ -701,19 +558,6 @@
                     }
                 }
             });
-        }
-
-        //监听更改佣金类型
-        function changeYongjinType() {
-            var yongjin_type = $("#set_yongjin_type").val();
-            //如果是固定金额
-            if (yongjin_type == "0") {
-                $("#set_yongjin_value_text").text("金额(元)");
-            }
-            //如果是千分比
-            if (yongjin_type == "1") {
-                $("#set_yongjin_value_text").text("千分比(‰)");
-            }
         }
 
 

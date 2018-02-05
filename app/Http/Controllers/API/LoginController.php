@@ -73,7 +73,7 @@ class LoginController extends Controller
         return ApiResponse::makeResponse(true, $kh, ApiResponse::SUCCESS_CODE);
     }
 //
-//    //根据指定的产品小区id获得指定的楼盘参数
+//    //根据指定的房源小区id获得指定的楼盘参数
 //    public function getHDById(Request $request){
 //        $data = $request->all();
 //        $requestValidationResult = RequestValidator::validator($data, [

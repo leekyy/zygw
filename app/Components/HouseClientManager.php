@@ -32,6 +32,9 @@ class HouseClientManager
         return $houseClients;
     }
 
+
+
+
     /*
      * 根据id获取房产商客户详细信息
      *
@@ -46,7 +49,7 @@ class HouseClientManager
         return $houseClient;
     }
 
-    /*根据楼盘id获取该楼盘下的所有产品
+    /*根据楼盘id获取该楼盘下的所有房源
      *
      * By Yinyue
      * 2018-1-24
@@ -58,46 +61,6 @@ class HouseClientManager
         return $houseClients;
     }
 
-    /*
-     * 根据客户phonenum，判断该客户是否是该房地产商的客户
-     *
-     * By TerryQi
-     *
-     * 2018-02-03
-     *
-     */
-    public static function isClientAsDeveloperClient($phonenum, $house_id)
-    {
-        $houseClients = self::getListByHouseId($house_id);
-        foreach ($houseClients as $houseClient) {
-            if (self::isPhonenumMatch($phonenum, $houseClient->phonenum)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    /*
-     * 进行正则匹配，匹配规则为除中间4位其余位置可以匹配
-     *
-     * By TerryQi
-     *
-     * 2018-02-03
-     *
-     */
-    public static function isPhonenumMatch($phonenum, $match_phonenum)
-    {
-        //前3位是否匹配
-        if (substr($phonenum, 0, 3) != substr($match_phonenum, 0, 3)) {
-            return false;
-        }
-        //后4位是否匹配
-        if (substr($phonenum, -4) != substr($match_phonenum, -4)) {
-            return false;
-        }
-        return true;
-    }
 
     public static function setHouseClient($houseClient, $data)
     {

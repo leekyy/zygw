@@ -11,10 +11,9 @@ namespace App\Components;
 
 use App\Models\AD;
 use App\Models\House;
-use App\Models\HouseLabel;
+use App\Models\HouseType;
 use App\Models\Huxing;
 use App\Models\HouseDetail;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Cast\Object_;
 use Qiniu\Auth;
@@ -37,20 +36,7 @@ class HouseManager
     }
 
     /*
-     * 根据条件获取楼盘
-     *
-     * By TerryQi
-     *
-     * 2018-02-03
-     *
-     */
-    public static function getListByCon($con)
-    {
-
-    }
-
-    /*
-     * 根据search_word进行搜索，用于管理后台，不需要考虑status==1的情况
+     * 根据search_word进行搜索
      *
      * By TerryQi
      *
@@ -58,69 +44,9 @@ class HouseManager
      */
     public static function searchByName($search_word)
     {
-        $hourses = House::where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        $hourses = House::where('title', 'like', '%' . $search_word . '%')->paginate(Utils::PAGE_SIZE);
         return $hourses;
     }
-
-    /*
-     * 根据search_word进行搜索，用于API接口，需要考虑status==1的情况
-     *
-     * By TerryQi
-     *
-     * 2018-02-03
-     *
-     */
-    public static function searchByNameValid($search_word)
-    {
-        $hourses = House::where('status', '=', '1')->where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->get();
-        return $hourses;
-    }
-
-    /*
-     * 根据条件搜索，用于API接口，需要考虑status==1的情况
-     *
-     * By TerryQi
-     *
-     * 2018-02-03
-     *
-     * @con是参数
-     */
-    public static function searchByConValid($con)
-    {
-        $houses = House::where('status', '=', '1');
-        //如果地区的选项不为空
-        if (array_key_exists('area_id', $con) && !Utils::isObjNull($con['area_id'])) {
-            $houses = $houses->where('area_id', '=', $con['area_id']);
-        }
-        //如果楼盘类型的选项不为空
-        if (array_key_exists('type_id', $con) && !Utils::isObjNull($con['type_id'])) {
-            $houses = $houses->where('type_ids', 'like', '%' . $con['type_id'] . '%');
-        }
-        //如果楼盘类型的选项不为空
-        if (array_key_exists('label_id', $con) && !Utils::isObjNull($con['label_id'])) {
-            $houses = $houses->where('label_ids', 'like', '%' . $con['label_id'] . '%');
-        }
-        //如果最小面积不为空
-        if (array_key_exists('size_min', $con) && !Utils::isObjNull($con['size_min'])) {
-            $houses = $houses->where('size_min', '>=', $con['size_min']);
-        }
-        //如果最大面积不为空
-        if (array_key_exists('size_max', $con) && !Utils::isObjNull($con['size_max'])) {
-            $houses = $houses->where('size_max', '<=', $con['size_max']);
-        }
-        //楼盘最低均价不为空
-        if (array_key_exists('price_min', $con) && !Utils::isObjNull($con['price_min'])) {
-            $houses = $houses->where('price', '>=', $con['price_min']);
-        }
-        //楼盘最高均价不为空
-        if (array_key_exists('price_max', $con) && !Utils::isObjNull($con['price_max'])) {
-            $houses = $houses->where('price', '<=', $con['price_max']);
-        }
-        $houses = $houses->orderby('id', 'desc')->get();
-        return $houses;
-
-    }
-
 
     /*
      * 根据状态进行分页
@@ -148,9 +74,25 @@ class HouseManager
         return $house;
     }
 
+    public static function getHouseById($house_id)
+    {
+        $house = House::where('house_id', '=', $house_id)->first();
+        return $house;
+    }
+
+
+    public static function detail($house_id)
+    {
+        $house = HouseDetail::where('house_id', '=', $house_id)->first();
+        return $house;
+    }
+
+
+    /*根据楼盘id获取该楼盘下的所有房源
+=======
 
     /*
-     * 根据级别获取产品详细信息
+     * 根据级别获取房源详细信息
      *
      * By TerryQi
      *
@@ -158,9 +100,11 @@ class HouseManager
      *
      * $level数组
      *
-     * 0：带types、labels、areas信息
+     * 0：带types和labels信息
+
      *
      */
+
     public static function getHouseInfoByLevel($house, $level)
     {
         if (strpos($level, '0') !== false) {
@@ -169,17 +113,24 @@ class HouseManager
             $house->types = HouseTypeManager::getListByIds($types);
             $labels = explode(',', $house->label_ids);
             $house->labels = HouselabelManager::getListByIds($labels);
-            $house->area = HouseAreaManager::getById($house->area_id);
-        }
-        if (strpos($level, '1') !== false) {
-            //楼盘下的产品信息
-            $house->huxings = HuxingManager::getListByHouseId($house->id);
-            foreach ($house->huxings as $huxing) {
-                $huxing = HuxingManager::getInfoByLevel($huxing, '0');
-            }
         }
         return $house;
     }
+
+
+    /*
+    * 根据级别获取积分兑换订单详情
+    *
+    * By TerryQi
+    *
+    */
+    public static function getInfoByLevel($goodsExchange, $level)
+    {
+        $goodsExchange->admin = UserManager::getUserInfoById($goodsExchange->admin_id);
+        $goodsExchange->house = HouseManager::detail($goodsExchange->house_id);
+        return $goodsExchange;
+    }
+
 
     /*
      * 获取总楼盘数
@@ -192,17 +143,32 @@ class HouseManager
         return $count;
     }
 
+    /*
+    * 获取总房源数
+    *
+    * By TerryQi
+    */
+    public static function getAllFangYuanNum()
+    {
+        // $count = DB::select('SELECT COUNT(distinct house_id) as rs FROM zygwdb.t_house_huxing;', []);
+        $count = Huxing::all()->count();
+        return $count;
+    }
 
     /*
-     * 获取近N日的报表
-     *
-     * By TerryQi
-     *
-     */
+       * 获取近N日的报表
+       *
+       * By TerryQi
+       *
+       */
     public static function getRecentDatas($day_num)
     {
+
+
         $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(type)  as psjfs FROM zygwdb.t_house_info GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
+
         return $data;
+
     }
 
 
@@ -220,58 +186,70 @@ class HouseManager
         if (array_key_exists('address', $data)) {
             $house->address = array_get($data, 'address');
         }
-        if (array_key_exists('desc', $data)) {
-            $house->desc = array_get($data, 'desc');
-        }
         if (array_key_exists('price', $data)) {
             $house->price = array_get($data, 'price');
         }
         if (array_key_exists('type_ids', $data)) {
             $house->type_ids = array_get($data, 'type_ids');
         }
-        if (array_key_exists('area_id', $data)) {
-            $house->area_id = array_get($data, 'area_id');
-        }
-        if (array_key_exists('size_min', $data)) {
-            $house->size_min = array_get($data, 'size_min');
-        }
-        if (array_key_exists('size_max', $data)) {
-            $house->size_max = array_get($data, 'size_max');
+        if (array_key_exists('size', $data)) {
+            $house->size = array_get($data, 'size');
         }
         if (array_key_exists('label_ids', $data)) {
             $house->label_ids = array_get($data, 'label_ids');
         }
-        if (array_key_exists('video', $data)) {
-            $house->video = array_get($data, 'video');
+        if (array_key_exists('period', $data)) {
+            $house->period = array_get($data, 'period');
         }
-        if (array_key_exists('count', $data)) {
-            $house->count = array_get($data, 'count');
-        }
-        if (array_key_exists('developer', $data)) {
-            $house->developer = array_get($data, 'developer');
+        if (array_key_exists('yongjin', $data)) {
+            $house->yongjin = array_get($data, 'yongjin');
         }
         return $house;
     }
 
-    /*
-     * 获取楼盘相关属性
-     *
-     * By TerryQi
-     *
-     * 2018-02-03
+
+    /*2017-1-31
+     * By Yinyue
+     * 查所有楼盘的地址
      *
      */
-    public static function getOptions()
+    public static function getHouseAddress()
     {
-        $area = HouseAreaManager::getList();
-        $type = HouseTypeManager::getList();
-        $label = HouselabelManager::getList();
-        $houseOptions = new Collection([
-            'area' => $area,
-            'type' => $type,
-            'label' => $label,
-        ]);
-        return $houseOptions;
+
+        $kh = DB::table('t_house_info')->select('address')->distinct('address')->get();
+        return $kh;
+
     }
+
+    /*2017-1-31
+    * By Yinyue
+    * 查所有楼盘的价格
+    *
+    */
+    public static function getHousePrice()
+    {
+
+        $kh = DB::table('t_house_info')->select('price')
+            ->distinct('price')
+            ->get();
+        return $kh;
+
+    }
+
+    /*2017-1-31
+    * By Yinyue
+    * 查所有楼盘的类型
+    *
+    */
+
+
+    public static function getHouseType()
+    {
+
+        $kh = DB::table('t_house_type')->select('name')->get();
+        return $kh;
+
+    }
+
 
 }

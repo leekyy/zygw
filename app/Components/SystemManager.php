@@ -44,12 +44,6 @@ class SystemManager
         if (array_key_exists('tj_jifen', $data)) {
             $systemInfo->tj_jifen = array_get($data, 'tj_jifen');
         }
-        if (array_key_exists('df_jifen', $data)) {
-            $systemInfo->df_jifen = array_get($data, 'df_jifen');
-        }
-        if (array_key_exists('cj_jifen', $data)) {
-            $systemInfo->cj_jifen = array_get($data, 'cj_jifen');
-        }
         return $systemInfo;
     }
 

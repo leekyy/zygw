@@ -74,17 +74,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/detail/edit', 'Admin\HouseController@edit');//新建或编辑楼盘
     Route::post('/detail/edit', 'Admin\HouseController@editPost');//新建或编辑楼盘
 
-    //楼盘下的产品管理
-    Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的产品
-    Route::get('/huxing/del/{id}', 'Admin\HuxingController@del');//删除产品
+
+    //楼盘下的房源管理
+    Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的房源
+    Route::get('/huxing/del/{id}', 'Admin\HuxingController@del');//删除房源
     Route::post('/huxing/edit', 'Admin\HuxingController@edit');//新建或编辑楼盘
     Route::post('/huxing/edit', 'Admin\HuxingController@editPost');//新建或编辑楼盘
-    Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取产品信息
-    Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置产品状态
-    Route::post('/huxing/editYongjin', 'Admin\HuxingController@editYongjin');//新建或编辑产品的佣金
-
-    //产品佣金设置记录
-    Route::get('/huxingYongjinRecord/index', 'Admin\HuxingYongjinRecordController@index');//查看佣金记录
+    Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取楼盘信息
+    Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置房源状态
 
     //楼盘下的顾问管理
     Route::get('/zygw/index', 'Admin\ZYGWController@index');//根据楼盘id获取相应的顾问
@@ -106,11 +103,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/kehu/edit', 'Admin\KeHuController@editPost');  //新建或编辑客户
     Route::get('/kehu/getById', 'Admin\KeHuController@getById');  //根据id获取客户信息
 
-    //产品标签
+    //房源标签
     Route::get('/houseLabel/index', 'Admin\HouseLabelController@index');  //楼盘标签管理首页
-    Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑产品标签
+    Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑房源标签
 
-    //产品类型
+    //房源类型
     Route::get('/houseType/index', 'Admin\HouseTypeController@index');  //楼盘类型管理首页
     Route::post('/houseType/edit', 'Admin\HouseTypeController@editPost');  //编辑楼盘标签
 
@@ -135,7 +132,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 
     //兑换订单管理
     Route::get('/goodsexchange/index', 'Admin\GoodsExchangeController@index');//订单管理首页
-    Route::post('/goodsexchange/setStatus', 'Admin\GoodsExchangeController@setStatus');  //设置订单状态
+    Route::get('/goodsexchange/setStatus/{id}', 'Admin\GoodsExchangeController@setStatus');  //设置订单状态
     Route::get('/goodsexchange/del/{id}', 'Admin\GoodsExchangeController@del');  //删除订单
     Route::get('/goodsexchange/stmt', 'Admin\GoodsExchangeController@stmt');  //系统配置首页信息
     Route::get('/goodsexchange/getById', 'Admin\GoodsExchangeController@getById');//根据id获取订单信息
@@ -150,20 +147,43 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/rule/edit', 'Admin\RuleController@editPost');  //新建或编辑规则
 
 
+
     //合作细则管理
     Route::get('/hezuo/index', 'Admin\HeZuoController@index');  //合作细则管理首页
-    Route::get('/hezuo/del/{id}', 'Admin\HeZuoController@del');  //删除合作细则
     Route::get('/hezuo/setStatus/{id}', 'Admin\HeZuoController@setStatus');  //设置合作细则状态
+    Route::get('/hezuo/setStep/{id}', 'Admin\HeZuoController@setStep');  //设置合作细则图文
+    Route::post('/hezuo/setStep/{id}', 'Admin\HeZuoController@setStepPost');  //编辑合作细则步骤信息
+    Route::get('/hezuo/delStep/{id}', 'Admin\HeZuoController@delStep');  //删除合作细则步骤
     Route::get('/hezuo/edit', 'Admin\HeZuoController@edit');  //新建或编辑合作细则
     Route::post('/hezuo/edit', 'Admin\HeZuoController@editPost');  //新建或编辑合作细则
-    Route::get('/hezuo/getById', 'Admin\HeZuoController@getById');  //根据id获取合作细则信息
+    Route::get('/hezuo/del/{id}', 'Admin\HeZuoController@del');  //删除合作细则
+    Route::get('/hezuo/editHeZuo', 'Admin\HeZuoController@editHeZuo');  //编辑合作细则页面
+    Route::post('/hezuo/editHeZuo', 'Admin\HeZuoController@editHeZuoPost'); //编辑合作细则Post
+
 
     //行业白皮书管理
     Route::get('/whitebook/index', 'Admin\WhiteBookController@index');  //行业白皮书管理首页
-    Route::get('/whitebook/del/{id}', 'Admin\WhiteBookController@del');  //删除行业白皮书
     Route::get('/whitebook/setStatus/{id}', 'Admin\WhiteBookController@setStatus');  //设置行业白皮书状态
+    Route::get('/whitebook/setStep/{id}', 'Admin\WhiteBookController@setStep');  //设置合作细则图文
+    Route::post('/whitebook/setStep/{id}', 'Admin\WhiteBookController@setStepPost');  //编辑行业白皮书步骤信息
+    Route::get('/whitebook/delStep/{id}', 'Admin\WhiteBookController@delStep');  //删除行业白皮书步骤
     Route::get('/whitebook/edit', 'Admin\WhiteBookController@edit');  //新建或编辑行业白皮书
     Route::post('/whitebook/edit', 'Admin\WhiteBookController@editPost');  //新建或编辑行业白皮书
-    Route::get('/whitebook/getById', 'Admin\WhiteBookController@getById');  //根据id获取行业白皮书信息
+    Route::get('/whitebook/del/{id}', 'Admin\WhiteBookController@del');  //删除行业白皮书
+    Route::get('/whitebook/editWhiteBook', 'Admin\WhiteBookController@editWhiteBook');  //编辑行业白皮书页面
+    Route::post('/whitebook/editWhiteBook', 'Admin\WhiteBookController@editWhiteBookPost'); //编辑行业白皮书Post
+
+
+    //积分兑换规则管理
+    Route::get('/rule/index', 'Admin\RuleController@index');  //积分兑换规则管理首页
+    Route::get('/rule/setStatus/{id}', 'Admin\RuleController@setStatus');  //设置积分兑换规则状态
+    Route::get('/rule/setStep/{id}', 'Admin\RuleController@setStep');  //设置积分兑换规则图文
+    Route::post('/rule/setStep/{id}', 'Admin\RuleController@setStepPost');  //编辑积分兑换规则步骤信息
+    Route::get('/rule/delStep/{id}', 'Admin\RuleController@delStep');  //删除积分兑换规则步骤
+    Route::get('/rule/edit', 'Admin\RuleController@edit');  //新建或编辑积分兑换规则
+    Route::post('/rule/edit', 'Admin\RuleController@editPost');  //新建或编辑积分兑换规则
+    Route::get('/rule/del/{id}', 'Admin\RuleController@del');  //删除积分兑换规则
+    Route::get('/rule/editRule', 'Admin\RuleController@editRule');  //编辑积分兑换规则页面
+    Route::post('/rule/editRule', 'Admin\RuleController@editRulePost'); //编辑积分兑换规则Post
 
 });
