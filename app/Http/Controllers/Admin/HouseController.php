@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin;
 use App\Components\ADManager;
 use App\Components\AdminManager;
 use App\Components\DateTool;
+use App\Components\HouseAreaManager;
 use App\Components\HouselabelManager;
 use App\Components\HouseTypeManager;
 use App\Components\QNManager;
@@ -44,11 +45,12 @@ class HouseController
         }
 //        dd($house);
         $upload_token = QNManager::uploadToken();
-        $houseTypes = HouseTypeManager::getList(); //获取房源类型
-        $houseLabels = HouselabelManager::getList();        //获取房源标签
+        $houseTypes = HouseTypeManager::getList(); //获取楼盘类型
+        $houseLabels = HouselabelManager::getList();        //获取楼盘标签
+        $houseAreas = HouseAreaManager::getList();  //获取楼盘区域
 
         return view('admin.house.index', ['admin' => $admin, 'datas' => $houses, 'upload_token' => $upload_token
-            , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels]);
+            , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels, 'houseAreas' => $houseAreas]);
     }
 
     //根据名称进行楼盘搜索

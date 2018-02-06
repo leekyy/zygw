@@ -74,14 +74,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/detail/edit', 'Admin\HouseController@edit');//新建或编辑楼盘
     Route::post('/detail/edit', 'Admin\HouseController@editPost');//新建或编辑楼盘
 
-
-    //楼盘下的房源管理
-    Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的房源
-    Route::get('/huxing/del/{id}', 'Admin\HuxingController@del');//删除房源
+    //楼盘下的产品管理
+    Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的产品
+    Route::get('/huxing/del/{id}', 'Admin\HuxingController@del');//删除产品
     Route::post('/huxing/edit', 'Admin\HuxingController@edit');//新建或编辑楼盘
     Route::post('/huxing/edit', 'Admin\HuxingController@editPost');//新建或编辑楼盘
-    Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取楼盘信息
-    Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置房源状态
+    Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取产品信息
+    Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置产品状态
+    Route::post('/huxing/editYongjin', 'Admin\HuxingController@editYongjin');//新建或编辑产品的佣金
+
+    //产品佣金设置记录
+    Route::get('/huxingYongjinRecord/index', 'Admin\HuxingYongjinRecordController@index');//查看佣金记录
 
     //楼盘下的顾问管理
     Route::get('/zygw/index', 'Admin\ZYGWController@index');//根据楼盘id获取相应的顾问
@@ -103,11 +106,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/kehu/edit', 'Admin\KeHuController@editPost');  //新建或编辑客户
     Route::get('/kehu/getById', 'Admin\KeHuController@getById');  //根据id获取客户信息
 
-    //房源标签
+    //产品标签
     Route::get('/houseLabel/index', 'Admin\HouseLabelController@index');  //楼盘标签管理首页
-    Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑房源标签
+    Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑产品标签
 
-    //房源类型
+    //产品类型
     Route::get('/houseType/index', 'Admin\HouseTypeController@index');  //楼盘类型管理首页
     Route::post('/houseType/edit', 'Admin\HouseTypeController@editPost');  //编辑楼盘标签
 
@@ -132,21 +135,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 
     //兑换订单管理
     Route::get('/goodsexchange/index', 'Admin\GoodsExchangeController@index');//订单管理首页
-    Route::get('/goodsexchange/setStatus/{id}', 'Admin\GoodsExchangeController@setStatus');  //设置订单状态
+    Route::post('/goodsexchange/setStatus', 'Admin\GoodsExchangeController@setStatus');  //设置订单状态
     Route::get('/goodsexchange/del/{id}', 'Admin\GoodsExchangeController@del');  //删除订单
     Route::get('/goodsexchange/stmt', 'Admin\GoodsExchangeController@stmt');  //系统配置首页信息
     Route::get('/goodsexchange/getById', 'Admin\GoodsExchangeController@getById');//根据id获取订单信息
     Route::get('/goodsexchange/getRecentDatas', 'Admin\GoodsExchangeController@getRecentDatas');        //获取近几日综合统计数据
     Route::get('/goodsexchange/edit', 'Admin\GoodsExchangeController@edit');  //新建或编辑管理员
     Route::post('/goodsexchange/edit', 'Admin\GoodsExchangeController@editPost');  //新建或编辑商品
-    Route::get('/goodsexchange/rule', 'Admin\RuleController@index');//积分兑换规则首页
-    Route::get('/rule/setStatus/{id}', 'Admin\RuleController@setStatus');  //设置规则状态
-    Route::get('/rule/del/{id}', 'Admin\RuleController@del');  //删除订单
-    Route::get('/rule/getById', 'Admin\RuleController@getById');//根据id获取积分兑换规则信息
-    Route::get('/rule/edit', 'Admin\RuleController@edit');  //新建或编辑规则
-    Route::post('/rule/edit', 'Admin\RuleController@editPost');  //新建或编辑规则
-
-
 
     //合作细则管理
     Route::get('/hezuo/index', 'Admin\HeZuoController@index');  //合作细则管理首页
@@ -159,7 +154,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/hezuo/del/{id}', 'Admin\HeZuoController@del');  //删除合作细则
     Route::get('/hezuo/editHeZuo', 'Admin\HeZuoController@editHeZuo');  //编辑合作细则页面
     Route::post('/hezuo/editHeZuo', 'Admin\HeZuoController@editHeZuoPost'); //编辑合作细则Post
-
 
     //行业白皮书管理
     Route::get('/whitebook/index', 'Admin\WhiteBookController@index');  //行业白皮书管理首页
