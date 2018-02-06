@@ -118,6 +118,20 @@ class HouseManager
         $houses = House::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $houses;
     }
+
+    /*
+    * 根据获取全部的楼盘信息
+    *
+    * By yinyue
+    *
+    */
+    public static function getHouseList($status)
+    {
+        $houses = House::where('status',$status)->get();
+        return $houses;
+    }
+
+
     /*
      * 根据id获取楼盘详细信息
      *
@@ -249,4 +263,6 @@ class HouseManager
         ]);
         return $houseOptions;
     }
+
+
 }
