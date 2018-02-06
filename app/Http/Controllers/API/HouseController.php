@@ -12,6 +12,7 @@ use App\Components\ADManager;
 use App\Components\HomeManager;
 use App\Components\HouseManager;
 use App\Components\HuxingManager;
+use App\Components\HouselabelManager;
 use App\Components\UserManager;
 use App\Components\ZYGWManager;
 use App\Http\Controllers\ApiResponse;
@@ -132,4 +133,14 @@ class HouseController extends Controller
         $options = HouseManager::getOptions();
         return ApiResponse::makeResponse(true, $options, ApiResponse::SUCCESS_CODE);
     }
+
+    public function  getAllHouseInfo(Request $request){
+        $status = 1;
+        $houses = HouseManager::getHouseList($status);
+        foreach ($houses as $house) {
+            $house = HouseManager::getHouseInfoByLevel($house, '0');
+        }
+        return ApiResponse::makeResponse(true, $houses, ApiResponse::SUCCESS_CODE);
+    }
+
 }
