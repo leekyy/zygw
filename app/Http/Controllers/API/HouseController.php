@@ -28,6 +28,30 @@ class HouseController extends Controller
 {
 
     /*
+     * 根据id获取楼盘信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-07
+     *
+     */
+    public function getById(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $house = HouseManager::getById($data['id']);
+        $house = HouseManager::getHouseInfoByLevel($house, "01");
+        return ApiResponse::makeResponse(true, $house, ApiResponse::SUCCESS_CODE);
+    }
+
+
+    /*
      * 根据条件搜索列表
      *
      * By TerryQi
@@ -134,13 +158,5 @@ class HouseController extends Controller
         return ApiResponse::makeResponse(true, $options, ApiResponse::SUCCESS_CODE);
     }
 
-    public function  getAllHouseInfo(Request $request){
-        $status = 1;
-        $houses = HouseManager::getHouseList($status);
-        foreach ($houses as $house) {
-            $house = HouseManager::getHouseInfoByLevel($house, '0');
-        }
-        return ApiResponse::makeResponse(true, $houses, ApiResponse::SUCCESS_CODE);
-    }
 
 }

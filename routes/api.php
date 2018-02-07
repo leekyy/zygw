@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,13 +45,15 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('goods/getGoodsById', 'API\GoodsController@getGoodsById');     //根据id获取商品明细信息
     Route::post('goods/exchange', 'API\GoodsController@exchange')->middleware('CheckToken');     //兑换商品
     Route::get('goods/getExchangeListByUserId', 'API\GoodsController@getExchangeListByUserId')->middleware('CheckToken');        //根据id获取商品明细信息
+
     //楼盘相关
-    Route::get('house/getAllHouseInfo', 'API\HouseController@getAllHouseInfo');       //获取全部status=1的有效楼盘信息
+    Route::get('house/getById', 'API\HouseController@getById');       //根据id获取楼盘信息
     Route::get('house/getOptions', 'API\HouseController@getOptions');       //获取楼盘相关选项
     Route::post('house/searchByName', 'API\HouseController@searchByName');       //根据名称获取楼盘列表
     Route::post('house/searchByCon', 'API\HouseController@searchByCon');       //根据名称获取楼盘列表
     Route::get('house/getHuxings', 'API\HouseController@getHuxingsByHouseId')->middleware('CheckToken');       //获取楼盘下所有生效的产品（户型）
     Route::get('house/getZYGWs', 'API\HouseController@getZYGWsByHouseId')->middleware('CheckToken');       //获取楼盘下所有生效的置业顾问
+
     //报备相关
     Route::get('baobei/getOptions', 'API\BaobeiController@getBaobeiOption');       //获取报备选项
     Route::post('baobei/acceptClient', 'API\BaobeiController@acceptClient')->middleware('CheckToken');     //中介/案场负责人报备客户
