@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Client extends Model
 {
     use SoftDeletes;    //使用软删除
-    protected $table = 't_client_date';     //表名
+    protected $table = 't_client_info';     //表名
     public $timestamps = true;  //自动管理时间戳
     protected $dates = ['deleted_at'];  //软删除
 }
