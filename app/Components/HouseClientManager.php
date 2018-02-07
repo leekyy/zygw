@@ -85,6 +85,15 @@ class HouseClientManager
         }
         return true;
     }
+
+    /*
+     * 设置房产商客户列表
+     *
+     * By TerryQi
+     *
+     * 2018-02-08
+     */
+
     public static function setHouseClient($houseClient, $data)
     {
         if (array_key_exists('house_id', $data)) {
