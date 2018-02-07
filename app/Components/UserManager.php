@@ -1,24 +1,20 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: HappyQi
  * Date: 2017/9/28
  * Time: 10:30
  */
-
 namespace App\Components;
-
 use App\Models\Exange;
 use App\Models\User;
 use App\Models\Goods;
 use App\Models\Rules;
+use App\Models\UserUp;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pingjia;
-
 class UserManager
 {
-
     /*
      * 根据id获取用户信息，带token
      *
@@ -31,7 +27,6 @@ class UserManager
         $user = User::find($user_id);
         return $user;
     }
-
     /*
      * 根据搜索关键字和身份获取用户信息-分页
      *
@@ -46,8 +41,6 @@ class UserManager
             ->where('phonenum', 'like', '%' . $search_word . '%')->paginate(Utils::PAGE_SIZE);
         return $users;
     }
-
-
     /*
      * 根据id获取用户信息
      *
@@ -63,7 +56,6 @@ class UserManager
         }
         return $user;
     }
-
     /*
      * 根据手机号获取用户信息
      *
@@ -76,7 +68,6 @@ class UserManager
         $user = User::where('phonenum', '=', $phonenum)->first();
         return $user;
     }
-
     /*
      * 根据user_code和token校验合法性，全部插入、更新、删除类操作需要使用中间件
      *
@@ -97,7 +88,6 @@ class UserManager
             return false;
         }
     }
-
     /*
      * 用户登录
      *
@@ -120,7 +110,6 @@ class UserManager
         //不存在即新建用户
         return self::register($data);
     }
-
     /*
      * 配置用户信息，用于更新用户信息和新建用户信息
      *
@@ -181,7 +170,6 @@ class UserManager
         }
         return $user;
     }
-
     /*
      * 注册用户
      *
@@ -206,7 +194,6 @@ class UserManager
         $user = self::getUserInfoByIdWithToken($user->id);
         return $user;
     }
-
     /*
      * 更新用户信息
      *
@@ -223,8 +210,6 @@ class UserManager
         $user->save();
         return $user;
     }
-
-
     /*
      * 根据用户openid获取用户信息
      *
@@ -237,8 +222,6 @@ class UserManager
         $user = User::where('xcx_openid', '=', $openid)->first();
         return $user;
     }
-
-
     // 生成guid
     /*
      * 生成uuid全部用户相同，uuid即为token
@@ -251,7 +234,6 @@ class UserManager
         } else {
             mt_srand((double)microtime() * 10000);//optional for php 4.2.0 and up.
             $charid = strtoupper(md5(uniqid(rand(), true)));
-
             $uuid = substr($charid, 0, 8)
                 . substr($charid, 8, 4)
                 . substr($charid, 12, 4)
@@ -260,5 +242,37 @@ class UserManager
             return $uuid;
         }
     }
-
+    /*
+     * 根据house_id获取全部生效的案场负责人列表
+     *
+     * By TerryQi
+     *
+     * 2018-02-03
+     */
+    public static function getValidACFZRsByHouseId($house_id)
+    {
+        $user_ids = array();
+        $userUps = UserUp::where('house_id', '=', $house_id)->where('status', '=', '1')->get();
+        foreach ($userUps as $userUp) {
+            array_push($user_ids, $userUp->user_id);
+        }
+        $users = User::where('status', '=', '1')->where('role', '=', '1')->wherein('id', $user_ids)->get();
+        return $users;
+    }
+    /*
+     * 用户是否在案场负责人列表中
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public static function isUserInACFZRs($user_id, $acfzrs)
+    {
+        foreach ($acfzrs as $acfzr) {
+            if ($acfzr->id == $user_id) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
