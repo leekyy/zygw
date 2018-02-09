@@ -46,6 +46,28 @@ class BaobeiController extends Controller
         return ApiResponse::makeResponse(true, $baobeiOption, ApiResponse::SUCCESS_CODE);
     }
 
+    /*
+     * 根据id获取报备信息详情
+     *
+     * By TerryQi
+     *
+     * 2018-02-09
+     */
+    public function getById(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $baobei = BaobeiManager::getById($data['id']);
+        $baobei = BaobeiManager::getInfoByLevel($baobei, "0");
+        return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+    }
+
 
     /*
      * 设置报备通用信息

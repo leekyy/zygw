@@ -55,6 +55,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('house/getZYGWs', 'API\HouseController@getZYGWsByHouseId')->middleware('CheckToken');       //获取楼盘下所有生效的置业顾问
 
     //报备相关
+    Route::get('baobei/getById', 'API\BaobeiController@getById');       //获取报备选项
     Route::get('baobei/getOptions', 'API\BaobeiController@getBaobeiOption');       //获取报备选项
     Route::post('baobei/acceptClient', 'API\BaobeiController@acceptClient')->middleware('CheckToken');     //中介/案场负责人报备客户
     Route::post('baobei/setNormalInfo', 'API\BaobeiController@setNormalInfo')->middleware('CheckToken');     //中介/案场负责人报备客户
