@@ -20,6 +20,7 @@ use App\Components\SendMessageManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
 use App\Components\Utils;
+use App\Http\Controllers\Admin\UserACFZRController;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
@@ -45,6 +46,38 @@ class BaobeiController extends Controller
         $baobeiOption = BaobeiManager::getBaobeiOptions();
         return ApiResponse::makeResponse(true, $baobeiOption, ApiResponse::SUCCESS_CODE);
     }
+
+
+    /*
+     * 获取待接收客户的列表，根据案场负责人id获取其所属的楼盘下全部有效的anchang_id为空的baobei_status==0的信息
+     *
+     * By TerryQi
+     *
+     * 2018-2-9
+     */
+    public function getWaitingForAcceptListByAnchangId(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //获取用户报备信息
+        $userUps = UserUpManager::getUserUpHousesByUserId($data['user_id']);
+        $house_ids = array();
+        foreach ($userUps as $userUp) {
+            array_push($house_ids, $userUp->house_id);      //案场负责人所属楼盘id数组
+        }
+        $baobeis = BaobeiManager::getWaitingForAccpectByHouseIds($house_ids);
+        foreach ($baobeis as $baobei) {
+            $baobei = BaobeiManager::getInfoByLevel($baobei, "0");
+        }
+        return $baobeis;
+    }
+
 
     /*
      * 根据id获取报备信息详情

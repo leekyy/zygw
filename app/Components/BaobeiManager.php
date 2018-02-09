@@ -16,6 +16,7 @@ use App\Models\BaobeiClientCare;
 use App\Models\BaobeiKnowWay;
 use App\Models\BaobeiPayWay;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Qiniu\Auth;
 
 class BaobeiManager
@@ -42,6 +43,24 @@ class BaobeiManager
         ]);
         return $baobeiOption;
     }
+
+
+    /*
+     * 获取楼盘列表下待案场负责人接收的楼盘列表
+     *
+     * By TerryQi
+     *
+     * 2018-02-09
+     *
+     */
+    public static function getWaitingForAccpectByHouseIds($house_ids_arr)
+    {
+//        dd($house_ids);
+        $house_arr_str = "(" . implode(',', $house_ids_arr) . ")";
+        $baobeis = DB::select("SELECT * FROM zygwdb.t_baobei_info where baobei_status = '0' and anchang_id is null and house_id in " . $house_arr_str . " order by id desc;");
+        return $baobeis;
+    }
+
 
     /*
      * 根据visit_way获取中文描述
