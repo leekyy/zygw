@@ -6,6 +6,7 @@
  * Time: 10:30
  */
 namespace App\Components;
+
 use App\Models\Exange;
 use App\Models\User;
 use App\Models\Goods;
@@ -13,6 +14,7 @@ use App\Models\Rules;
 use App\Models\UserUp;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pingjia;
+
 class UserManager
 {
     /*
@@ -27,6 +29,7 @@ class UserManager
         $user = User::find($user_id);
         return $user;
     }
+
     /*
      * 根据搜索关键字和身份获取用户信息-分页
      *
@@ -41,6 +44,7 @@ class UserManager
             ->where('phonenum', 'like', '%' . $search_word . '%')->paginate(Utils::PAGE_SIZE);
         return $users;
     }
+
     /*
      * 根据id获取用户信息
      *
@@ -56,6 +60,7 @@ class UserManager
         }
         return $user;
     }
+
     /*
      * 根据手机号获取用户信息
      *
@@ -68,6 +73,7 @@ class UserManager
         $user = User::where('phonenum', '=', $phonenum)->first();
         return $user;
     }
+
     /*
      * 根据user_code和token校验合法性，全部插入、更新、删除类操作需要使用中间件
      *
@@ -88,6 +94,7 @@ class UserManager
             return false;
         }
     }
+
     /*
      * 用户登录
      *
@@ -110,6 +117,7 @@ class UserManager
         //不存在即新建用户
         return self::register($data);
     }
+
     /*
      * 配置用户信息，用于更新用户信息和新建用户信息
      *
@@ -170,6 +178,7 @@ class UserManager
         }
         return $user;
     }
+
     /*
      * 注册用户
      *
@@ -194,6 +203,7 @@ class UserManager
         $user = self::getUserInfoByIdWithToken($user->id);
         return $user;
     }
+
     /*
      * 更新用户信息
      *
@@ -205,11 +215,12 @@ class UserManager
     public static function updateUser($data)
     {
         //配置用户信息
-        $user = UserManager::getUserInfoByIdWithToken($data);
+        $user = UserManager::getUserInfoByIdWithToken($data['user_id']);
         $user = self::setUser($user, $data);
         $user->save();
         return $user;
     }
+
     /*
      * 根据用户openid获取用户信息
      *
@@ -242,6 +253,7 @@ class UserManager
             return $uuid;
         }
     }
+
     /*
      * 根据house_id获取全部生效的案场负责人列表
      *
@@ -259,6 +271,7 @@ class UserManager
         $users = User::where('status', '=', '1')->where('role', '=', '1')->wherein('id', $user_ids)->get();
         return $users;
     }
+
     /*
      * 用户是否在案场负责人列表中
      *

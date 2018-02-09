@@ -101,6 +101,8 @@ class BaobeiManager
      */
     public static function getInfoByLevel($baobei, $level)
     {
+
+
         $baobei->client = ClientManager::getById($baobei->client_id);
         $baobei->user = UserManager::getUserInfoById($baobei->user_id);
         $baobei->house = HouseManager::getById($baobei->house_id);
