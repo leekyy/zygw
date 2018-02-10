@@ -243,7 +243,7 @@ class BaobeiController extends Controller
         $baobei->visit_time = DateTool::getCurrentTime();
         $baobei->baobei_status = "1";
         //设置案场负责人
-        $user = UserManager::getUserInfoById($data['id']);
+        $user = UserManager::getUserInfoById($data['user_id']);
         if ($user->role == '1') { //如果该用户是案场负责人，则要设置案场负责人
             $baobei->anchang_id = $user->id;
         }
