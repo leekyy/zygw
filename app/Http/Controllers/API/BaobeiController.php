@@ -365,7 +365,8 @@ class BaobeiController extends Controller
         }
         $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
         //用户不是报备楼盘的案场负责人
-        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+//        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+        if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
         $baobei->sign_time = DateTool::getCurrentTime();
@@ -399,7 +400,8 @@ class BaobeiController extends Controller
         }
         $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
         //用户不是报备楼盘的案场负责人
-        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+//        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+        if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
         $baobei->qkdz_time = DateTool::getCurrentTime();
@@ -434,8 +436,8 @@ class BaobeiController extends Controller
             return ApiResponse::makeResponse(false, '报备记录状态不正确', ApiResponse::INNER_ERROR);
         }
         $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
-        //用户不是报备楼盘的案场负责人
-        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+//        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+        if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
         $baobei->can_jiesuan_status = "1";
