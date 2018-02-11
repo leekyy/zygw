@@ -315,9 +315,10 @@ class BaobeiController extends Controller
         if (!$baobei || $baobei->baobei_status != '1') { //baobei_status==1，代表到访，下一步为成交
             return ApiResponse::makeResponse(false, '报备记录状态不正确', ApiResponse::INNER_ERROR);
         }
-        $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
+//        $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);    //2018-02-11修改逻辑，不再判断用户是否数据该楼盘案场负责人，该问该条报备记录为本人操作
         //用户不是报备楼盘的案场负责人
-        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+//        if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+        if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
         //获取佣金
