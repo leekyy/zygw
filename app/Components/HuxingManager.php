@@ -122,6 +122,9 @@ class HuxingManager
         if (array_key_exists('admin_id', $data)) {
             $huxing->admin_id = array_get($data, 'admin_id');
         }
+        if (array_key_exists('name', $data)) {
+            $huxing->name = array_get($data, 'name');
+        }
         if (array_key_exists('image', $data)) {
             $huxing->image = array_get($data, 'image');
         }

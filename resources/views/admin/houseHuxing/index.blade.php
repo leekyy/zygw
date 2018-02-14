@@ -86,8 +86,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>图片</th>
+                                <th>名称</th>
                                 <th>类型</th>
-                                <th>面积/㎡</th>
                                 <th>佣金类型</th>
                                 <th>佣金额度</th>
                                 <th>管理员</th>
@@ -109,12 +109,12 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->type->name}}
+                                            {{$data->name}}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->size_min}}-{{$data->size_max}}
+                                            {{$data->type->name}}
                                         </div>
                                     </td>
                                     <td>
@@ -237,7 +237,7 @@
                             <div class="form-group hidden">
                                 <label for="type_id" class="col-sm-2 control-label">楼盘id</label>
                                 <div class="col-sm-10">
-                                    <input type="type_id" name="house_id" id="house_id" class="form-control"
+                                    <input type="text" name="house_id" id="house_id" class="form-control"
                                            value="{{$house->id}}">
                                 </div>
                             </div>
@@ -251,6 +251,13 @@
                                             <option value="{{$houseType->id}}">{{$houseType->name}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="col-sm-2 control-label">产品名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="name" id="name" class="form-control"
+                                           value="">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -494,6 +501,7 @@
                     //对象配置
                     $("#id").val(msgObj.id);
                     $("#house_id").val(msgObj.house_id);
+                    $("#name").val(msgObj.name);
                     $("#type_id").val(msgObj.type_id);
                     $("#yongjin_type").val(msgObj.yongjin_type);
                     $("#yongjin_value").val(msgObj.yongjin_value);
@@ -705,14 +713,23 @@
 
         //监听更改佣金类型
         function changeYongjinType() {
-            var yongjin_type = $("#set_yongjin_type").val();
+            //同时控制2个modal
+            var set_yongjin_type = $("#set_yongjin_type").val();
+            var yongjin_type = $("#yongjin_type").val();
+
             //如果是固定金额
             if (yongjin_type == "0") {
+                $("#yongjin_value_text").text("金额(元)");
+            }
+            if (set_yongjin_type == "0") {
                 $("#set_yongjin_value_text").text("金额(元)");
             }
             //如果是千分比
             if (yongjin_type == "1") {
-                $("#set_yongjin_value_text").text("千分比(‰)");
+                $("#yongjin_value_text").text("千分比(‰)");
+            }
+            if (set_yongjin_type == "1") {
+                $("#yongjin_value_text").text("千分比(‰)");
             }
         }
 

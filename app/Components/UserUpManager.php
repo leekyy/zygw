@@ -31,6 +31,20 @@ class UserUpManager
     }
 
     /*
+     * 根据用户id和house_id查看是否有申请中和审核通过的申请记录
+     *
+     * By TerryQi
+     *
+     * 2018-02-14
+     */
+    public static function getUserUpsByUserIdAndHouseIdInStatus01($user_id, $house_id)
+    {
+        $userUp = UserUp::where('user_id', '=', $user_id)->where('house_id', '=', $house_id)->wherein('status', ['0', '1'])->first();
+        return $userUp;
+    }
+
+
+    /*
      * 根据用户id搜索已经是案场负责人的楼盘列表
      *
      * By TerryQi
@@ -41,6 +55,19 @@ class UserUpManager
     {
         $userUpHouses = UserUp::where("user_id", '=', $user_id)->where("status", '=', "1")->get();;
         return $userUpHouses;
+    }
+
+    /*
+     * 根据用户id获取申请的记录
+     *
+     * By TerryQi
+     *
+     * 2018-02-14
+     */
+    public static function getListByUserId($user_id)
+    {
+        $userUps = UserUp::where("user_id", '=', $user_id)->orderby("id", 'desc')->get();
+        return $userUps;
     }
 
     /*
@@ -65,7 +92,7 @@ class UserUpManager
      */
     public static function getUserUpInfoByLevel($userUp, $level)
     {
-        $userUp->user = UserManager::getUserInfoById($userUp->user_id);
+        $userUp->user = UserManager::getById($userUp->user_id);
         $userUp->house = HouseManager::getById($userUp->house_id);
         $userUp->admin = AdminManager::getAdminInfoById($userUp->admin_id);
         return $userUp;

@@ -192,6 +192,29 @@ class UserController extends Controller
 
 
     /*
+     * 获取用户页面信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-14
+     */
+    public function getMyInfo(Request $request)
+    {
+        $data = $request->all();
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if (!$requestValidationResult) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $user = UserManager::getByIdWithToken($data['user_id']);
+        $user->all_yongjin = 1689;
+        $user->daijie_yongjin = 888;
+        return ApiResponse::makeResponse(true, $user, ApiResponse::SUCCESS_CODE);
+    }
+
+
+    /*
      * 根据id获取用户信息
      *
      * @request id：用户id

@@ -165,7 +165,7 @@ class BaobeiController extends Controller
         }
         //第一步，建立用户信息，通过手机号判断客户是否存在，用于获取client_id
         $client = ClientManager::getByPhonenum($data['phonenum']);
-        $user = UserManager::getUserInfoById($data['user_id']);
+        $user = UserManager::getById($data['user_id']);
         $house = HouseManager::getById($data['house_id']);
         if (!$client) { //如果不存在客户，需要建立客户信息
             $client = new Client();

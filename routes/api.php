@@ -23,13 +23,15 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 
     //用户相关
     Route::get('user/getById', 'API\UserController@getUserById');    //根据id获取用户信息
-    Route::get('user/getByIdWithToken', 'API\UserController@getUserInfoByIdWithToken')->middleware('CheckToken');  //根据id获取用户信息带token
+    Route::get('user/getByIdWithToken', 'API\UserController@getByIdWithToken')->middleware('CheckToken');  //根据id获取用户信息带token
     Route::get('user/getXCXOpenId', 'API\UserController@getXCXOpenId');//根据code获取openid
     Route::get('user/getUnionId', 'API\UserController@getUnionId');    //根据code获取unionId
     Route::post('user/login', 'API\UserController@login');    //登录/注册
     Route::post('user/updateById', 'API\UserController@updateById')->middleware('CheckToken');//更新用户信息
     Route::post('user/encryptedData', 'API\UserController@encryptedData');//解密encryptedData
     Route::post('user/applyUp', 'API\UserUpController@userUpApply');//中介升级为案场负责接口
+    Route::get('user/getMyInfo', 'API\UserController@getMyInfo');//获取个人主页的相关数据
+    Route::get('userUp/getListByUserId', 'API\UserUpController@getListByUserId')->middleware('CheckToken');    //根据用户id获取申请列表
 
 
     //微信相关接口

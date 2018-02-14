@@ -49,14 +49,14 @@ class UserQDController extends Controller
         //该用户是否今日签到了
         $userQD = UserQDManager::isUserAlreadyQDToday($data['user_id']);
         if ($userQD) {
-            return ApiResponse::makeResponse(false, "该用户今日已经签到", ApiResponse::INNER_ERROR);
+            return ApiResponse::makeResponse(false, "今日已经签到", ApiResponse::INNER_ERROR);
         }
         $userQD = new UserQD();
         $userQD = UserQDManager::setUserQD($userQD, $data);
         $userQD->jifen = SystemManager::getSystemInfo()->qd_jifen;
         $userQD->save();
         //增加用户积分
-        $user = UserManager::getUserInfoByIdWithToken($userQD->user_id);
+        $user = UserManager::getByIdWithToken($userQD->user_id);
         $user->jifen = $user->jifen + $userQD->jifen;
         $user->save();
         //保存用户签到信息

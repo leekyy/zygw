@@ -45,15 +45,41 @@ class UserUpController extends Controller
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
         //是否该用户重复申请
-        $userUp = UserUpManager::isUserAlreadyACFZ($data['user_id'], $data['house_id']);
+        $userUp = UserUpManager::getUserUpsByUserIdAndHouseIdInStatus01($data['user_id'], $data['house_id']);
         if ($userUp) {
-            return ApiResponse::makeResponse(false, "用户已经是楼盘案场负责人", ApiResponse::INNER_ERROR);
+            return ApiResponse::makeResponse(false, "用户已经申请", ApiResponse::INNER_ERROR);
         }
         $userUp = new UserUp();
         $userUp = UserUpManager::setUserUp($userUp, $data);
         $userUp->save();
         $userUp = UserUpManager::getById($userUp->id);
         return ApiResponse::makeResponse(true, $userUp, ApiResponse::SUCCESS_CODE);
+    }
+
+
+    /*
+     * 根据userid获取审核记录
+     *
+     * By TerryQi
+     *
+     * 2018-02-14
+     *
+     */
+    public function getListByUserId(Request $request)
+    {
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'user_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $userUps = UserUpManager::getListByUserId($data['user_id']);
+        foreach ($userUps as $userUp) {
+            $userUp = UserUpManager::getUserUpInfoByLevel($userUp, "0");
+        }
+        return ApiResponse::makeResponse(true, $userUps, ApiResponse::SUCCESS_CODE);
     }
 
     /*
@@ -80,5 +106,4 @@ class UserUpController extends Controller
         }
         return ApiResponse::makeResponse(true, $userUpHouses, ApiResponse::SUCCESS_CODE);
     }
-
 }
