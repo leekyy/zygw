@@ -24,7 +24,7 @@ class UserManager
      *
      * 2017-09-28
      */
-    public static function getUserInfoByIdWithToken($user_id)
+    public static function getByIdWithToken($user_id)
     {
         $user = User::find($user_id);
         return $user;
@@ -52,7 +52,7 @@ class UserManager
      *
      * 2017-09-28
      */
-    public static function getUserInfoById($id)
+    public static function getById($id)
     {
         $user = User::where('id', '=', $id)->first();
         if ($user) {
@@ -68,7 +68,7 @@ class UserManager
      *
      * 2018-01-21
      */
-    public static function getUserInfoByTel($phonenum)
+    public static function getByTel($phonenum)
     {
         $user = User::where('phonenum', '=', $phonenum)->first();
         return $user;
@@ -108,7 +108,7 @@ class UserManager
         $account_type = $data['account_type'];
         // 判断小程序，按照类型查询
         if ($account_type === 'xcx') {
-            $user = self::getUserByXCXOpenId($data['xcx_openid']);
+            $user = self::getByXCXOpenId($data['xcx_openid']);
             //存在用户即返回用户信息
             if ($user != null) {
                 return $user;
@@ -131,6 +131,9 @@ class UserManager
         if (array_key_exists('nick_name', $data)) {
             $user->nick_name = array_get($data, 'nick_name');
         }
+        if (array_key_exists('real_name', $data)) {
+            $user->real_name = array_get($data, 'real_name');
+        }
         if (array_key_exists('avatar', $data)) {
             $user->avatar = array_get($data, 'avatar');
         }
@@ -139,9 +142,6 @@ class UserManager
         }
         if (array_key_exists('xcx_openid', $data)) {
             $user->xcx_openid = array_get($data, 'xcx_openid');
-        }
-        if (array_key_exists('token', $data)) {
-            $user->token = array_get($data, 'token');
         }
         if (array_key_exists('unionid', $data)) {
             $user->unionid = array_get($data, 'unionid');
@@ -152,8 +152,11 @@ class UserManager
         if (array_key_exists('status', $data)) {
             $user->status = array_get($data, 'status');
         }
-        if (array_key_exists('type', $data)) {
-            $user->type = array_get($data, 'type');
+        if (array_key_exists('token', $data)) {
+            $user->token = array_get($data, 'token');
+        }
+        if (array_key_exists('role', $data)) {
+            $user->role = array_get($data, 'role');
         }
         if (array_key_exists('province', $data)) {
             $user->province = array_get($data, 'province');
@@ -161,20 +164,14 @@ class UserManager
         if (array_key_exists('city', $data)) {
             $user->city = array_get($data, 'city');
         }
-        if (array_key_exists('email', $data)) {
-            $user->email = array_get($data, 'email');
+        if (array_key_exists('jifen', $data)) {
+            $user->jifen = array_get($data, 'jifen');
         }
         if (array_key_exists('cardID', $data)) {
             $user->cardID = array_get($data, 'cardID');
         }
-        if (array_key_exists('tuijian', $data)) {
-            $user->tuijian = array_get($data, 'tuijian');
-        }
-        if (array_key_exists('yongjin', $data)) {
-            $user->yongjin = array_get($data, 'yongjin');
-        }
-        if (array_key_exists('role', $data)) {
-            $user->role = array_get($data, 'role');
+        if (array_key_exists('re_user_id', $data)) {
+            $user->re_user_id = array_get($data, 're_user_id');
         }
         return $user;
     }
@@ -190,17 +187,11 @@ class UserManager
     public static function register($data)
     {
         //创建用户信息
-        $user = new User;
-        //account是必填项目
-        if (array_key_exists('account_type', $data)) {
-            $user->account_type = array_get($data, 'account_type');
-        } else {
-            return null;
-        }
+        $user = new User();
         $user = self::setUser($user, $data);
         $user->token = self::getGUID();
         $user->save();
-        $user = self::getUserInfoByIdWithToken($user->id);
+        $user = self::getByIdWithToken($user->id);
         return $user;
     }
 
@@ -212,10 +203,10 @@ class UserManager
      * 2017-09-28
      *
      */
-    public static function updateUser($data)
+    public static function updateById($user_id, $data)
     {
         //配置用户信息
-        $user = UserManager::getUserInfoByIdWithToken($data['user_id']);
+        $user = UserManager::getByIdWithToken($user_id);
         $user = self::setUser($user, $data);
         $user->save();
         return $user;
@@ -228,7 +219,7 @@ class UserManager
      *
      * 2017-09-28
      */
-    public static function getUserByXCXOpenId($openid)
+    public static function getByXCXOpenId($openid)
     {
         $user = User::where('xcx_openid', '=', $openid)->first();
         return $user;

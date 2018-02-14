@@ -140,13 +140,15 @@
                             <li class="user-footer">
                                 <div class="row">
                                     <div class="col-xs-4 text-center">
-                                        <a href="#" class="btn btn-default btn-flat">修改密码</a>
+                                        <a href="{{url('/admin/admin/changePassword')}}"
+                                           class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="col-xs-4 text-center">
-                                        <a href="#" class="btn btn-default btn-flat">修改资料</a>
+                                        <a href="{{url('/admin/admin/editInfo')}}"
+                                           class="btn btn-default btn-flat">修改资料</a>
                                     </div>
                                     <div class="col-xs-4 text-center">
-                                        <a href="{{url('/admin/loginout')}}"
+                                        <a href="{{url('/admin/admin/logout')}}"
                                            class="btn btn-default btn-flat">注销</a>
                                     </div>
                                 </div>

@@ -114,4 +114,42 @@ class AdminController
         return redirect('/admin/admin/index');
     }
 
+
+    /*
+     * 修改管理员密码-get，跳转页面
+     *
+     * By TerryQi
+     *
+     * 2018-02-10
+     */
+    public function changePassword(Request $request)
+    {
+        $admin = $request->session()->get('admin');
+        return view('admin.admin.changePassword', ['admin' => $admin]);
+    }
+
+    /*
+     * 更改管理员密码
+     *
+     * By TerryQi
+     *
+     */
+    public function changePasswordPost(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'admin_id' => 'required',
+            'password' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //优化一下
+        $admin = AdminManager::getAdminInfoById($data['admin_id']);
+        $admin = AdminManager::setAdmin($admin, $data);
+        $admin->save();
+        return redirect('/admin/admin/logout');
+    }
+
 }

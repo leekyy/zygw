@@ -16,7 +16,7 @@
 
 Route::get('/admin/login', 'Admin\LoginController@login');        //登录
 Route::post('/admin/login', 'Admin\LoginController@loginPost');   //post登录请求
-Route::get('/admin/loginout', 'Admin\LoginController@loginout');  //注销
+
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function () {
 
@@ -41,6 +41,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/admin/edit', 'Admin\AdminController@edit');  //新建或编辑管理员
     Route::post('/admin/edit', 'Admin\AdminController@editPost');  //新建或编辑管理员
     Route::get('/admin/getById', 'Admin\AdminController@getById');  //根据id获取管理员信息
+    Route::get('/admin/editInfo', 'Admin\AdminController@editInfo');    //修改信息页面
+    Route::get('/admin/changePassword', 'Admin\AdminController@changePassword');    //修改密码页面
+    Route::post('/admin/changePassword', 'Admin\AdminController@changePasswordPost');    //修改密码页面
+    Route::get('/admin/logout', 'Admin\LoginController@loginout');  //注销
 
     //中介申请成为案场负责人管理
     Route::get('/userUp/index', 'Admin\UserUpController@index');  //管理员管理首页

@@ -33,14 +33,14 @@ class LoginController
             'password' => 'required',
         ]);
         if ($requestValidationResult !== true) {
-            return view('admin.login.login', '请输入手机号和密码');
+            return view('admin.login.loginPage', '请输入手机号和密码');
         }
         $phonenum = $request->phonenum;
         $password = $request->password;
         $admin = AdminManager::login($phonenum, $password);
         //登录失败
         if ($admin == null) {
-            return view('admin.login.login', ['msg' => '手机号或密码错误']);
+            return view('admin.login.loginPage', ['msg' => '手机号或密码错误']);
         }
         $request->session()->put('admin', $admin);//写入session
         return redirect('/admin/dashboard/index');//跳转至后台首页

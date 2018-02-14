@@ -23,8 +23,10 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>签到积分（每次签到赠送的积分值）</th>
-                                <th>推荐积分（每次推荐新用户获得的积分值）</th>
+                                <th>签到积分</th>
+                                <th>推荐积分</th>
+                                <th>到访积分</th>
+                                <th>成交积分</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -38,6 +40,16 @@
                                 <td>
                                     <div class="line-height-30">
                                         {{$data->tj_jifen}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="line-height-30">
+                                        {{$data->df_jifen}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="line-height-30">
+                                        {{$data->cj_jifen}}
                                     </div>
                                 </td>
                                 <td>
@@ -169,6 +181,24 @@
                                            value="0">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="df_jifen" class="col-sm-2 control-label">到访积分</label>
+
+                                <div class="col-sm-10">
+                                    <input id="df_jifen" name="df_jifen" type="number" class="form-control"
+                                           placeholder="客户到访赠送积分"
+                                           value="0">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cj_jifen" class="col-sm-2 control-label">成交积分</label>
+
+                                <div class="col-sm-10">
+                                    <input id="cj_jifen" name="cj_jifen" type="number" class="form-control"
+                                           placeholder="客户成交赠送积分"
+                                           value="0">
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -234,6 +264,8 @@
                     //对象配置
                     $("#qd_jifen").val(msgObj.qd_jifen);
                     $("#tj_jifen").val(msgObj.tj_jifen);
+                    $("#df_jifen").val(msgObj.df_jifen);
+                    $("#cj_jifen").val(msgObj.cj_jifen);
                     //展示modal
                     $("#addSystemModal").modal('show');
                 }
@@ -252,6 +284,16 @@
             var tj_jifen = $("#tj_jifen").val();
             if (judgeIsNullStr(tj_jifen)) {
                 $("#tj_jifen").focus();
+                return false;
+            }
+            var df_jifen = $("#df_jifen").val();
+            if (judgeIsNullStr(df_jifen)) {
+                $("#df_jifen").focus();
+                return false;
+            }
+            var cj_jifen = $("#cj_jifen").val();
+            if (judgeIsNullStr(cj_jifen)) {
+                $("#cj_jifen").focus();
                 return false;
             }
             return true;

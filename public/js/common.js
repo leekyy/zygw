@@ -119,6 +119,17 @@ function getRuleById(url, param, callBack) {
 }
 
 
+//获取系统设置信息
+function getSystemInfo(url, param, callBack) {
+    ajaxRequest(url + "admin/system/edit", param, "GET", callBack);
+}
+
+//修改管理员密码
+function changeAdminPasswordPost(url, param, callBack) {
+    ajaxRequest(url + "admin/admin/changePassword", param, "POST", callBack);
+}
+
+
 /*
  * 校验手机号js
  *

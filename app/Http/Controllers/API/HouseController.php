@@ -14,6 +14,7 @@ use App\Components\HouseManager;
 use App\Components\HuxingManager;
 use App\Components\HouselabelManager;
 use App\Components\UserManager;
+use App\Components\Utils;
 use App\Components\ZYGWManager;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
@@ -84,12 +85,9 @@ class HouseController extends Controller
     public function searchByName(Request $request)
     {
         $data = $request->all();
-        //合规校验
-        $requestValidationResult = RequestValidator::validator($request->all(), [
-            'search_word' => 'required',
-        ]);
-        if ($requestValidationResult !== true) {
-            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        $search_word = "";
+        if (array_key_exists('search_word', $data) && !Utils::isObjNull($data['search_word'])) {
+            $search_word = $data['search_word'];
         }
         //根据关键词搜索楼盘
         $houses = HouseManager::searchByNameValid($data['search_word']);

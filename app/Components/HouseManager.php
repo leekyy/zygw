@@ -6,6 +6,7 @@
  * Time: 10:30
  */
 namespace App\Components;
+
 use App\Models\AD;
 use App\Models\House;
 use App\Models\HouseLabel;
@@ -15,6 +16,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Cast\Object_;
 use Qiniu\Auth;
+
 class HouseManager
 {
     /*获取全部的楼盘信息
@@ -28,6 +30,7 @@ class HouseManager
         //设置用户信息和楼盘信息
         return $houses;
     }
+
     /*
      * 根据条件获取楼盘
      *
@@ -39,6 +42,7 @@ class HouseManager
     public static function getListByCon($con)
     {
     }
+
     /*
      * 根据search_word进行搜索，用于管理后台，不需要考虑status==1的情况
      *
@@ -48,9 +52,10 @@ class HouseManager
      */
     public static function searchByName($search_word)
     {
-        $hourses = House::where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        $hourses = House::where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->get();
         return $hourses;
     }
+
     /*
      * 根据search_word进行搜索，用于API接口，需要考虑status==1的情况
      *
@@ -64,6 +69,7 @@ class HouseManager
         $hourses = House::where('status', '=', '1')->where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->get();
         return $hourses;
     }
+
     /*
      * 根据条件搜索，用于API接口，需要考虑status==1的情况
      *
@@ -107,6 +113,7 @@ class HouseManager
         $houses = $houses->orderby('id', 'desc')->get();
         return $houses;
     }
+
     /*
      * 根据状态进行分页
      *
@@ -127,7 +134,7 @@ class HouseManager
     */
     public static function getHouseList($status)
     {
-        $houses = House::where('status',$status)->get();
+        $houses = House::where('status', $status)->get();
         return $houses;
     }
 
@@ -145,6 +152,7 @@ class HouseManager
         $house = House::where('id', '=', $id)->first();
         return $house;
     }
+
     /*
      * 根据级别获取产品详细信息
      *
@@ -176,6 +184,7 @@ class HouseManager
         }
         return $house;
     }
+
     /*
      * 获取总楼盘数
      *
@@ -186,6 +195,7 @@ class HouseManager
         $count = House::all()->count();
         return $count;
     }
+
     /*
      * 获取近N日的报表
      *
@@ -197,6 +207,7 @@ class HouseManager
         $data = DB::select('SELECT DATE_FORMAT( created_at, "%Y-%m-%d" ) as tjdate , COUNT(*)  as qdrs, SUM(type)  as psjfs FROM zygwdb.t_house_info GROUP BY tjdate order by tjdate desc limit 0,:day_num;', ['day_num' => $day_num]);
         return $data;
     }
+
     public static function setHouse($house, $data)
     {
         if (array_key_exists('admin_id', $data)) {
@@ -243,6 +254,7 @@ class HouseManager
         }
         return $house;
     }
+
     /*
      * 获取楼盘相关属性
      *
