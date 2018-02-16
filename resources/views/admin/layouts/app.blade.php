@@ -215,18 +215,6 @@
                 </li>
                 <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-odnoklassniki"></i> <span>置业顾问</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{url('admin/user/index')}}"><i class="fa fa-circle-o"></i>人员管理</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#">
                         <i class="fa  fa-folder-o"></i>
                         <span>楼盘管理</span>
                         <span class="pull-right-container">

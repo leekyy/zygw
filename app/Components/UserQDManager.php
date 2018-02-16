@@ -84,7 +84,7 @@ class UserQDManager
      */
     public static function getUserQDInfoByLevel($userQD, $level)
     {
-        $userQD->user = UserManager::getUserInfoById($userQD->user_id);
+        $userQD->user = UserManager::getById($userQD->user_id);
         return $userQD;
     }
 

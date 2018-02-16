@@ -83,6 +83,10 @@ class UserUpController
         $userUp->admin_id = $data['admin_id'];
         $userUp->sh_time = DateTool::getCurrentTime();
         $userUp->save();
+        //设置用户身份
+        $user = UserManager::getByIdWithToken($userUp->user_id);    //此处不要丢失token
+        $user->role = "1";
+        $user->save();
         return redirect('/admin/userUp/index');
     }
 }

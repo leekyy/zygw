@@ -15,6 +15,7 @@ use App\Models\BaobeiBuyPurpose;
 use App\Models\BaobeiClientCare;
 use App\Models\BaobeiKnowWay;
 use App\Models\BaobeiPayWay;
+use App\Models\HouseArea;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Qiniu\Auth;
@@ -34,12 +35,14 @@ class BaobeiManager
         $buy_purposes = BaobeiBuyPurposeManager::getListValid();
         $know_ways = BaobeiKnowWayManager::getListValid();
         $client_cares = BaobeiClientCareManager::getListValid();
+        $areas = HouseAreaManager::getList();
 
         $baobeiOption = new Collection([
             'pay_ways' => $pay_ways,
             'buy_purposes' => $buy_purposes,
             'know_ways' => $know_ways,
-            'client_cares' => $client_cares
+            'client_cares' => $client_cares,
+            'areas' => $areas,
         ]);
         return $baobeiOption;
     }
@@ -101,14 +104,12 @@ class BaobeiManager
      */
     public static function getInfoByLevel($baobei, $level)
     {
-
-
         $baobei->client = ClientManager::getById($baobei->client_id);
-        $baobei->user = UserManager::getUserInfoById($baobei->user_id);
+        $baobei->user = UserManager::getById($baobei->user_id);
         $baobei->house = HouseManager::getById($baobei->house_id);
         //案场负责人
         if (!Utils::isObjNull($baobei->anchang_id)) {
-            $baobei->anchang = UserManager::getUserInfoById($baobei->anchang_id);
+            $baobei->anchang = UserManager::getById($baobei->anchang_id);
         }
         //置业顾问
         if (!Utils::isObjNull($baobei->guwen_id)) {
@@ -124,7 +125,7 @@ class BaobeiManager
         }
         //购房目的
         if (!Utils::isObjNull($baobei->purpose_id)) {
-            $baobei->purpose = BaobeiBuyPurpose::getById($baobei->purpose_id);
+            $baobei->purpose = BaobeiBuyPurposeManager::getById($baobei->purpose_id);
         }
         //关注点
         if (!Utils::isObjNull($baobei->care_id)) {
@@ -240,6 +241,9 @@ class BaobeiManager
         if (array_key_exists('deal_huxing_id', $data)) {
             $baobei->deal_huxing_id = array_get($data, 'deal_huxing_id');
         }
+        if (array_key_exists('deal_room', $data)) {
+            $baobei->deal_room = array_get($data, 'deal_room');
+        }
         if (array_key_exists('pay_way_id', $data)) {
             $baobei->pay_way_id = array_get($data, 'pay_way_id');
         }
@@ -276,7 +280,7 @@ class BaobeiManager
      * 2018-02-04
      *
      */
-    public static function getListForZJByStatusPaginate($user_id, $baobei_status, $can_jiesuan_status, $pay_zhongie_status)
+    public static function getListForZJByStatusPaginate($user_id, $baobei_status, $can_jiesuan_status, $pay_zhongie_status, $house_id, $start_time, $end_time)
     {
         $baobeis = Baobei::where('user_id', '=', $user_id);
         if ($baobei_status != null) {
@@ -288,7 +292,16 @@ class BaobeiManager
         if ($pay_zhongie_status != null) {
             $baobeis = $baobeis->where('pay_zhongie_status', '=', $pay_zhongie_status);
         }
-        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        if ($house_id != null) {
+            $baobeis = $baobeis->where('house_id', '=', $house_id);
+        }
+        if ($start_time != null) {
+            $baobeis = $baobeis->where('created_at', '>', $start_time);
+        }
+        if ($end_time != null) {
+            $baobeis = $baobeis->where('created_at', '<=', $end_time);
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->get();
         return $baobeis;
     }
 
@@ -311,7 +324,7 @@ class BaobeiManager
         if ($pay_zhongie_status != null) {
             $baobeis = $baobeis->where('pay_zhongie_status', '=', $pay_zhongie_status);
         }
-        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        $baobeis = $baobeis->orderby('id', 'desc')->get();
         return $baobeis;
     }
 

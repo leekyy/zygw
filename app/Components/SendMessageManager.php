@@ -26,7 +26,7 @@ class SendMessageManager
      */
     public static function sendMessage($user_id, $message_type, $message_content)
     {
-        $user = UserManager::getUserInfoByIdWithToken($user_id);
+        $user = UserManager::getByIdWithToken($user_id);
         //判断服务号是否为空，如果不为空则通过服务号发送消息，如果为空则通过短信模板发送消息
         if (!Utils::isObjNull($user->fwh_openid)) {
             self::setMessageFromFWH($user->fwh_openid, $message_type, $message_content);

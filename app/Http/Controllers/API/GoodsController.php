@@ -79,7 +79,7 @@ class GoodsController extends Controller
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        $user = UserManager::getUserInfoByIdWithToken($data['user_id']);    //带token
+        $user = UserManager::getByIdWithToken($data['user_id']);    //带token
         $goods = GoodsManager::getById($data['goods_id']);
         //判断用户积分余额是否足够
         $user_jifen = $user->jifen;
@@ -90,7 +90,7 @@ class GoodsController extends Controller
         //扣减用户积分
         $user->jifen = $user_jifen - $goods_jifen;
         $user->save();
-        $user = UserManager::getUserInfoById($user->id);    //返回用户基本信息
+        $user = UserManager::getById($user->id);    //返回用户基本信息
         //新建兑换订单
         $goodsExchange = new GoodsExchange();
         $goodsExchange->user_id = $user->id;

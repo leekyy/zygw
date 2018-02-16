@@ -59,7 +59,7 @@ class GoodsExchangeManager
      */
     public static function getInfoByLevel($goodsExchange, $level)
     {
-        $goodsExchange->user = UserManager::getUserInfoById($goodsExchange->user_id);
+        $goodsExchange->user = UserManager::getById($goodsExchange->user_id);
         $goodsExchange->goods = GoodsManager::getById($goodsExchange->goods_id);
         return $goodsExchange;
     }
@@ -130,7 +130,7 @@ class GoodsExchangeManager
 //goodsexchange(index.php)
     public static function getUserUpInfoByLevel($userUp, $level)
     {
-        $userUp->user = UserManager::getUserInfoById($userUp->user_id);
+        $userUp->user = UserManager::getById($userUp->user_id);
         $userUp->goods = GoodsManager::getById($userUp->goods_id);
         $userUp->admin = AdminManager::getAdminInfoById($userUp->admin_id);
         return $userUp;

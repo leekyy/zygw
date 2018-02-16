@@ -71,6 +71,8 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('baobei/deal', 'API\BaobeiController@deal')->middleware('CheckToken');     //案场负责人报备成交信息
     Route::post('baobei/sign', 'API\BaobeiController@sign')->middleware('CheckToken');     //案场负责人报备签约信息
     Route::post('baobei/qkdz', 'API\BaobeiController@qkdz')->middleware('CheckToken');     //案场负责人报备全款到账信息
+    Route::post('baobei/setZYGW', 'API\BaobeiController@setZYGW')->middleware('CheckToken');     //设置报备记录的置业顾问
+
     Route::post('baobei/canjiesuan', 'API\BaobeiController@canjiesuan')->middleware('CheckToken');     //案场负责人设置报备单可结算
     Route::get('baobei/getListForZJByStatus', 'API\BaobeiController@getListForZJByStatus')->middleware('CheckToken');   //获取中介维度的报备列表
     Route::get('baobei/getListForACByStatus', 'API\BaobeiController@getListForACByStatus')->middleware('CheckToken');   //获取案场负责人维度的报备列表

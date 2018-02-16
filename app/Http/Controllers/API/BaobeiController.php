@@ -129,6 +129,43 @@ class BaobeiController extends Controller
             $acfzrs = UserManager::getValidACFZRsByHouseId($baobei->house_id);
             //用户是报备楼盘的案场负责人
             if (!UserManager::isUserInACFZRs($data['user_id'], $acfzrs)) {
+                return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法设置客户信息', ApiResponse::INNER_ERROR);
+            }
+            $baobei = BaobeiManager::setBaoBei($baobei, $data);
+            $baobei->save();
+            $baobei = BaobeiManager::getById($baobei->id);
+            return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
+        } else {
+            return ApiResponse::makeResponse(false, '未找到报备楼盘', ApiResponse::INNER_ERROR);
+        }
+    }
+
+
+    /*
+     * 设置置业顾问
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     *
+     */
+    public function setZYGW(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'guwen_id' => 'required',
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        //获取报备基本信息
+        $baobei = BaobeiManager::getById($data['id']);
+        //存在报备信息
+        if ($baobei) {
+            //获取楼盘案场负责人
+            if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
                 return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
             }
             $baobei = BaobeiManager::setBaoBei($baobei, $data);
@@ -187,7 +224,12 @@ class BaobeiController extends Controller
         }
         //3）用户是否为案场负责人，如果是案场负责人的话，是否对自己的楼盘进行报备
         if (UserUpManager::isUserAlreadyACFZ($user->id, $house->id)) {
-            return ApiResponse::makeResponse(false, '该用户为楼盘案场负责人', ApiResponse::INNER_ERROR);
+            return ApiResponse::makeResponse(false, '案场负责人不能报备自己楼盘', ApiResponse::INNER_ERROR);
+        }
+        //4）预约到访时间超过3天
+        $data_diff = DateTool::dateDiff('D', DateTool::getToday(), $data['plan_visit_time']);
+        if ($data_diff > 3) {
+            return ApiResponse::makeResponse(false, '报备时间超过3天', ApiResponse::INNER_ERROR);
         }
         //进行客户信息报备
         $baobei = new Baobei();
@@ -206,7 +248,7 @@ class BaobeiController extends Controller
                 'keyword2' => $baobei->plan_visit_time,
                 'keyword3' => $house->title,
                 'keyword4' => BaobeiManager::getVisitWayTxt($baobei->visit_way)];
-            SendMessageManager::sendMessage($acfzr->id, SendMessageManager::CLIENT_COMMING, $message_content);
+//            SendMessageManager::sendMessage($acfzr->id, SendMessageManager::CLIENT_COMMING, $message_content);        //向案场负责人发送短信通知
         }
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
@@ -240,10 +282,15 @@ class BaobeiController extends Controller
         //进行状态保存
         $baobei = BaobeiManager::getById($data['id']);
         $baobei->visit_attach = $data['visit_attach'];
-        $baobei->visit_time = DateTool::getCurrentTime();
+        //visit_time不为空
+        if (array_key_exists('visit_time', $data) && !Utils::isObjNull($data['visit_time'])) {
+            $baobei->visit_time = $data['visit_time'];
+        } else {
+            $baobei->visit_time = DateTool::getCurrentTime();
+        }
         $baobei->baobei_status = "1";
         //设置案场负责人
-        $user = UserManager::getUserInfoById($data['user_id']);
+        $user = UserManager::getById($data['user_id']);
         if ($user->role == '1') { //如果该用户是案场负责人，则要设置案场负责人
             $baobei->anchang_id = $user->id;
         }
@@ -303,6 +350,7 @@ class BaobeiController extends Controller
             'id' => 'required',
             'user_id' => 'required',
             'deal_size' => 'required',
+            'deal_room' => 'required',
             'deal_price' => 'required',
             'deal_huxing_id' => 'required',
             'pay_way_id' => 'required',
@@ -335,7 +383,12 @@ class BaobeiController extends Controller
         $baobei = BaobeiManager::setBaoBei($baobei, $data);
         $baobei->yongjin = $yongjin;
         $baobei->baobei_status = '2';    //报备状态为成交
-        $baobei->deal_time = DateTool::getCurrentTime();
+        //deal_time不为空
+        if (array_key_exists('deal_time', $data) && !Utils::isObjNull($data['deal_time'])) {
+            $baobei->deal_time = $data['deal_time'];
+        } else {
+            $baobei->deal_time = DateTool::getCurrentTime();
+        }
         $baobei->save();
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
@@ -369,7 +422,12 @@ class BaobeiController extends Controller
         if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
-        $baobei->sign_time = DateTool::getCurrentTime();
+        //sign_time不为空
+        if (array_key_exists('sign_time', $data) && !Utils::isObjNull($data['sign_time'])) {
+            $baobei->sign_time = $data['sign_time'];
+        } else {
+            $baobei->sign_time = DateTool::getCurrentTime();
+        }
         $baobei->baobei_status = "3";
         $baobei->save();
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
@@ -404,7 +462,12 @@ class BaobeiController extends Controller
         if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
-        $baobei->qkdz_time = DateTool::getCurrentTime();
+        //qkdz_time不为空
+        if (array_key_exists('qkdz_time', $data) && !Utils::isObjNull($data['qkdz_time'])) {
+            $baobei->qkdz_time = $data['qkdz_time'];
+        } else {
+            $baobei->qkdz_time = DateTool::getCurrentTime();
+        }
         $baobei->baobei_status = "4";
         $baobei->save();
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
@@ -441,7 +504,13 @@ class BaobeiController extends Controller
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
         $baobei->can_jiesuan_status = "1";
-        $baobei->can_jiesuan_time = DateTool::getCurrentTime();
+
+        //can_jiesuan_time不为空
+        if (array_key_exists('can_jiesuan_time', $data) && !Utils::isObjNull($data['can_jiesuan_time'])) {
+            $baobei->can_jiesuan_time = $data['can_jiesuan_time'];
+        } else {
+            $baobei->can_jiesuan_time = DateTool::getCurrentTime();
+        }
         $baobei->save();
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
@@ -479,12 +548,28 @@ class BaobeiController extends Controller
         if (array_key_exists('pay_zhongie_status', $data)) {
             $pay_zhongie_status = $data['pay_zhongie_status'];
         }
+        //报备楼盘
+        $house_id = null;
+        if (array_key_exists('house_id', $data)) {
+            $house_id = $data['house_id'];
+        }
+        //开始日期
+        $start_time = null;
+        if (array_key_exists('start_time', $data)) {
+            $start_time = $data['start_time'];
+        }
+        //结束日期
+        $end_time = null;
+        if (array_key_exists('end_time', $data)) {
+            $end_time = $data['end_time'];
+        }
+
         $baobeis = BaobeiManager::getListForZJByStatusPaginate($data['user_id'],
-            $baobei_status, $can_jiesuan_status, $pay_zhongie_status);
+            $baobei_status, $can_jiesuan_status, $pay_zhongie_status, $house_id, $start_time, $end_time);
         foreach ($baobeis as $baobei) {
             $baobei = BaobeiManager::getInfoByLevel($baobei, '0');
         }
-        return $baobeis;
+        return ApiResponse::makeResponse(true, $baobeis, ApiResponse::SUCCESS_CODE);
     }
 
     /*
@@ -524,6 +609,6 @@ class BaobeiController extends Controller
         foreach ($baobeis as $baobei) {
             $baobei = BaobeiManager::getInfoByLevel($baobei, '0');
         }
-        return $baobeis;
+        return ApiResponse::makeResponse(true, $baobeis, ApiResponse::SUCCESS_CODE);
     }
 }
