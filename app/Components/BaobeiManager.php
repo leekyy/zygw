@@ -259,14 +259,14 @@ class BaobeiManager
         if (array_key_exists('can_jiesuan_time', $data)) {
             $baobei->can_jiesuan_time = array_get($data, 'can_jiesuan_time');
         }
-        if (array_key_exists('pay_zhongie_status', $data)) {
-            $baobei->pay_zhongie_status = array_get($data, 'pay_zhongie_status');
+        if (array_key_exists('pay_zhongjie_status', $data)) {
+            $baobei->pay_zhongjie_status = array_get($data, 'pay_zhongjie_status');
         }
         if (array_key_exists('pay_zhongjie_time', $data)) {
             $baobei->pay_zhongjie_time = array_get($data, 'pay_zhongjie_time');
         }
-        if (array_key_exists('pay_zhongie_attach', $data)) {
-            $baobei->pay_zhongie_attach = array_get($data, 'pay_zhongie_attach');
+        if (array_key_exists('pay_zhongjie_attach', $data)) {
+            $baobei->pay_zhongjie_attach = array_get($data, 'pay_zhongjie_attach');
         }
         return $baobei;
     }
@@ -280,7 +280,7 @@ class BaobeiManager
      * 2018-02-04
      *
      */
-    public static function getListForZJByStatusPaginate($user_id, $baobei_status, $can_jiesuan_status, $pay_zhongie_status, $house_id, $start_time, $end_time)
+    public static function getListForZJByStatusPaginate($user_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $house_id, $start_time, $end_time)
     {
         $baobeis = Baobei::where('user_id', '=', $user_id);
         if ($baobei_status != null) {
@@ -289,8 +289,8 @@ class BaobeiManager
         if ($can_jiesuan_status != null) {
             $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
         }
-        if ($pay_zhongie_status != null) {
-            $baobeis = $baobeis->where('pay_zhongie_status', '=', $pay_zhongie_status);
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
         }
         if ($house_id != null) {
             $baobeis = $baobeis->where('house_id', '=', $house_id);
@@ -312,7 +312,7 @@ class BaobeiManager
      *
      * 2018-02-04
      */
-    public static function getListForACByStatusPaginate($anchang_id, $baobei_status, $can_jiesuan_status, $pay_zhongie_status)
+    public static function getListForACByStatusPaginate($anchang_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status)
     {
         $baobeis = Baobei::where('anchang_id', '=', $anchang_id);
         if ($baobei_status != null) {
@@ -321,8 +321,8 @@ class BaobeiManager
         if ($can_jiesuan_status != null) {
             $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
         }
-        if ($pay_zhongie_status != null) {
-            $baobeis = $baobeis->where('pay_zhongie_status', '=', $pay_zhongie_status);
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
         }
         $baobeis = $baobeis->orderby('id', 'desc')->get();
         return $baobeis;
@@ -364,7 +364,7 @@ class BaobeiManager
      */
     public static function getNotPayYongjinByUserId($user_id)
     {
-        $not_pay_yongjin = Baobei::where('user_id', '=', $user_id)->where('can_jiesuan_status', '=', '1')->where('pay_zhongie_status', '=', '0')->sum('yongjin');
+        $not_pay_yongjin = Baobei::where('user_id', '=', $user_id)->where('can_jiesuan_status', '=', '1')->where('pay_zhongjie_status', '=', '0')->sum('yongjin');
         return $not_pay_yongjin;
     }
 
@@ -377,7 +377,7 @@ class BaobeiManager
      */
     public static function getAlreadyPayYongjinByUserId($user_id)
     {
-        $already_pay_yongjin = Baobei::where('user_id', '=', $user_id)->where('can_jiesuan_status', '=', '1')->where('pay_zhongie_status', '=', '1')->sum('yongjin');
+        $already_pay_yongjin = Baobei::where('user_id', '=', $user_id)->where('can_jiesuan_status', '=', '1')->where('pay_zhongjie_status', '=', '1')->sum('yongjin');
         return $already_pay_yongjin;
     }
 

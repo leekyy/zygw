@@ -544,9 +544,9 @@ class BaobeiController extends Controller
             $can_jiesuan_status = $data['can_jiesuan_status'];
         }
         //是否已经结算条件
-        $pay_zhongie_status = null;
-        if (array_key_exists('pay_zhongie_status', $data)) {
-            $pay_zhongie_status = $data['pay_zhongie_status'];
+        $pay_zhongjie_status = null;
+        if (array_key_exists('pay_zhongjie_status', $data)) {
+            $pay_zhongjie_status = $data['pay_zhongjie_status'];
         }
         //报备楼盘
         $house_id = null;
@@ -565,7 +565,7 @@ class BaobeiController extends Controller
         }
 
         $baobeis = BaobeiManager::getListForZJByStatusPaginate($data['user_id'],
-            $baobei_status, $can_jiesuan_status, $pay_zhongie_status, $house_id, $start_time, $end_time);
+            $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $house_id, $start_time, $end_time);
         foreach ($baobeis as $baobei) {
             $baobei = BaobeiManager::getInfoByLevel($baobei, '0');
         }
@@ -584,7 +584,7 @@ class BaobeiController extends Controller
         $data = $request->all();
         //合规校验
         $requestValidationResult = RequestValidator::validator($request->all(), [
-            'anchang_id' => 'required',
+            'user_id' => 'required',
         ]);
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
@@ -600,12 +600,25 @@ class BaobeiController extends Controller
             $can_jiesuan_status = $data['can_jiesuan_status'];
         }
         //是否已经结算条件
-        $pay_zhongie_status = null;
-        if (array_key_exists('pay_zhongie_status', $data)) {
-            $pay_zhongie_status = $data['pay_zhongie_status'];
+        $pay_zhongjie_status = null;
+        if (array_key_exists('pay_zhongjie_status', $data)) {
+            $pay_zhongjie_status = $data['pay_zhongjie_status'];
         }
-        $baobeis = BaobeiManager::getListForZJByStatusPaginate($data['anchang_id'],
-            $baobei_status, $can_jiesuan_status, $pay_zhongie_status);
+        //如果全部为空，则搜索该案场负责人下属的待接收楼盘
+        if ($baobei_status == null && $can_jiesuan_status == null && $pay_zhongjie_status == null) {
+            $userUps = UserUpManager::getUserUpHousesByUserId($data['user_id']);
+            $house_ids = array();
+            foreach ($userUps as $userUp) {
+                array_push($house_ids, $userUp->house_id);      //案场负责人所属楼盘id数组
+            }
+            $baobeis = BaobeiManager::getWaitingForAccpectByHouseIds($house_ids);
+            foreach ($baobeis as $baobei) {
+                $baobei = BaobeiManager::getInfoByLevel($baobei, "0");
+            }
+            return ApiResponse::makeResponse(true, $baobeis, ApiResponse::SUCCESS_CODE);
+        }
+        $baobeis = BaobeiManager::getListForACByStatusPaginate($data['user_id'],
+            $baobei_status, $can_jiesuan_status, $pay_zhongjie_status);
         foreach ($baobeis as $baobei) {
             $baobei = BaobeiManager::getInfoByLevel($baobei, '0');
         }
