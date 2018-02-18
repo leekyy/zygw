@@ -18,6 +18,7 @@ use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
 use App\Libs\wxDecode\WXBizDataCrypt;
+use App\Models\JifenChangeRecord;
 use App\Models\UserQD;
 use App\Models\UserUp;
 use App\Models\ViewModels\HomeView;
@@ -59,6 +60,13 @@ class UserQDController extends Controller
         $user = UserManager::getByIdWithToken($userQD->user_id);
         $user->jifen = $user->jifen + $userQD->jifen;
         $user->save();
+        //写入记录
+        $jifen_change_record = new JifenChangeRecord();
+        $jifen_change_record->user_id = $user->id;
+        $jifen_change_record->jifen = $userQD->jifen;
+        $jifen_change_record->record = "每日签到奖励";
+        $jifen_change_record->save();
+
         //保存用户签到信息
         $userQD = UserQDManager::getUserQDById($userQD->id);
         return ApiResponse::makeResponse(true, $userQD, ApiResponse::SUCCESS_CODE);

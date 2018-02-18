@@ -63,6 +63,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/zhongjie/index', 'Admin\UserZJController@index');  //中介管理首页
     Route::get('/zhongjie/search', 'Admin\UserZJController@search');  //搜索中介
     Route::get('/zhongjie/setStatus/{id}', 'Admin\UserZJController@setStatus');  //设置状态
+    Route::get('/zhongjie/smst', 'Admin\UserZJController@smst');  //案场负责人统计页面
+    Route::post('/zhongjie/payYongjin', 'Admin\UserZJController@payYongjin');  //支付中介佣金
 
     //楼盘管理
     Route::get('/house/index', 'Admin\HouseController@index');//楼盘管理首页

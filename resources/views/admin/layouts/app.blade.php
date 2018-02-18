@@ -251,21 +251,22 @@
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/goods/index')}}"><i class="fa fa-circle-o"></i>商品管理</a></li>
                         <li><a href="{{url('admin/goodsexchange/index')}}"><i class="fa fa-circle-o"></i>兑换订单</a></li>
-                        <li><a href="{{url('admin/rule/index')}}"><i class="fa fa-circle-o"></i>兑换规则</a></li>
                         <li><a href="{{url('admin/goodsexchange/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
-
-                <li class="">
-                    <a href="{{url('/admin/hezuo/index')}}">
-                        <i class="fa fa-file-text-o"></i><span>合作细则管理</span>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-file-text-o"></i>
+                        <span>规则管理</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
                     </a>
-                </li>
-
-                <li class="">
-                    <a href="{{url('/admin/whitebook/index')}}">
-                        <i class="fa fa-file-text-o"></i><span>行业白皮书管理</span>
-                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{url('admin/rule/index')}}"><i class="fa fa-circle-o"></i>积分兑换规则</a></li>
+                        <li><a href="{{url('/admin/hezuo/index')}}"><i class="fa fa-circle-o"></i>合作细则</a></li>
+                        <li><a href="{{url('admin/whitebook/index')}}"><i class="fa fa-circle-o"></i>行业白皮书</a></li>
+                    </ul>
                 </li>
                 <li class="treeview">
                     <a href="#">

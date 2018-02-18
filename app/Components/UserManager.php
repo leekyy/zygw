@@ -38,9 +38,9 @@ class UserManager
      *
      * 2018-01-20
      */
-    public static function getListByRoleAndSearchWordPaginate($search_word, $role)
+    public static function getListByRoleAndSearchWordPaginate($search_word, $role_arr)
     {
-        $users = User::where('role', '=', $role)->orderby('id', 'desc')
+        $users = User::wherein('role', $role_arr)->orderby('id', 'desc')
             ->where('phonenum', 'like', '%' . $search_word . '%')->paginate(Utils::PAGE_SIZE);
         return $users;
     }

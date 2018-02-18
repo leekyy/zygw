@@ -54,6 +54,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>头像</th>
+                                <th>微信昵称</th>
                                 <th>姓名</th>
                                 <th>电话</th>
                                 <th>积分</th>
@@ -73,6 +74,11 @@
                                     <td>
                                         <img src="{{ $data->avatar ? $data->avatar.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/default_headicon.png')}}"
                                              class="img-rect-30 radius-5">
+                                    </td>
+                                    <td>
+                                        <div class="line-height-30">
+                                            {{$data->nick_name}}
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="line-height-30">
@@ -115,6 +121,12 @@
                                              data-toggle="tooltip"
                                              data-placement="top" title="冻结">
                                             <i class="fa fa-close opt-btn-i-size"></i>
+                                          </a>
+                                            <a href="{{URL::asset('/admin/zhongjie/smst')}}?id={{$data->id}}"
+                                               class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="查看统计信息">
+                                            <i class="fa fa-bar-chart opt-btn-i-size"></i>
                                           </a>
                                         </span>
                                     </td>

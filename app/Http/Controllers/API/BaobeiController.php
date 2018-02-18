@@ -28,6 +28,7 @@ use App\Libs\wxDecode\ErrorCode;
 use App\Libs\wxDecode\WXBizDataCrypt;
 use App\Models\Baobei;
 use App\Models\Client;
+use App\Models\JifenChangeRecord;
 use Illuminate\Http\Request;
 use App\Components\RequestValidator;
 use Qiniu\Auth;
@@ -298,7 +299,11 @@ class BaobeiController extends Controller
             $user->jifen = $user->jifen + $system->df_jifen;
             $user->save();
             //进行积分值的记录
-
+            $jifen_change_record = new JifenChangeRecord();
+            $jifen_change_record->user_id = $user->id;
+            $jifen_change_record->jifen = $system->df_jifen;
+            $jifen_change_record->record = "到访楼盘奖励";
+            $jifen_change_record->save();
         }
         $baobei = BaobeiManager::getById($baobei->id);
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);

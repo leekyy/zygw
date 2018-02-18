@@ -35,12 +35,12 @@ class UserACFZRController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $users = UserManager::getListByRoleAndSearchWordPaginate('', '1');
+        $users = UserManager::getListByRoleAndSearchWordPaginate('', ['1']);
         foreach ($users as $user) {
             $user->created_at_str = DateTool::formateData($user->created_at, 1);
             $user->userUps = UserUpManager::getUserUpHousesByUserId($user->id);
             foreach ($user->userUps as $userUp) {
-                $userUp->house = HouseManager::getById($userUp->house_id);
+                $userUp = UserUpManager::getUserUpInfoByLevel($userUp, "0");
             }
         }
         return view('admin.acfzr.index', ['admin' => $admin, 'datas' => $users]);
@@ -58,8 +58,6 @@ class UserACFZRController
         if ($requestValidationResult !== true) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
         }
-
-
         //报备状态条件
         $baobei_status = null;
         if (array_key_exists('baobei_status', $data)) {
@@ -105,9 +103,13 @@ class UserACFZRController
     {
         $admin = $request->session()->get('admin');
         $data = $request->all();
-        $users = UserManager::getListByRoleAndSearchWordPaginate($data['search_word'], '1');
+        $users = UserManager::getListByRoleAndSearchWordPaginate($data['search_word'], ['1']);
         foreach ($users as $user) {
-            $user->created_at_str = DateTool::formateData($user->created_at, 1);;
+            $user->created_at_str = DateTool::formateData($user->created_at, 1);
+            $user->userUps = UserUpManager::getUserUpHousesByUserId($user->id);
+            foreach ($user->userUps as $userUp) {
+                $userUp = UserUpManager::getUserUpInfoByLevel($userUp, "0");
+            }
         }
         return view('admin.acfzr.index', ['admin' => $admin, 'datas' => $users]);
     }

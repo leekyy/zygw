@@ -265,6 +265,9 @@ class BaobeiManager
         if (array_key_exists('pay_zhongjie_time', $data)) {
             $baobei->pay_zhongjie_time = array_get($data, 'pay_zhongjie_time');
         }
+        if (array_key_exists('pay_admin_id', $data)) {
+            $baobei->pay_admin_id = array_get($data, 'pay_admin_id');
+        }
         if (array_key_exists('pay_zhongjie_attach', $data)) {
             $baobei->pay_zhongjie_attach = array_get($data, 'pay_zhongjie_attach');
         }
