@@ -162,7 +162,7 @@ class UserController extends Controller
         if ($user) {
         } else {
             $user = UserManager::register($data);
-            $user = UserManager::getById($user->id);
+            $user = UserManager::getByIdWithToken($user->id);
         }
         return $user;
     }
