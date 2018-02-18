@@ -275,7 +275,7 @@
                     var msgObj = ret.ret;
                     //对象配置
                     $("#id").val(msgObj.id);
-                    $("#content").val(msgObj.content);
+                    $("#title").val(msgObj.title);
                     $("#img").val(msgObj.image);
                     $("#pickfiles").attr("src", msgObj.image);
                     //展示modal

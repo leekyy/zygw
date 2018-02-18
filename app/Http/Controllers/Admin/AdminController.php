@@ -48,8 +48,10 @@ class AdminController
         }
         $admin = Admin::find($id);
         //非根管理员
-        if (!($admin->role == '0')) {
+        if (!($admin->role == '1')) {
             $admin->delete();
+        } else {
+            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，无法删除根级管理员']);
         }
         return redirect('/admin/admin/index');
     }
@@ -73,7 +75,6 @@ class AdminController
         }
         $admin = AdminManager::getAdminInfoById($data['id']);
         return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
-
     }
 
 
@@ -100,18 +101,42 @@ class AdminController
     public function editPost(Request $request)
     {
         $data = $request->all();
-        $admin = new Admin();
+        $admin = $request->session()->get('admin');
+//        dd($data);
+        $admin_b = new Admin();
         //存在id是保存
         if (array_key_exists('id', $data) && !Utils::isObjNull($data['id'])) {
-            $admin = AdminManager::getAdminInfoById($data['id']);
+            $admin_b = AdminManager::getAdminInfoById($data['id']);
+        } else {
+            //如果不存在id代表新建，则默认设置密码
+            $admin_b->password = 'afdd0b4ad2ec172c586e2150770fbf9e';  //该password为Aa123456的码
         }
-        $admin = AdminManager::setAdmin($admin, $data);
-        //如果不存在id代表新建，则默认设置密码
-        if (!array_key_exists('id', $data)) {
-            $admin->password = 'afdd0b4ad2ec172c586e2150770fbf9e';  //该password为Aa123456的码
-        }
-        $admin->save();
+        $admin_b = AdminManager::setAdmin($admin_b, $data);
+        $admin_b->save();
         return redirect('/admin/admin/index');
+    }
+
+    /*
+     * 重置密码
+     *
+     * By TerryQi
+     *
+     * 2018-02-18
+     */
+    public function resetPassword(Request $request)
+    {
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $admin = AdminManager::getAdminInfoById($data['id']);
+        $admin->password = 'afdd0b4ad2ec172c586e2150770fbf9e';  //该password为Aa123456的码
+        $admin->save();
+        return ApiResponse::makeResponse(true, "修改密码成功", ApiResponse::SUCCESS_CODE);
     }
 
 
@@ -150,6 +175,22 @@ class AdminController
         $admin = AdminManager::setAdmin($admin, $data);
         $admin->save();
         return redirect('/admin/admin/logout');
+    }
+
+    /*
+     * 编辑用户信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-18
+     */
+    public function editInfo(Request $request)
+    {
+        $data = $request->all();
+        $admin = $request->session()->get('admin');
+        //生成七牛token
+        $upload_token = QNManager::uploadToken();
+        return view('admin.admin.edit', ['admin' => $admin, 'data' => $admin, 'upload_token' => $upload_token]);
     }
 
 }

@@ -273,14 +273,14 @@ class BaobeiManager
 
 
     /*
-     * 根据状态获取中介维度的报备列表-paginate
+     * 根据状态获取中介维度的报备列表-不分页
      *
      * By TerryQi
      *
      * 2018-02-04
      *
      */
-    public static function getListForZJByStatusPaginate($user_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $house_id, $start_time, $end_time)
+    public static function getListForZJByStatus($user_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $house_id, $start_time, $end_time)
     {
         $baobeis = Baobei::where('user_id', '=', $user_id);
         if ($baobei_status != null) {
@@ -306,13 +306,40 @@ class BaobeiManager
     }
 
     /*
-     * 根据状态获取案场负责人维度的报备列表-paginate
+     * 根据状态获取中介维度的报备列表-分页
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     *
+     */
+    public static function getListForZJByStatusPaginate($user_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $trade_no)
+    {
+        $baobeis = Baobei::where('user_id', '=', $user_id);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
+        }
+        if ($trade_no != null) {
+            $baobeis = $baobeis->where('trade_no', 'like', '%' . $trade_no . '%');
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $baobeis;
+    }
+
+    /*
+     * 根据状态获取案场负责人维度的报备列表-不分页
      *
      * By TerryQi
      *
      * 2018-02-04
      */
-    public static function getListForACByStatusPaginate($anchang_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status)
+    public static function getListForACByStatus($anchang_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $house_id, $start_time, $end_time)
     {
         $baobeis = Baobei::where('anchang_id', '=', $anchang_id);
         if ($baobei_status != null) {
@@ -324,7 +351,44 @@ class BaobeiManager
         if ($pay_zhongjie_status != null) {
             $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
         }
+        if ($house_id != null) {
+            $baobeis = $baobeis->where('house_id', '=', $house_id);
+        }
+        if ($start_time != null) {
+            $baobeis = $baobeis->where('created_at', '>', $start_time);
+        }
+        if ($end_time != null) {
+            $baobeis = $baobeis->where('created_at', '<=', $end_time);
+        }
+
         $baobeis = $baobeis->orderby('id', 'desc')->get();
+        return $baobeis;
+    }
+
+
+    /*
+     * 根据状态获取案场负责人维度的报备列表-paginate
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public static function getListForACByStatusPaginate($anchang_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $trade_no)
+    {
+        $baobeis = Baobei::where('anchang_id', '=', $anchang_id);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
+        }
+        if ($trade_no != null) {
+            $baobeis = $baobeis->where('trade_no', 'like', '%' . $trade_no . '%');
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $baobeis;
     }
 

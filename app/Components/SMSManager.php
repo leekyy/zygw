@@ -49,6 +49,7 @@ class SMSManager
     //发送停车通知
     public static function sendSMS($telphone, $templated_id, $sms_txt)
     {
+//        dd("sendSMS telphone:" . $telphone . " template_id:" . $templated_id . " sms_txt:" . $sms_txt);
         // url中{function}/{operation}?部分
         $funAndOperate = "industrySMS/sendSMS";
         $body = self::createBasicAuthData();

@@ -17,6 +17,7 @@ class SendMessageManager
 {
 
     const CLIENT_COMMING = "CLIENT_COMMING";    //客户即将到访通知
+    const USERUP_SUCCESS = "USERUP_SUCCESS";  //中介升级为案场负责人成功
 
     /*
      * 发送消息
@@ -27,13 +28,14 @@ class SendMessageManager
     public static function sendMessage($user_id, $message_type, $message_content)
     {
         $user = UserManager::getByIdWithToken($user_id);
-        //判断服务号是否为空，如果不为空则通过服务号发送消息，如果为空则通过短信模板发送消息
+        //判断服务号是否为空，如果不为空则通过服务号发送消息
         if (!Utils::isObjNull($user->fwh_openid)) {
             self::setMessageFromFWH($user->fwh_openid, $message_type, $message_content);
-        } else {
-
         }
-
+        //判断手机号是否为空，如果不为空则通过短信发送消息
+        if (!Utils::isObjNull($user->phonenum)) {
+            self::setMessageFromSM($user->phonenum, $message_type, $message_content);
+        }
     }
 
     /*
@@ -106,6 +108,8 @@ class SendMessageManager
         switch ($message_type) {
             case self::CLIENT_COMMING:  //客户即将到访
                 return $message_content['keyword1'] . ',' . $message_content['keyword2'] . ',' . $message_content['keyword3'] . ',' . $message_content['keyword4'];
+            case self::USERUP_SUCCESS:  //中介升级为置业顾问
+                return $message_content['keyword1'] . ',' . $message_content['keyword2'];
             default:
                 break;
         }
@@ -119,8 +123,10 @@ class SendMessageManager
     {
         //根据消息类型选择模板
         switch ($message_type) {
-            case self::CLIENT_COMMING:  //客户即将到访
+            case self::CLIENT_COMMING:      //客户即将到访
                 return "170823977";
+            case self::USERUP_SUCCESS:       //中介升级为案场负责人成功
+                return "163798279";
             default:
                 break;
         }

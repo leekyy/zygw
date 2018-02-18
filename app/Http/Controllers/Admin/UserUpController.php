@@ -13,7 +13,9 @@ use App\Components\ADManager;
 use App\Components\AdminManager;
 use App\Components\DateTool;
 use App\Components\DoctorManager;
+use App\Components\HouseManager;
 use App\Components\QNManager;
+use App\Components\SendMessageManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
 use App\Components\Utils;
@@ -73,7 +75,7 @@ class UserUpController
         if ($requestValidationResult !== true) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
         }
-        //opt必须为0或者1
+        //status必须为1-审核通过或者2-审核不通过
         $status = $data['status'];
         if (!($status == '1' || $status == '2')) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数,opt必须为0或者1，现值为' . $opt]);
@@ -83,10 +85,20 @@ class UserUpController
         $userUp->admin_id = $data['admin_id'];
         $userUp->sh_time = DateTool::getCurrentTime();
         $userUp->save();
-        //设置用户身份
-        $user = UserManager::getByIdWithToken($userUp->user_id);    //此处不要丢失token
-        $user->role = "1";
-        $user->save();
+        //如果审核通过，则设置用户身份
+        if ($userUp->status == "1") {
+            $user = UserManager::getByIdWithToken($userUp->user_id);    //此处不要丢失token
+            $user->role = "1";
+            $user->save();
+            //并发送消息通知
+            $house = HouseManager::getById($userUp->house_id);
+            $message_content = [
+                'keyword1' => $house->title,
+                'keyword2' => $userUp->sh_time
+            ];
+//            dd($message_content);
+            SendMessageManager::sendMessage($user->id, SendMessageManager::USERUP_SUCCESS, $message_content);
+        }
         return redirect('/admin/userUp/index');
     }
 }

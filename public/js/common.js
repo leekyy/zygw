@@ -54,6 +54,11 @@ function getAdminById(url, param, callBack) {
     ajaxRequest(url + "admin/admin/getById", param, "GET", callBack);
 }
 
+//重置管理员密码
+function resetPassword(url, param, callBack) {
+    ajaxRequest(url + "admin/admin/resetPassword", param, "GET", callBack);
+}
+
 //测试接口
 function test(url, param, callBack) {
     ajaxRequest(url + "api/test", param, "post", callBack);

@@ -45,6 +45,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/admin/changePassword', 'Admin\AdminController@changePassword');    //修改密码页面
     Route::post('/admin/changePassword', 'Admin\AdminController@changePasswordPost');    //修改密码页面
     Route::get('/admin/logout', 'Admin\LoginController@loginout');  //注销
+    Route::get('/admin/resetPassword', 'Admin\AdminController@resetPassword');    //重置管理员密码
+
 
     //中介申请成为案场负责人管理
     Route::get('/userUp/index', 'Admin\UserUpController@index');  //管理员管理首页
@@ -55,6 +57,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/acfzr/index', 'Admin\UserACFZRController@index');  //案场负责人管理首页
     Route::post('/acfzr/search', 'Admin\UserACFZRController@search');  //搜索案场负责人
     Route::get('/acfzr/setStatus/{id}', 'Admin\UserACFZRController@setStatus');  //设置状态
+    Route::get('/acfzr/smst', 'Admin\UserACFZRController@smst');  //案场负责人统计页面
 
     //中介
     Route::get('/zhongjie/index', 'Admin\UserZJController@index');  //中介管理首页
@@ -110,6 +113,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/kehu/edit', 'Admin\KeHuController@editPost');  //新建或编辑客户
     Route::get('/kehu/getById', 'Admin\KeHuController@getById');  //根据id获取客户信息
 
+    //报备详情页面
+    Route::get('/baobei/info', 'Admin\BaobeiController@info');  //客户管理首页
+
     //产品标签
     Route::get('/houseLabel/index', 'Admin\HouseLabelController@index');  //楼盘标签管理首页
     Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑产品标签
@@ -130,7 +136,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/userQD/search', 'Admin\UserQDController@search');  //系统配置首页信息
     Route::get('/userQD/getRecentDatas', 'Admin\UserQDController@getRecentDatas');        //获取近几日综合统计数据
 
-    //换商品管理
+    //商品管理
     Route::get('/goods/index', 'Admin\GoodsController@index');  //商品管理首页
     Route::get('/goods/setStatus/{id}', 'Admin\GoodsController@setStatus');  //设置商品状态
     Route::get('/goods/del/{id}', 'Admin\GoodsController@del');  //删除商品

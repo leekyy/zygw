@@ -63,6 +63,9 @@ class AdminManager
         if (array_key_exists('phonenum', $data)) {
             $admin->phonenum = array_get($data, 'phonenum');
         }
+        if (array_key_exists('email', $data)) {
+            $admin->email = array_get($data, 'email');
+        }
         if (array_key_exists('password', $data)) {
             $admin->password = array_get($data, 'password');
         }

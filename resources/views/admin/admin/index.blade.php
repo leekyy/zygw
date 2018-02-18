@@ -54,11 +54,11 @@
                                     </td>
                                     <td>
                                         <span class="line-height-30">
-                                        @if($data->role==='0')
-                                                <span class="label label-info line-height-30">普通管理人员</span>
+                                            @if($data->role=="0")
+                                                <span class="label label-info line-height-30">普通管理员</span>
                                             @endif
-                                            @if($data->role==='1')
-                                                <span class="label label-success line-height-30">超级医师人员</span>
+                                            @if($data->role=="1")
+                                                <span class="label label-success line-height-30">超级管理员</span>
                                             @endif
                                         </span>
                                     </td>
@@ -75,6 +75,13 @@
                                                   onclick="clickEdit({{$data->id}})"
                                                   title="编辑该角色">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
+                                            </span>
+                                            <span class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
+                                                  data-toggle="tooltip"
+                                                  data-placement="top"
+                                                  onclick="clickResetPassword({{$data->id}})"
+                                                  title="重置密码">
+                                                <i class="fa fa-key opt-btn-i-size"></i>
                                             </span>
                                             <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
@@ -147,6 +154,15 @@
                                            placeholder="请输入电话号码">
                                 </div>
                             </div>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label for="email" class="col-sm-2 control-label">邮箱*</label>
+
+                                <div class="col-sm-10">
+                                    <input id="email" name="email" type="text" class="form-control"
+                                           value=""
+                                           placeholder="请输入常用邮箱">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="avatar" class="col-sm-2 control-label">头像*</label>
 
@@ -202,12 +218,34 @@
                     <h4 class="modal-title">提示信息</h4>
                 </div>
                 <div class="modal-body">
-                    <p>您确认要删除该医师信息吗？</p>
+                    <p>您确认要删除该管理员信息吗？</p>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" id="url"/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button id="delConfrimModal_confirm_btn" data-value="" onclick="delAdmin();"
+                            class="btn btn-success"
+                            data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    {{--提示Modal--}}
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body" id="tipModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button id="delConfrimModal_confirm_btn" data-value=""
                             class="btn btn-success"
                             data-dismiss="modal">确定
                     </button>
@@ -228,7 +266,7 @@
             initQNUploader();
         });
 
-        //点击删除医师
+        //点击删除管理员
         function clickDel(admin_id) {
             console.log("clickDel admin_id:" + admin_id);
             //为删除按钮赋值
@@ -236,7 +274,7 @@
             $("#delConfrimModal").modal('show');
         }
 
-        //删除医师
+        //删除管理员
         function delAdmin() {
             var admin_id = $("#delConfrimModal_confirm_btn").attr("data-value");
             console.log("delAdmin admin_id:" + admin_id);
@@ -246,16 +284,47 @@
             window.location.href = "{{URL::asset('/admin/admin/del')}}/" + admin_id;
         }
 
-        //点击新建医师
+        //点击新建管理员
         function clickAdd() {
+            //普通管理员没有修改权限
+            if ("{{$admin->role}}" == "0") {
+                $("#tipModalBody").html('<p>普通管理员没有新建/管理管理员权限，请联系超级管理员处理</p>');
+                $("#tipModal").modal('show');
+                return;
+            }
             //清空模态框
             $("#editAdmin")[0].reset();
             $("#pickfiles").attr("src", '{{URL::asset('/img/default_headicon.png')}}');
             $("#addAdminModal").modal('show');
         }
 
+        //重置管理员密码
+        function clickResetPassword(admin_id) {
+            //普通管理员没有修改权限
+            if ("{{$admin->role}}" == "0") {
+                $("#tipModalBody").html('<p>普通管理员没有重置管理员密码权限，请联系超级管理员处理</p>');
+                $("#tipModal").modal('show');
+                return;
+            }
+            resetPassword("{{URL::asset('')}}", {id: admin_id, _token: "{{ csrf_token() }}"}, function (ret) {
+                if (ret.result) {
+                    $("#tipModalBody").html('<p>管理员密码已经重置为Aa123456</p>');
+                    $("#tipModal").modal('show');
+                } else {
+                    $("#tipModalBody").html('<p>重置失败，请联系系统管理员理</p>');
+                    $("#tipModal").modal('show');
+                }
+            })
+        }
+
         //点击编辑
         function clickEdit(admin_id) {
+            //普通管理员没有修改权限
+            if ("{{$admin->role}}" == "0") {
+                $("#tipModalBody").html('<p>普通管理员没有新建/管理管理员权限，请联系超级管理员处理</p>');
+                $("#tipModal").modal('show');
+                return;
+            }
             console.log("clickEdit admin_id:" + admin_id);
             getAdminById("{{URL::asset('')}}", {id: admin_id, _token: "{{ csrf_token() }}"}, function (ret) {
                 if (ret.result) {
@@ -264,6 +333,7 @@
                     $("#id").val(msgObj.id);
                     $("#name").val(msgObj.name);
                     $("#phonenum").val(msgObj.phonenum);
+                    $("#email").val(msgObj.email);
                     $("#avatar").val(msgObj.avatar)
                     $("#pickfiles").attr("src", msgObj.avatar);
                     $("#role").val(msgObj.role);
