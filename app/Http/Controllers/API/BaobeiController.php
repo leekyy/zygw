@@ -628,6 +628,7 @@ class BaobeiController extends Controller
             foreach ($userUps as $userUp) {
                 array_push($house_ids, $userUp->house_id);      //案场负责人所属楼盘id数组
             }
+//            dd($house_ids);
             $baobeis = BaobeiManager::getWaitingForAccpectByHouseIds($house_ids);
             foreach ($baobeis as $baobei) {
                 $baobei = BaobeiManager::getInfoByLevel($baobei, "0");
