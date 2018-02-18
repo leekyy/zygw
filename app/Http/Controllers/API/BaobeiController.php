@@ -17,6 +17,7 @@ use App\Components\HouseClientManager;
 use App\Components\HouseManager;
 use App\Components\HuxingManager;
 use App\Components\SendMessageManager;
+use App\Components\SystemManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
 use App\Components\Utils;
@@ -289,12 +290,16 @@ class BaobeiController extends Controller
             $baobei->visit_time = DateTool::getCurrentTime();
         }
         $baobei->baobei_status = "1";
-        //设置案场负责人
-        $user = UserManager::getById($data['user_id']);
-        if ($user->role == '1') { //如果该用户是案场负责人，则要设置案场负责人
-            $baobei->anchang_id = $user->id;
-        }
         $baobei->save();
+        //增加用户积分
+        $user = UserManager::getById($data['user_id']);
+        if ($user) {
+            $system = SystemManager::getSystemInfo();
+            $user->jifen = $user->jifen + $system->df_jifen;
+            $user->save();
+            //进行积分值的记录
+
+        }
         $baobei = BaobeiManager::getById($baobei->id);
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }

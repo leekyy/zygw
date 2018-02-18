@@ -56,8 +56,7 @@
                                 <th>头像</th>
                                 <th>姓名</th>
                                 <th>电话</th>
-                                <th>积分</th>
-                                <th>注册时间</th>
+                                <th>所属楼盘</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -91,7 +90,11 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->created_at}}
+                                            @foreach($data->userUps as $userUp)
+                                                <a>
+                                                    {{$userUp->house->title}}
+                                                </a>
+                                            @endforeach
                                         </div>
                                     </td>
                                     <td>

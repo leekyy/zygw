@@ -12,8 +12,10 @@ namespace App\Http\Controllers\Admin;
 use App\Components\AdminManager;
 use App\Components\BaobeiManager;
 use App\Components\DateTool;
+use App\Components\HouseManager;
 use App\Components\QNManager;
 use App\Components\UserManager;
+use App\Components\UserUpManager;
 use App\Components\Utils;
 use App\Http\Controllers\ApiResponse;
 use App\Models\AD;
@@ -35,7 +37,11 @@ class UserACFZRController
         $admin = $request->session()->get('admin');
         $users = UserManager::getListByRoleAndSearchWordPaginate('', '1');
         foreach ($users as $user) {
-            $user->created_at_str = DateTool::formateData($user->created_at, 1);;
+            $user->created_at_str = DateTool::formateData($user->created_at, 1);
+            $user->userUps = UserUpManager::getUserUpHousesByUserId($user->id);
+            foreach ($user->userUps as $userUp) {
+                $userUp->house = HouseManager::getById($userUp->house_id);
+            }
         }
         return view('admin.acfzr.index', ['admin' => $admin, 'datas' => $users]);
     }
