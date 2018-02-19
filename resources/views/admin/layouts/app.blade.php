@@ -251,7 +251,7 @@
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/goods/index')}}"><i class="fa fa-circle-o"></i>商品管理</a></li>
                         <li><a href="{{url('admin/goodsexchange/index')}}"><i class="fa fa-circle-o"></i>兑换订单</a></li>
-                        <li><a href="{{url('admin/goodsexchange/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>
+                        {{--                        <li><a href="{{url('admin/goodsexchange/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>--}}
                     </ul>
                 </li>
                 <li class="treeview">

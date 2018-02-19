@@ -56,6 +56,7 @@
                                 <th>姓名</th>
                                 <th>电话</th>
                                 <th>报备中介</th>
+                                <th>备注</th>
                                 <th>报备次数</th>
                                 <th>首次报备时间</th>
                                 <th>操作</th>
@@ -87,6 +88,11 @@
                                                     {{isset($data->user)?$data->user->real_name:'--'}}
                                                 </a>
                                             @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="line-height-30">
+                                            {{$data->remark}}
                                         </div>
                                     </td>
                                     <td>

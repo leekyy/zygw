@@ -47,7 +47,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/admin/logout', 'Admin\LoginController@loginout');  //注销
     Route::get('/admin/resetPassword', 'Admin\AdminController@resetPassword');    //重置管理员密码
 
-
     //中介申请成为案场负责人管理
     Route::get('/userUp/index', 'Admin\UserUpController@index');  //管理员管理首页
     Route::get('/userUp/setStatus/{id}', 'Admin\UserUpController@setStatus');  //设置升级状态
@@ -182,7 +181,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/whitebook/del/{id}', 'Admin\WhiteBookController@del');  //删除行业白皮书
     Route::get('/whitebook/editWhiteBook', 'Admin\WhiteBookController@editWhiteBook');  //编辑行业白皮书页面
     Route::post('/whitebook/editWhiteBook', 'Admin\WhiteBookController@editWhiteBookPost'); //编辑行业白皮书Post
-
 
     //积分兑换规则管理
     Route::get('/rule/index', 'Admin\RuleController@index');  //积分兑换规则管理首页
