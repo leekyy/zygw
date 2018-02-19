@@ -47,7 +47,7 @@ class UserACFZRController
     }
 
     //统计页面
-    public function smst(Request $request)
+    public function stmt(Request $request)
     {
         $data = $request->all();
         $admin = $request->session()->get('admin');
@@ -95,7 +95,7 @@ class UserACFZRController
             'pay_zhongjie_status1' => BaobeiManager::getListForACByStatus($user->id, null, null, '1', null, null, null)->count(),
         ]);
 //        dd($stmt);
-        return view('admin.acfzr.smst', ['admin' => $admin, 'user' => $user, 'smst' => $stmt, 'datas' => $datas]);
+        return view('admin.acfzr.stmt', ['admin' => $admin, 'user' => $user, 'stmt' => $stmt, 'datas' => $datas]);
     }
 
     //搜索

@@ -57,14 +57,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/acfzr/index', 'Admin\UserACFZRController@index');  //案场负责人管理首页
     Route::post('/acfzr/search', 'Admin\UserACFZRController@search');  //搜索案场负责人
     Route::get('/acfzr/setStatus/{id}', 'Admin\UserACFZRController@setStatus');  //设置状态
-    Route::get('/acfzr/smst', 'Admin\UserACFZRController@smst');  //案场负责人统计页面
+    Route::get('/acfzr/stmt', 'Admin\UserACFZRController@stmt');  //案场负责人统计页面
 
     //中介
     Route::get('/zhongjie/index', 'Admin\UserZJController@index');  //中介管理首页
     Route::get('/zhongjie/search', 'Admin\UserZJController@search');  //搜索中介
     Route::get('/zhongjie/setStatus/{id}', 'Admin\UserZJController@setStatus');  //设置状态
-    Route::get('/zhongjie/smst', 'Admin\UserZJController@smst');  //案场负责人统计页面
+    Route::get('/zhongjie/stmt', 'Admin\UserZJController@stmt');  //案场负责人统计页面
     Route::post('/zhongjie/payYongjin', 'Admin\UserZJController@payYongjin');  //支付中介佣金
+
+    //报备
+    Route::get('/baobei/info', 'Admin\BaobeiController@info');  //报备详情
+    Route::get('/baobei/resetDealInfo', 'Admin\BaobeiController@resetDealInfo');  //重新设置交易详情-get
+    Route::post('/baobei/resetDealInfo', 'Admin\BaobeiController@resetDealInfoPost');  //重新设置交易详情-post
 
     //楼盘管理
     Route::get('/house/index', 'Admin\HouseController@index');//楼盘管理首页
@@ -108,15 +113,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/houseClient/edit', 'Admin\HouseClientController@editPost');//新建或编辑房地产客户
     Route::get('/houseClient/del/{id}', 'Admin\HouseClientController@del');//删除房地产客户
 
-    //客户管理
-    Route::get('/kehu/index', 'Admin\KeHuController@index');  //客户管理首页
-    Route::get('/kehu/del/{id}', 'Admin\KeHuController@del');  //删除客户
-    Route::get('/kehu/edit', 'Admin\KeHuController@edit');  //新建或编辑客户
-    Route::post('/kehu/edit', 'Admin\KeHuController@editPost');  //新建或编辑客户
-    Route::get('/kehu/getById', 'Admin\KeHuController@getById');  //根据id获取客户信息
-
     //报备详情页面
-    Route::get('/baobei/info', 'Admin\BaobeiController@info');  //客户管理首页
+    Route::get('/baobei/info', 'Admin\BaobeiController@info');  //报备详情页
+    Route::get('/baobei/index', 'Admin\BaobeiController@index');  //报备管理首页
+
+    //客户管理
+    Route::get('/client/index', 'Admin\ClientController@index');  //客户管理首页
+    Route::get('/client/stmt', 'Admin\ClientController@stmt');  //客户统计
+    Route::post('/client/search', 'Admin\ClientController@search');  //客户搜索首页
 
     //产品标签
     Route::get('/houseLabel/index', 'Admin\HouseLabelController@index');  //楼盘标签管理首页

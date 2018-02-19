@@ -139,6 +139,10 @@ class BaobeiManager
         if (!Utils::isObjNull($baobei->pay_way_id)) {
             $baobei->pay_way = BaobeiPayWayManager::getById($baobei->pay_way_id);
         }
+        //支付中介的管理员
+        if (!Utils::isObjNull($baobei->pay_admin_id)) {
+            $baobei->admin = AdminManager::getAdminInfoById($baobei->pay_admin_id);
+        }
         return $baobei;
     }
 
@@ -276,6 +280,67 @@ class BaobeiManager
 
 
     /*
+     * 根据状态获取报备列表-不分页
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     *
+     */
+    public static function getListByStatus($baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $house_id, $start_time, $end_time)
+    {
+        $baobeis = Baobei::wherein('status', ['0', '1']);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
+        }
+        if ($house_id != null) {
+            $baobeis = $baobeis->where('house_id', '=', $house_id);
+        }
+        if ($start_time != null) {
+            $baobeis = $baobeis->where('created_at', '>', $start_time);
+        }
+        if ($end_time != null) {
+            $baobeis = $baobeis->where('created_at', '<=', $end_time);
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->get();
+        return $baobeis;
+    }
+
+    /*
+     * 根据状态获取报备列表-分页
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     *
+     */
+    public static function getListByStatusPaginate($baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $trade_no)
+    {
+        $baobeis = Baobei::wherein('status', ['0', '1']);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
+        }
+        if ($trade_no != null) {
+            $baobeis = $baobeis->where('trade_no', 'like', '%' . $trade_no . '%');
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $baobeis;
+    }
+
+
+    /*
      * 根据状态获取中介维度的报备列表-不分页
      *
      * By TerryQi
@@ -394,6 +459,119 @@ class BaobeiManager
         $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $baobeis;
     }
+
+    /*
+    * 根据状态获取客户维度的报备列表-不分页
+    *
+    * By TerryQi
+    *
+    * 2018-02-04
+    */
+    public static function getListForClientByStatus($client_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $house_id, $start_time, $end_time)
+    {
+        $baobeis = Baobei::where('client_id', '=', $client_id);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
+        }
+        if ($house_id != null) {
+            $baobeis = $baobeis->where('house_id', '=', $house_id);
+        }
+        if ($start_time != null) {
+            $baobeis = $baobeis->where('created_at', '>', $start_time);
+        }
+        if ($end_time != null) {
+            $baobeis = $baobeis->where('created_at', '<=', $end_time);
+        }
+
+        $baobeis = $baobeis->orderby('id', 'desc')->get();
+        return $baobeis;
+    }
+
+
+    /*
+     * 根据状态获取案场负责人维度的报备列表-paginate
+     *
+     * By TerryQi
+     *
+     * 2018-02-04
+     */
+    public static function getListForClientByStatusPaginate($client_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $trade_no)
+    {
+        $baobeis = Baobei::where('client_id', '=', $client_id);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
+        }
+        if ($trade_no != null) {
+            $baobeis = $baobeis->where('trade_no', 'like', '%' . $trade_no . '%');
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $baobeis;
+    }
+
+    /*
+     * 根据状态获取楼盘维度的报备列表
+     *
+     * By TerryQi
+     *
+     * 2018-02-19
+     */
+    public static function getListForHouseByStatus($house_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $trade_no)
+    {
+        $baobeis = Baobei::where('house_id', '=', $house_id);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
+        }
+        if ($trade_no != null) {
+            $baobeis = $baobeis->where('trade_no', 'like', '%' . $trade_no . '%');
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->get();
+        return $baobeis;
+    }
+
+    /*
+     * 根据状态获取楼盘维度的报备列表-paginate
+     *
+     * By TerryQi
+     *
+     * 2018-02-19
+     */
+    public static function getListForHouseByStatusPaginate($house_id, $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $trade_no)
+    {
+        $baobeis = Baobei::where('house_id', '=', $house_id);
+        if ($baobei_status != null) {
+            $baobeis = $baobeis->where('baobei_status', '=', $baobei_status);
+        }
+        if ($can_jiesuan_status != null) {
+            $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+        }
+        if ($pay_zhongjie_status != null) {
+            $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
+        }
+        if ($trade_no != null) {
+            $baobeis = $baobeis->where('trade_no', 'like', '%' . $trade_no . '%');
+        }
+        $baobeis = $baobeis->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $baobeis;
+    }
+
 
     /*
    * 获取中介佣金总额

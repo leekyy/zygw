@@ -6,9 +6,11 @@
  * Time: 10:30
  */
 namespace App\Components;
+
 use App\Models\AD;
 use App\Models\Client;
 use Qiniu\Auth;
+
 class ClientManager
 {
     /*
@@ -23,6 +25,7 @@ class ClientManager
         $client = Client::find($id);
         return $client;
     }
+
     /*
      * 根据phonenum获取客户信息
      *
@@ -35,6 +38,7 @@ class ClientManager
         $client = Client::where('phonenum', '=', $phonenum)->first();
         return $client;
     }
+
     /*
      * 获取列表
      *
@@ -45,6 +49,36 @@ class ClientManager
         $clients = Client::orderby('id', 'desc')->get();
         return $clients;
     }
+
+    /*
+     * 根级获取级别获取客户信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-19
+     */
+    public static function getInfoByLevel($client, $level)
+    {
+        if (!Utils::isObjNull($client->user_id)) {
+            $client->user = UserManager::getById($client->user_id);
+        }
+    }
+
+    /*
+     * 根据手机号获取姓名搜索
+     *
+     * By TerryQi
+     *
+     * 2018-02-19
+     *
+     */
+    public static function search($search_word)
+    {
+        $clients = Client::where('name', 'like', '%' . $search_word . '%')->orwhere('phonenum', 'like', '%' . $search_word . '%')
+            ->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
+        return $clients;
+    }
+
     /*
      * 获取列表-分页
      *
@@ -56,6 +90,7 @@ class ClientManager
         $clients = Client::orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $clients;
     }
+
     /*
      * 增加客户报备次数
      *
@@ -70,6 +105,7 @@ class ClientManager
             $client->save();
         }
     }
+
     /*
      * 设置客户信息，用于编辑
      *

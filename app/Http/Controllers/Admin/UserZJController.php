@@ -13,6 +13,7 @@ use App\Components\AdminManager;
 use App\Components\BaobeiManager;
 use App\Components\DateTool;
 use App\Components\QNManager;
+use App\Components\SendMessageManager;
 use App\Components\UserManager;
 use App\Components\UserUpManager;
 use App\Components\Utils;
@@ -73,7 +74,15 @@ class UserZJController
         $baobei->pay_zhongjie_status = '1';
         $baobei->pay_zhongjie_attach = $data['pay_zhongjie_attach'];
         $baobei->save();
-        return redirect('/admin/zhongjie/smst?id=' . $baobei->user_id);
+        //进行信息通知
+        $user = UserManager::getById($baobei->user_id); //中介信息
+        $message_content = [
+            'keyword1' => $user->real_name,
+            'keyword2' => $baobei->trade_no,
+            'keyword3' => $baobei->yongjin,
+            'keyword4' => $baobei->pay_zhongjie_time];
+        SendMessageManager::sendMessage($user->id, SendMessageManager::PAY_ZHONGJIE, $message_content);
+        return redirect('/admin/zhongjie/stmt?id=' . $baobei->user_id);
     }
 
     //设置状态
@@ -99,7 +108,7 @@ class UserZJController
     }
 
     //统计页面
-    public function smst(Request $request)
+    public function stmt(Request $request)
     {
         $data = $request->all();
         $admin = $request->session()->get('admin');
@@ -151,7 +160,7 @@ class UserZJController
             'pay_zhongjie_status1' => BaobeiManager::getListForZJByStatus($user->id, null, null, '1', null, null, null)->count(),
         ]);
 //        dd($stmt);
-        return view('admin.zhongjie.smst', ['admin' => $admin, 'user' => $user, 'smst' => $stmt, 'datas' => $datas, 'upload_token' => $upload_token]);
+        return view('admin.zhongjie.stmt', ['admin' => $admin, 'user' => $user, 'stmt' => $stmt, 'datas' => $datas, 'upload_token' => $upload_token]);
     }
 
 }

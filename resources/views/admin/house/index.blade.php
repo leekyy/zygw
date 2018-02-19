@@ -150,13 +150,12 @@
                                                data-placement="top" title="查看该楼盘的厂商客户">
                                                 <i class="fa fa-male opt-btn-i-size"></i>
                                             </a>
-                                            <span class="btn btn-social-icon btn-danger opt-btn-size"
-                                                  data-toggle="tooltip"
-                                                  data-placement="top"
-                                                  title="查看统计信息"
-                                                  onclick="clickStmt({{$data->id}})">
+                                            <a href="{{URL::asset('/admin/house/stmt')}}?id={{$data->id}}"
+                                               class="btn btn-social-icon btn-danger opt-btn-size"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title="查看统计信息">
                                                 <i class="fa fa-bar-chart opt-btn-i-size"></i>
-                                            </span>
+                                            </a>
                                         </span>
                                     </td>
                                 </tr>

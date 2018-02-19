@@ -30,6 +30,23 @@ class UserManager
         return $user;
     }
 
+
+    /*
+     * 增加中介报备次数
+     *
+     * By TerryQi
+     *
+     */
+    public static function addBaobeiTimes($user_id)
+    {
+        $user = self::getByIdWithToken($user_id);
+        if ($user) {
+            $user->baobei_times += 1;
+            $user->save();
+        }
+    }
+
+
     /*
      * 根据搜索关键字和身份获取用户信息-分页
      *
@@ -166,6 +183,12 @@ class UserManager
         }
         if (array_key_exists('jifen', $data)) {
             $user->jifen = array_get($data, 'jifen');
+        }
+        if (array_key_exists('yongjin', $data)) {
+            $user->yongjin = array_get($data, 'yongjin');
+        }
+        if (array_key_exists('baobei_times', $data)) {
+            $user->baobei_times = array_get($data, 'baobei_times');
         }
         if (array_key_exists('cardID', $data)) {
             $user->cardID = array_get($data, 'cardID');

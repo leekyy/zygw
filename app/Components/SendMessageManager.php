@@ -18,6 +18,7 @@ class SendMessageManager
 
     const CLIENT_COMMING = "CLIENT_COMMING";    //客户即将到访通知
     const USERUP_SUCCESS = "USERUP_SUCCESS";  //中介升级为案场负责人成功
+    const PAY_ZHONGJIE = "PAY_ZHONGJIE";        //向中介支付
 
     /*
      * 发送消息
@@ -110,6 +111,8 @@ class SendMessageManager
                 return $message_content['keyword1'] . ',' . $message_content['keyword2'] . ',' . $message_content['keyword3'] . ',' . $message_content['keyword4'];
             case self::USERUP_SUCCESS:  //中介升级为置业顾问
                 return $message_content['keyword1'] . ',' . $message_content['keyword2'];
+            case self::PAY_ZHONGJIE:
+                return $message_content['keyword1'] . ',' . $message_content['keyword2'] . ',' . $message_content['keyword3'] . ',' . $message_content['keyword4'];
             default:
                 break;
         }
@@ -127,6 +130,8 @@ class SendMessageManager
                 return "170823977";
             case self::USERUP_SUCCESS:       //中介升级为案场负责人成功
                 return "163798279";
+            case self::PAY_ZHONGJIE:       //中介升级为案场负责人成功
+                return "179832253";
             default:
                 break;
         }

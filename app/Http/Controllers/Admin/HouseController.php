@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Components\ADManager;
 use App\Components\AdminManager;
+use App\Components\BaobeiManager;
 use App\Components\DateTool;
 use App\Components\HouseAreaManager;
 use App\Components\HouselabelManager;
@@ -29,6 +30,7 @@ use App\Models\Huxing;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redirect;
 
 
@@ -52,6 +54,68 @@ class HouseController
         return view('admin.house.index', ['admin' => $admin, 'datas' => $houses, 'upload_token' => $upload_token
             , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels, 'houseAreas' => $houseAreas]);
     }
+
+    //统计信息
+    /*
+     * 楼盘维度的报备单明细
+     *
+     * By TerryQi
+     *
+     * 2018-02-19
+     */
+    public function stmt(Request $request)
+    {
+        $data = $request->all();
+        $admin = $request->session()->get('admin');
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数' . $requestValidationResult]);
+        }
+        //报备状态条件
+        $baobei_status = null;
+        if (array_key_exists('baobei_status', $data)) {
+            $baobei_status = $data['baobei_status'];
+        }
+        //是否可以结算条件
+        $can_jiesuan_status = null;
+        if (array_key_exists('can_jiesuan_status', $data)) {
+            $can_jiesuan_status = $data['can_jiesuan_status'];
+        }
+        //是否已经结算条件
+        $pay_zhongjie_status = null;
+        if (array_key_exists('pay_zhongjie_status', $data)) {
+            $pay_zhongjie_status = $data['pay_zhongjie_status'];
+        }
+        //trade_no
+        $trade_no = null;
+        if (array_key_exists('trade_no', $data)) {
+            $trade_no = $data['trade_no'];
+        }
+        //楼盘信息
+        $house = HouseManager::getById($data['id']);
+        $datas = BaobeiManager::getListForHouseByStatusPaginate($data['id'], $baobei_status, $can_jiesuan_status, $pay_zhongjie_status, $trade_no);
+        foreach ($datas as $data) {
+            $data = BaobeiManager::getInfoByLevel($data, "0");
+        }
+
+        //获取统计信息
+        $stmt = new Collection([
+            'all_nums' => BaobeiManager::getListForHouseByStatus($house->id, null, null, null, null, null, null)->count(),
+            'baobei_status0' => BaobeiManager::getListForHouseByStatus($house->id, '0', null, null, null, null, null)->count(),
+            'baobei_status1' => BaobeiManager::getListForHouseByStatus($house->id, '1', null, null, null, null, null)->count(),
+            'baobei_status2' => BaobeiManager::getListForHouseByStatus($house->id, '2', null, null, null, null, null)->count(),
+            'baobei_status3' => BaobeiManager::getListForHouseByStatus($house->id, '3', null, null, null, null, null)->count(),
+            'baobei_status4' => BaobeiManager::getListForHouseByStatus($house->id, '4', null, null, null, null, null)->count(),
+            'can_jiesuan_status1' => BaobeiManager::getListForHouseByStatus($house->id, null, '1', null, null, null, null)->count(),
+            'pay_zhongjie_status1' => BaobeiManager::getListForHouseByStatus($house->id, null, null, '1', null, null, null)->count(),
+        ]);
+//        dd($stmt);
+        return view('admin.house.stmt', ['admin' => $admin, 'house' => $house, 'stmt' => $stmt, 'datas' => $datas]);
+    }
+
 
     //根据名称进行楼盘搜索
     public function search(Request $request)
@@ -103,26 +167,6 @@ class HouseController
         //生成七牛token
         $upload_token = QNManager::uploadToken();
         return view('admin.house.edit', ['admin' => $admin, 'data' => $house, 'upload_token' => $upload_token]);
-    }
-
-
-    /*
-     * 获取统计数据
-     *
-     * By TerryQi
-     *
-     * 2018-01-27
-     */
-    public function stmt(Request $request)
-    {
-        $admin = $request->session()->get('admin');
-        $data = $request->all();
-        $stmt = collect();
-        $stmt->zqdrs = HouseManager::getAllQDRenShuNum();
-        $stmt->zqdrcs = HouseManager::getAllQDRenCiShuNum();
-        // $stmt->zpsjfs = HouseManager::getAllPaiSongJiFenNum();
-//        dd($stmt);
-        return view('admin.house.stmt', ['admin' => $admin, 'data' => $stmt]);
     }
 
 

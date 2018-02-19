@@ -199,6 +199,7 @@
                         <li><a href="{{url('admin/userUp/index')}}"><i class="fa fa-circle-o"></i>升级审核</a></li>
                         <li><a href="{{url('admin/acfzr/index')}}"><i class="fa fa-circle-o"></i>案场负责人管理</a></li>
                         <li><a href="{{url('admin/zhongjie/index')}}"><i class="fa fa-circle-o"></i>中介人员管理</a></li>
+                        <li><a href="{{url('admin/userQD/index')}}"><i class="fa fa-circle-o"></i>签到明细</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -211,7 +212,6 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{{url('admin/house/index')}}"><i class="fa fa-circle-o"></i>楼盘管理</a></li>
-                        <li><a href="{{url('admin/house/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>
                     </ul>
                 </li>
                 <li class="treeview">
@@ -223,8 +223,8 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{url('admin/kehu/index')}}"><i class="fa fa-circle-o"></i>客户管理</a></li>
-                        <li><a href=""><i class="fa fa-circle-o"></i>综合报表</a></li>
+                        <li><a href="{{url('admin/client/index')}}"><i class="fa fa-circle-o"></i>客户管理</a></li>
+                        <li><a href="{{url('admin/baobei/index')}}"><i class="fa fa-circle-o"></i>报备查询</a></li>
                     </ul>
                 </li>
                 {{--<li class="treeview">--}}

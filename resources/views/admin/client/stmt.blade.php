@@ -7,14 +7,48 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">楼盘综合统计</li>
+                    <li class="active">客户明细</li>
                 </ol>
+            </div>
+            <div class="col-lg-6 text-right">
+
             </div>
         </div>
     </section>
+    {{--<div id = 'upload_token' style="display: none;">{{$upload_token}}</div>--}}
 
     <!-- Main content -->
     <section class="content">
+        {{--客户基本信息--}}
+        <div class="white-bg">
+            <div style="padding: 15px;padding-bottom: 0px;">
+                <div class="margin-top-10 font-size-14 grey-bg">
+                    <div style="padding: 10px;">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                            <tr>
+                                <td>客户id</td>
+                                <td>
+                                    {{$client->id}}
+                                </td>
+                                <td>姓名</td>
+                                <td>
+                                    {{$client->name}}
+                                </td>
+                                <td>电话</td>
+                                <td>
+                                    {{$client->phonenum}}
+                                </td>
+                                <td>首次报备时间</td>
+                                <td>{{$client->created_at}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{--基础统计--}}
         <div class="white-bg">
             <div style="padding: 15px;">
@@ -48,13 +82,12 @@
                 </div>
             </div>
         </div>
-        {{--检索信息--}}
         <div class="margin-top-10">
-            <form action="{{URL::asset('/admin/house/stmt')}}" method="get"
+            <form action="{{URL::asset('/admin/client/stmt')}}" method="get"
                   class="form-horizontal">
                 {{csrf_field()}}
                 <input id="id" name="id" type="text" class="form-control hidden"
-                       placeholder="楼盘id" value="{{$house->id}}">
+                       placeholder="客户id" value="{{$client->id}}">
                 <div class="row">
                     <div class="col-xs-4">
                         <input id="trade_no" name="trade_no" type="text" class="form-control"
@@ -96,7 +129,7 @@
             </form>
         </div>
 
-        {{--中介的报备列表--}}
+        {{--客户的报备列表--}}
         <div class="row margin-top-10">
             <div class="col-xs-12">
                 <div class="box">
@@ -107,7 +140,7 @@
                                 <th>报备流水</th>
                                 <th>客户姓名</th>
                                 <th>客户电话</th>
-                                <th>意向产品</th>
+                                <th>意向楼盘</th>
                                 <th>分润佣金</th>
                                 <th>报备状态</th>
                                 <th>可结算</th>
@@ -135,7 +168,7 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{isset($data->deal_huxing)?$data->deal_huxing->name:'--'}}
+                                            {{$data->house->title}}
                                         </div>
                                     </td>
                                     <td>
@@ -201,7 +234,30 @@
                 {!! $datas->links() !!}
             </div>
         </div>
+
     </section>
+
+    {{--提示Modal--}}
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body" id="tipModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button id="delConfrimModal_confirm_btn" data-value=""
+                            class="btn btn-success"
+                            data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @section('script')
@@ -210,7 +266,6 @@
         //入口函数
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip()
-
         });
 
 

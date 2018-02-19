@@ -7,7 +7,7 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">中介明细</li>
+                    <li class="active">案场负责人明细</li>
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
@@ -19,7 +19,7 @@
 
     <!-- Main content -->
     <section class="content">
-        {{--中介基本信息--}}
+        {{--案场负责人基本信息--}}
         <div class="white-bg">
             <div style="padding: 15px;padding-bottom: 0px;">
                 <div class="margin-top-10 font-size-14 grey-bg">
@@ -63,7 +63,7 @@
                                         中介
                                     @endif
                                     @if($user->role == "1")
-                                        中介
+                                        案场负责人
                                     @endif
                                 </td>
                             </tr>
@@ -91,23 +91,23 @@
                             <tbody>
                             <tr>
                                 <td>全部记录数</td>
-                                <td>{{$smst['all_nums']}}</td>
+                                <td>{{$stmt['all_nums']}}</td>
                                 <td>已报备数</td>
-                                <td>{{$smst['baobei_status0']}}</td>
+                                <td>{{$stmt['baobei_status0']}}</td>
                                 <td>已到访数</td>
-                                <td>{{$smst['baobei_status1']}}</td>
+                                <td>{{$stmt['baobei_status1']}}</td>
                                 <td>已成交数</td>
-                                <td>{{$smst['baobei_status2']}}</td>
+                                <td>{{$stmt['baobei_status2']}}</td>
                             </tr>
                             <tr>
                                 <td>已签约数</td>
-                                <td>{{$smst['baobei_status3']}}</td>
+                                <td>{{$stmt['baobei_status3']}}</td>
                                 <td>全款到账数</td>
-                                <td>{{$smst['baobei_status4']}}</td>
+                                <td>{{$stmt['baobei_status4']}}</td>
                                 <td>可结算数</td>
-                                <td> {{$smst['can_jiesuan_status1']}}</td>
+                                <td> {{$stmt['can_jiesuan_status1']}}</td>
                                 <td>已结算数</td>
-                                <td>{{$smst['pay_zhongjie_status1']}}</td>
+                                <td>{{$stmt['pay_zhongjie_status1']}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -116,11 +116,11 @@
             </div>
         </div>
         <div class="margin-top-10">
-            <form action="{{URL::asset('/admin/zhongjie/smst')}}" method="get"
+            <form action="{{URL::asset('/admin/acfzr/stmt')}}" method="get"
                   class="form-horizontal">
                 {{csrf_field()}}
                 <input id="id" name="id" type="text" class="form-control hidden"
-                       placeholder="中介id" value="{{$user->id}}">
+                       placeholder="案场负责人id" value="{{$user->id}}">
                 <div class="row">
                     <div class="col-xs-4">
                         <input id="trade_no" name="trade_no" type="text" class="form-control"
@@ -162,7 +162,7 @@
             </form>
         </div>
 
-        {{--中介的报备列表--}}
+        {{--案场负责人的报备列表--}}
         <div class="row margin-top-10">
             <div class="col-xs-12">
                 <div class="box">
@@ -178,7 +178,6 @@
                                 <th>报备状态</th>
                                 <th>可结算</th>
                                 <th>已支付</th>
-                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -248,18 +247,6 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <td>
-                                        <span class="line-height-30">
-                                            @if($data->pay_zhongjie_status=='0' && $data->yongjin > 0)
-                                                <span class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
-                                                      data-toggle="tooltip"
-                                                      onclick="clickPayZhongjie({{$data->id}})"
-                                                      data-placement="top" title="进行佣金结算">
-                                                <i class="fa fa-check opt-btn-i-size"></i>
-                                            </span>
-                                            @endif
-                                        </span>
-                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -282,76 +269,6 @@
         </div>
 
     </section>
-
-    {{--新建对话框--}}
-    <div class="modal fade -m" id="payZhongjieModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content message_align">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">中介佣金支付</h4>
-                </div>
-                <form id="editHouse" action="{{URL::asset('/admin/zhongjie/payYongjin')}}" method="post"
-                      class="form-horizontal"
-                      onsubmit="return checkValid();">
-                    <div class="modal-body">
-                        {{csrf_field()}}
-                        <div class="box-body">
-                            <div class="form-group hidden">
-                                <label for="id" class="col-sm-2 control-label">报备id</label>
-                                <div class="col-sm-10">
-                                    <input id="baobei_id" name="baobei_id" type="text" class="form-control"
-                                           value="">
-                                </div>
-                            </div>
-                            <div class="form-group hidden">
-                                <label for="admin_id" class="col-sm-2 control-label">兑付人id</label>
-                                <div class="col-sm-10">
-                                    <input id="admin_id" name="admin_id" type="text" class="form-control"
-                                           value="{{$admin->id}}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-2 control-label">兑付人</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control"
-                                           value="{{$admin->name}}" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="pay_zhongjie_attach" class="col-sm-2 control-label">支付凭证</label>
-
-                                <div class="col-sm-10">
-                                    <input id="pay_zhongjie_attach" name="pay_zhongjie_attach" type="text"
-                                           class="form-control"
-                                           placeholder="图片网路链接地址"
-                                           value="">
-                                </div>
-                            </div>
-                            <div style="margin-top: 10px;" class="text-center">
-                                <div id="container">
-                                    <img id="pickfiles"
-                                         src="{{URL::asset('/img/upload.png')}}"
-                                         style="width: 350px;">
-                                </div>
-                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传350*200尺寸图片
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" id="url"/>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="submit" id="addHouseModal_confirm_btn" data-value=""
-                                class="btn btn-success">确定
-                        </button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
     {{--提示Modal--}}
     <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
@@ -381,121 +298,8 @@
 
         //入口函数
         $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            //获取七牛token
-            initQNUploader();
+            $('[data-toggle="tooltip"]').tooltip()
         });
-
-        //合规校验
-        function checkValid() {
-            //合规校验
-            var pay_zhongjie_attach = $("#pay_zhongjie_attach").val();
-            if (judgeIsNullStr(pay_zhongjie_attach)) {
-                $("#pay_zhongjie_attach").focus();
-                return false;
-            }
-            return true;
-        }
-
-        //点击商品兑付
-        function clickPayZhongjie(baobei_id) {
-            console.log("clickPayZhongjie baobei_id:" + baobei_id);
-            $("#baobei_id").val(baobei_id);
-            //展示modal
-            $("#payZhongjieModal").modal('show');
-        }
-
-
-        //初始化七牛上传模块
-        function initQNUploader() {
-            var uploader = Qiniu.uploader({
-                runtimes: 'html5,flash,html4',      // 上传模式，依次退化
-                browse_button: 'pickfiles',         // 上传选择的点选按钮，必需
-                container: 'container',//上传按钮的上级元素ID
-                // 在初始化时，uptoken，uptoken_url，uptoken_func三个参数中必须有一个被设置
-                // 切如果提供了多个，其优先级为uptoken > uptoken_url > uptoken_func
-                // 其中uptoken是直接提供上传凭证，uptoken_url是提供了获取上传凭证的地址，如果需要定制获取uptoken的过程则可以设置uptoken_func
-                uptoken: "{{$upload_token}}", // uptoken是上传凭证，由其他程序生成
-                // uptoken_url: '/uptoken',         // Ajax请求uptoken的Url，强烈建议设置（服务端提供）
-                // uptoken_func: function(file){    // 在需要获取uptoken时，该方法会被调用
-                //    // do something
-                //    return uptoken;
-                // },
-                get_new_uptoken: false,             // 设置上传文件的时候是否每次都重新获取新的uptoken
-                // downtoken_url: '/downtoken',
-                // Ajax请求downToken的Url，私有空间时使用，JS-SDK将向该地址POST文件的key和domain，服务端返回的JSON必须包含url字段，url值为该文件的下载地址
-                unique_names: true,              // 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
-                // save_key: true,                  // 默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
-                domain: 'http://twst.isart.me/',     // bucket域名，下载资源时用到，必需
-                max_file_size: '100mb',             // 最大文件体积限制
-                flash_swf_url: 'path/of/plupload/Moxie.swf',  //引入flash，相对路径
-                max_retries: 3,                     // 上传失败最大重试次数
-                dragdrop: true,                     // 开启可拖曳上传
-                drop_element: 'container',          // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
-                chunk_size: '4mb',                  // 分块上传时，每块的体积
-                auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
-                //x_vars : {
-                //    查看自定义变量
-                //    'time' : function(up,file) {
-                //        var time = (new Date()).getTime();
-                // do something with 'time'
-                //        return time;
-                //    },
-                //    'size' : function(up,file) {
-                //        var size = file.size;
-                // do something with 'size'
-                //        return size;
-                //    }
-                //},
-                init: {
-                    'FilesAdded': function (up, files) {
-                        plupload.each(files, function (file) {
-                            // 文件添加进队列后，处理相关的事情
-//                                            alert(alert(JSON.stringify(file)));
-                        });
-                    },
-                    'BeforeUpload': function (up, file) {
-                        // 每个文件上传前，处理相关的事情
-//                        console.log("BeforeUpload up:" + up + " file:" + JSON.stringify(file));
-                    },
-                    'UploadProgress': function (up, file) {
-                        // 每个文件上传时，处理相关的事情
-//                        console.log("UploadProgress up:" + up + " file:" + JSON.stringify(file));
-                    },
-                    'FileUploaded': function (up, file, info) {
-                        // 每个文件上传成功后，处理相关的事情
-                        // 其中info是文件上传成功后，服务端返回的json，形式如：
-                        // {
-                        //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
-                        //    "key": "gogopher.jpg"
-                        //  }
-//                        console.log(JSON.stringify(info));
-                        var domain = up.getOption('domain');
-                        var res = JSON.parse(info);
-                        //获取上传成功后的文件的Url
-                        var sourceLink = domain + res.key;
-                        $("#pay_zhongjie_attach").val(sourceLink);
-                        $("#pickfiles").attr('src', qiniuUrlTool(sourceLink, "ad"));
-//                        console.log($("#pickfiles").attr('src'));
-                    },
-                    'Error': function (up, err, errTip) {
-                        //上传出错时，处理相关的事情
-                        console.log(err + errTip);
-                    },
-                    'UploadComplete': function () {
-                        //队列文件处理完毕后，处理相关的事情
-                    },
-                    'Key': function (up, file) {
-                        // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-                        // 该配置必须要在unique_names: false，save_key: false时才生效
-
-                        var key = "";
-                        // do something with key here
-                        return key
-                    }
-                }
-            });
-        }
 
 
     </script>

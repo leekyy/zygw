@@ -119,7 +119,7 @@
                                              data-placement="top" title="冻结">
                                             <i class="fa fa-close opt-btn-i-size"></i>
                                           </a>
-                                            <a href="{{URL::asset('/admin/acfzr/smst')}}?id={{$data->id}}"
+                                            <a href="{{URL::asset('/admin/acfzr/stmt')}}?id={{$data->id}}"
                                                class="btn btn-social-icon btn-danger opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top" title="查看统计信息">

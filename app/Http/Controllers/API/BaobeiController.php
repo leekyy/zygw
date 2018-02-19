@@ -212,7 +212,6 @@ class BaobeiController extends Controller
             $client->save();
             $client = ClientManager::getById($client->id);
         }
-        ClientManager::addBaobeiTimes($client->id); //报备次数加1
         //第二步，判断客户的有效性
         //1）客户是否是为房地产商的客户
         if (HouseClientManager::isClientAsDeveloperClient($client->phonenum, $house->id)) {
@@ -252,6 +251,9 @@ class BaobeiController extends Controller
                 'keyword4' => BaobeiManager::getVisitWayTxt($baobei->visit_way)];
             SendMessageManager::sendMessage($acfzr->id, SendMessageManager::CLIENT_COMMING, $message_content);        //向案场负责人发送短信通知
         }
+        //增加报备次数
+        ClientManager::addBaobeiTimes($client->id); //客户报备次数加1
+        UserManager::addBaobeiTimes($baobei->user_id);  //中介报备次数加1
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
 

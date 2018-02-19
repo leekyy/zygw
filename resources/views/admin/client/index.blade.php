@@ -7,7 +7,7 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">中介管理</li>
+                    <li class="active">客户管理</li>
                 </ol>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 <!-- Horizontal Form -->
                 <div class="">
                     <!-- form start -->
-                    <form action="{{URL::asset('/admin/zhongjie/search')}}" method="post" class="form-horizontal">
+                    <form action="{{URL::asset('/admin/client/search')}}" method="post" class="form-horizontal">
                         {{csrf_field()}}
                         <div class="box-body">
                             <div class="form-group">
@@ -53,13 +53,11 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>头像</th>
-                                <th>微信昵称</th>
                                 <th>姓名</th>
                                 <th>电话</th>
-                                <th>积分</th>
-                                <th>注册时间</th>
-                                <th>状态</th>
+                                <th>报备中介</th>
+                                <th>报备次数</th>
+                                <th>首次报备时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -72,17 +70,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <img src="{{ $data->avatar ? $data->avatar.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/default_headicon.png')}}"
-                                             class="img-rect-30 radius-5">
-                                    </td>
-                                    <td>
                                         <div class="line-height-30">
-                                            {{$data->nick_name}}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->real_name}}
+                                            {{$data->name}}
                                         </div>
                                     </td>
                                     <td>
@@ -92,7 +81,17 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30">
-                                            {{$data->jifen}}
+                                            @if($data->user!=null)
+                                                <a href="{{URL::asset('/admin/zhongjie/stmt')}}?id={{$data->user->id}}"
+                                                   target="_blank">
+                                                    {{isset($data->user)?$data->user->real_name:'--'}}
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="line-height-30">
+                                            {{$data->baobei_times}}
                                         </div>
                                     </td>
                                     <td>
@@ -101,29 +100,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if($data->status === '0')
-                                            <span class="label label-info line-height-30">冻结</span>
-                                        @endif
-                                        @if($data->status === '1')
-                                            <span class="label label-success line-height-30">正常</span>
-                                        @endif
-                                    </td>
-                                    <td>
                                         <span class="line-height-30">
-                                          <a href="{{URL::asset('/admin/zhongjie/setStatus')}}/{{$data->id}}?status=1"
-                                             class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
-                                             data-toggle="tooltip"
-                                             data-placement="top" title="解冻">
-                                            <i class="fa fa-check opt-btn-i-size"></i>
-                                          </a>
-                                          <a href="{{URL::asset('/admin/zhongjie/setStatus')}}/{{$data->id}}?status=0"
-                                             class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
-                                             data-toggle="tooltip"
-                                             data-placement="top" title="冻结">
-                                            <i class="fa fa-close opt-btn-i-size"></i>
-                                          </a>
-                                            <a href="{{URL::asset('/admin/zhongjie/stmt')}}?id={{$data->id}}"
-                                               class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
+                                            <a href="{{URL::asset('/admin/client/stmt')}}?id={{$data->id}}"
+                                               class="btn btn-social-icon btn-danger opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top" title="查看统计信息">
                                             <i class="fa fa-bar-chart opt-btn-i-size"></i>

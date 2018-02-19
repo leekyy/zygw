@@ -39,12 +39,13 @@ return [
             'prefix' => '',
         ],
 
+        //测试数据库
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '182.92.235.154'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'fhqdb'),
-            'username' => env('DB_USERNAME', 'fhq'),
+            'database' => env('DB_DATABASE', 'zygwdb'),
+            'username' => env('DB_USERNAME', 'zygw'),
             'password' => env('DB_PASSWORD', 'Aa123456'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
