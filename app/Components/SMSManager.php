@@ -61,7 +61,7 @@ class SMSManager
         $body['param'] = $sms_txt;
         $body['to'] = $telphone;
         $result = self::post($funAndOperate, $body);
-        Log::info("sendSMS result:" + \GuzzleHttp\json_encode($result));
+        Log::info("sendSMS result:" . \GuzzleHttp\json_encode($result));
         return $result;
     }
 
