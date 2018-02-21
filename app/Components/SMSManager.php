@@ -10,6 +10,7 @@
 namespace App\Components;
 
 use App\Models\AD;
+use Illuminate\Support\Facades\Log;
 use Qiniu\Auth;
 
 class SMSManager
@@ -46,7 +47,7 @@ class SMSManager
         return $result;
     }
 
-    //发送停车通知
+    //发送通知
     public static function sendSMS($telphone, $templated_id, $sms_txt)
     {
 //        dd("sendSMS telphone:" . $telphone . " template_id:" . $templated_id . " sms_txt:" . $sms_txt);
@@ -60,6 +61,7 @@ class SMSManager
         $body['param'] = $sms_txt;
         $body['to'] = $telphone;
         $result = self::post($funAndOperate, $body);
+        Log::info("sendSMS result:" + \GuzzleHttp\json_encode($result));
         return $result;
     }
 

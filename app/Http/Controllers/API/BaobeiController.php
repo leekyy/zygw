@@ -294,19 +294,6 @@ class BaobeiController extends Controller
         }
         $baobei->baobei_status = "1";
         $baobei->save();
-        //增加用户积分
-        $user = UserManager::getById($data['user_id']);
-        if ($user) {
-            $system = SystemManager::getSystemInfo();
-            $user->jifen = $user->jifen + $system->df_jifen;
-            $user->save();
-            //进行积分值的记录
-            $jifen_change_record = new JifenChangeRecord();
-            $jifen_change_record->user_id = $user->id;
-            $jifen_change_record->jifen = $system->df_jifen;
-            $jifen_change_record->record = "到访楼盘奖励";
-            $jifen_change_record->save();
-        }
         $baobei = BaobeiManager::getById($baobei->id);
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
@@ -343,6 +330,19 @@ class BaobeiController extends Controller
         }
         $baobei->anchang_id = $data['user_id'];
         $baobei->save();
+        //增加用户积分
+        $user = UserManager::getById($data['user_id']);
+        if ($user) {
+            $system = SystemManager::getSystemInfo();
+            $user->jifen = $user->jifen + $system->df_jifen;
+            $user->save();
+            //进行积分值的记录
+            $jifen_change_record = new JifenChangeRecord();
+            $jifen_change_record->user_id = $user->id;
+            $jifen_change_record->jifen = $system->df_jifen;
+            $jifen_change_record->record = "到访楼盘奖励";
+            $jifen_change_record->save();
+        }
         $baobei = BaobeiManager::getById($data['id']);
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
