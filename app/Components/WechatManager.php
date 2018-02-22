@@ -9,7 +9,7 @@
 
 namespace App\Components;
 
-use App\Models\AD;
+use Illuminate\Support\Facades\Log;
 use Qiniu\Auth;
 
 class WechatManager
@@ -17,6 +17,7 @@ class WechatManager
     //服务号，根据openid获取用户信息
     public static function getUserInfoByFWHOpenId($fwh_openid)
     {
+        Log::info("getUserInfoByFWHOpenId fuwh_openid:" . $fwh_openid);
         $app = app('wechat.official_account');
         $userInfo = $app->user->get($fwh_openid);
         return $userInfo;
