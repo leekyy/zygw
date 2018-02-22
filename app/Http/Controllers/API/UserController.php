@@ -10,6 +10,7 @@ namespace App\Http\Controllers\API;
 
 use App\Components\HomeManager;
 use App\Components\UserManager;
+use App\Components\Utils;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
@@ -159,7 +160,9 @@ class UserController extends Controller
         } else {
             $user = UserManager::getByXCXOpenId($data['xcx_openid']);
         }
+
         if ($user) {
+
         } else {
             $user = UserManager::register($data);
             $user = UserManager::getByIdWithToken($user->id);
@@ -297,5 +300,7 @@ class UserController extends Controller
         $data = $result;
         return ErrorCode::$OK;
     }
+
+
 
 }

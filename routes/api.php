@@ -33,7 +33,6 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('user/getMyInfo', 'API\UserController@getMyInfo');//获取个人主页的相关数据
     Route::get('userUp/getListByUserId', 'API\UserUpController@getListByUserId')->middleware('CheckToken');    //根据用户id获取申请列表
 
-
     //微信相关接口
     Route::get('wechat/miniProgramLogin', 'API\WechatController@miniProgramLogin'); //小程序通过code换取openid接口
     Route::any('wechat', 'API\WechatController@serve');     //微信服务号 加入接口
@@ -72,7 +71,6 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('baobei/sign', 'API\BaobeiController@sign')->middleware('CheckToken');     //案场负责人报备签约信息
     Route::post('baobei/qkdz', 'API\BaobeiController@qkdz')->middleware('CheckToken');     //案场负责人报备全款到账信息
     Route::post('baobei/setZYGW', 'API\BaobeiController@setZYGW')->middleware('CheckToken');     //设置报备记录的置业顾问
-
     Route::post('baobei/canjiesuan', 'API\BaobeiController@canjiesuan')->middleware('CheckToken');     //案场负责人设置报备单可结算
     Route::get('baobei/getListForZJByStatus', 'API\BaobeiController@getListForZJByStatus')->middleware('CheckToken');   //获取中介维度的报备列表
     Route::get('baobei/getListForACByStatus', 'API\BaobeiController@getListForACByStatus')->middleware('CheckToken');   //获取案场负责人维度的报备列表

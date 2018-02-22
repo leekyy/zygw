@@ -626,4 +626,32 @@ class BaobeiManager
         return $already_pay_yongjin;
     }
 
+
+    /*
+     * 根据用户id获取全部佣金信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-22
+     *
+     */
+    public static function getAllYongjinByUserId($user_id)
+    {
+        $all_yongjin = Baobei::where('user_id', '=', $user_id)->where('status', '=', '1')->sum('yongjin');
+        return $all_yongjin;
+    }
+
+    /*
+     * 根据用户id获取待结算佣金
+     *
+     * By TerryQi
+     *
+     * 2018-02-22
+     */
+    public static function getWaitingForPayByUserId($user_id)
+    {
+        $waingtingForPay_yongjin = Baobei::where('user_id', '=', $user_id)->where('status', '=', '1')
+            ->where('can_jiesuan_status', '=', '1')->where('pay_zhongjie_status', '=', '0')->sum('yongjin');
+        return $waingtingForPay_yongjin;
+    }
 }
