@@ -317,7 +317,7 @@
                 var param = {
                     id: xj_id
                 }
-                getXJInfoById("{{URL::asset('')}}", param, function (ret, err) {
+                getHeZuoInfoById("{{URL::asset('')}}", param, function (ret, err) {
                     //提示保存成功
                     if (ret.result == true) {
                         xjInfo = ret.ret;

@@ -80,7 +80,7 @@ function getLPRecentDatas(url, param, callBack) {
 
 
 //根据id获取合作细则
-function getXJInfoById(url, param, callBack) {
+function getHeZuoInfoById(url, param, callBack) {
     ajaxRequest(url + "api/hezuo/getXJInfoById", param, "get", callBack);
 }
 
