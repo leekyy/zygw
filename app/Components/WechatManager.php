@@ -20,6 +20,7 @@ class WechatManager
         Log::info("getUserInfoByFWHOpenId fuwh_openid:" . $fwh_openid);
         $app = app('wechat.official_account');
         $userInfo = $app->user->get($fwh_openid);
+        Log::info("getUserInfoByFWHOpenId userInfo:" . $userInfo);
         return $userInfo;
     }
 
