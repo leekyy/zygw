@@ -247,6 +247,22 @@ class UserManager
         $user = User::where('xcx_openid', '=', $openid)->first();
         return $user;
     }
+
+
+    /*
+     * 根据用户unionid获取用户信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-22
+     *
+     */
+    public static function getByUnionid($unionid)
+    {
+        $user = User::where('unionid','=',$unionid)->first();
+        return $user;
+    }
+
     // 生成guid
     /*
      * 生成uuid全部用户相同，uuid即为token
