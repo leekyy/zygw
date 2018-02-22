@@ -17,10 +17,10 @@ class WechatManager
     //服务号，根据openid获取用户信息
     public static function getUserInfoByFWHOpenId($fwh_openid)
     {
-        Log::info("getUserInfoByFWHOpenId fuwh_openid:" . $fwh_openid);
+        Log::info("getUserInfoByFWHOpenId fwh_openid:" . $fwh_openid);
         $app = app('wechat.official_account');
         $userInfo = $app->user->get($fwh_openid);
-        Log::info("getUserInfoByFWHOpenId userInfo:" . $userInfo);
+        Log::info("getUserInfoByFWHOpenId userInfo:" . \GuzzleHttp\json_encode($userInfo));
         return $userInfo;
     }
 
