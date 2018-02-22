@@ -73,7 +73,7 @@ class WechatController extends Controller
              *
              * 2018-02-22
              */
-            $user = UserManager::getUserByFWHOpenId($from_user);
+            $user = UserManager::getByFWHOpenId($from_user);
             Log::info("user:" . json_encode($user));
             if (!$user) {  //若不存在用户，则应该走注册流程
                 $user = WechatManager::getUserInfoByFWHOpenId($from_user);

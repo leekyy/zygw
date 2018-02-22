@@ -266,6 +266,19 @@ class UserManager
         return $user;
     }
 
+    /*
+     * 根据服务号openid获取用户信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-22
+     */
+    public static function getByFWHOpenid($openid)
+    {
+        $user = User::where('fwh_openid', '=', $openid)->first();
+        return $user;
+    }
+
 
     /*
     * 服务号注册用户流程
