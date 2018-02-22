@@ -160,6 +160,9 @@ class UserManager
         if (array_key_exists('xcx_openid', $data)) {
             $user->xcx_openid = array_get($data, 'xcx_openid');
         }
+        if (array_key_exists('fwh_openid', $data)) {
+            $user->fwh_openid = array_get($data, 'fwh_openid');
+        }
         if (array_key_exists('unionid', $data)) {
             $user->unionid = array_get($data, 'unionid');
         }
