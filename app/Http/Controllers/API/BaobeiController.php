@@ -331,7 +331,7 @@ class BaobeiController extends Controller
         $baobei->anchang_id = $data['user_id'];
         $baobei->save();
         //增加用户积分，从报备单中找到中介信息
-        $user = UserManager::getById($baobei->user_id);
+        $user = UserManager::getByIdWithToken($baobei->user_id);
         if ($user) {
             $system = SystemManager::getSystemInfo();
             $user->jifen = $user->jifen + $system->df_jifen;

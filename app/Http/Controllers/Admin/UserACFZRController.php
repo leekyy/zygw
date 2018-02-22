@@ -130,7 +130,7 @@ class UserACFZRController
         if (!($status == '0' || $status == '1')) {
             return redirect()->action('\App\Http\Controllers\Usermin\IndexController@error', ['msg' => '合规校验失败，请检查参数,status必须为0或者1，现值为' . $status]);
         }
-        $user = User::where('id', '=', $id)->first();
+        $user = UserManager::getByIdWithToken($id);
         $user->status = $status;
         $user->save();
         return redirect('/admin/acfzr/index');
