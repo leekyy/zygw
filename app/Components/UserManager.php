@@ -259,9 +259,38 @@ class UserManager
      */
     public static function getByUnionid($unionid)
     {
-        $user = User::where('unionid','=',$unionid)->first();
+        $user = User::where('unionid', '=', $unionid)->first();
         return $user;
     }
+
+
+    /*
+    * 服务号注册用户流程
+    *
+    * By TerryQi
+    *
+    * 2018-01-17
+    */
+    public static function registerFWH($data)
+    {
+        $unionid = $data['unionid'];
+        $user = self::getByUnionid($unionid);
+        //如果存在用户，则说明已经关注服务号，只需赋值xcx_openid即可
+        if ($user) {
+            $user->fwh_openid = $data['openid'];
+            $user->save();
+        } else {
+            //创建用户信息
+            $user = new User();
+            $user = self::setUser($user, $data);
+            $user->token = self::getGUID();
+            $user->save();
+        }
+        $user = self::getByIdWithToken($user->id);
+        return $user;
+    }
+
+
 
     // 生成guid
     /*

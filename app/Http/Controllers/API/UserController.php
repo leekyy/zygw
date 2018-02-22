@@ -157,12 +157,22 @@ class UserController extends Controller
         //如果unionid不为空，则通过unionid进行登录
         if (array_key_exists('unionid', $data) && !Utils::isObjNull($data['unionid'])) {
             $user = UserManager::getByUnionid($data['unionid']);
+            //考虑到兼容性，如果unionid未找到用户，则通过xcx_openid登录一次
+            if (!$user) {
+                $user = UserManager::getByXCXOpenId($data['xcx_openid']);
+            }
         } else {
             $user = UserManager::getByXCXOpenId($data['xcx_openid']);
         }
-
+        //是否存在用户信息
         if ($user) {
-
+            //如果存在用户信息，则将uniond和xcx_openid设置进去
+            $user = UserManager::getByIdWithToken($user->id);
+            if (Utils::isObjNull($user->xcx_openid) || Utils::isObjNull($user->unionid)) {
+                $user->xcx_openid = $data['xcx_openid'];
+                $user->unionid = $data['unionid'];
+                $user->save();
+            }
         } else {
             $user = UserManager::register($data);
             $user = UserManager::getByIdWithToken($user->id);

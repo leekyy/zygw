@@ -66,6 +66,19 @@ class WechatController extends Controller
             Log::info(\GuzzleHttp\json_encode($message));
             $from_user = $message['FromUserName'];  //消息来自于哪个用户
             Log::info("from_user:" . $from_user);
+            /*
+             * 每次接收用户信息都需要获取uniondid
+             *
+             * By TerryQi
+             *
+             * 2018-02-22
+             */
+            $user = UserManager::getUserByFWHOpenId($from_user);
+            Log::info("user:" . json_encode($user));
+            if (!$user) {  //若不存在用户，则应该走注册流程
+                $user = WechatManager::getUserInfoByFWHOpenId($from_user);
+                UserManager::registerFWH($user);
+            }
             switch ($message['MsgType']) {
                 case 'event':
                     //进行用户注册流程
