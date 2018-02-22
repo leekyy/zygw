@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Components\BaobeiManager;
 use App\Components\HomeManager;
 use App\Components\UserManager;
 use App\Components\Utils;
@@ -221,8 +222,8 @@ class UserController extends Controller
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
         $user = UserManager::getByIdWithToken($data['user_id']);
-        $user->all_yongjin = 1689;
-        $user->daijie_yongjin = 888;
+        $user->all_yongjin = BaobeiManager::getAllYongjinByUserId($user->id);
+        $user->daijie_yongjin = BaobeiManager::getWaitingForPayByUserId($user->id);
         return ApiResponse::makeResponse(true, $user, ApiResponse::SUCCESS_CODE);
     }
 
