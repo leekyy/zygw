@@ -268,6 +268,13 @@
                         <li><a href="{{url('admin/whitebook/index')}}"><i class="fa fa-circle-o"></i>行业白皮书</a></li>
                     </ul>
                 </li>
+
+                <li>
+                    <a href="{{url('/admin/article/index')}}">
+                        <i class="fa fa-photo"></i>
+                        <span>文章管理</span>
+                    </a>
+                </li>
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-database"></i>

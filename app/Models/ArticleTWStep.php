@@ -11,7 +11,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class HeZuoTWStep extends Model
+class ArticleTWStep extends Model
 {
     use SoftDeletes;    //使用软删除
     protected $table = 't_tw_step';     //表名

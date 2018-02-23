@@ -19,7 +19,7 @@ use App\Components\Utils;
 use App\Libs\CommonUtils;
 use App\Models\HeZuo;
 use App\Models\Doctor;
-use App\Models\HeZuoTWStep;
+use App\Models\ArticleTWStep;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiResponse;
 use App\Libs\ServerUtils;
@@ -122,7 +122,7 @@ class HeZuoController
         foreach ($new_steps as $new_step) {
             $new_step['f_id'] = $xj->id;
             $new_step['f_table'] = "xj";
-            $twStep = new HeZuoTWStep();
+            $twStep = new ArticleTWStep();
             if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
                 $twStep = HeZuoManager::getStepById($new_step['id']);
             }
@@ -183,7 +183,7 @@ class HeZuoController
     public function setStepPost(Request $request)
     {
         $data = $request->all();
-        $tw_step = new HeZuoTWStep();
+        $tw_step = new ArticleTWStep();
         $tw_step = HeZuoManager::setHeZuoStep($tw_step, $data);
         $tw_step->f_table = "xj";
         $tw_step->save();

@@ -10,7 +10,7 @@
 namespace App\Components;
 
 use App\Models\HeZuo;
-use App\Models\HeZuoTWStep;
+use App\Models\ArticleTWStep;
 use Qiniu\Auth;
 
 class HeZuoManager
@@ -114,19 +114,7 @@ class HeZuoManager
      */
     public static function getXJInfoByLevel($xj, $level)
     {
-//        if ($level >= 1) {
-//            $xj->doctor = DoctorManager::getDoctorById($xj->doctor_id);
-//        }
-//        if ($level >= 2) {
-//            $hpos_ids = $xj->hpos_ids;
-//            $hpos_id_arr = explode(",", $hpos_ids);
-//            $hposs_collection = collect(['data' => collect()]);
-//            foreach ($hpos_id_arr as $hpos_id) {
-//                $hpos = HposManager::getHPosById($hpos_id);
-//                $hposs_collection['data']->push($hpos);
-//            }
-//            $xj->hposs = $hposs_collection;
-//        }
+
         if ($level >= 3) {
             $xj->steps = self::getStepsByXJId($xj->id);
             self::addShowNum($xj->id);
@@ -143,7 +131,7 @@ class HeZuoManager
      */
     public static function getStepsByXJId($xj_id)
     {
-        $steps = HeZuoTWStep::where('f_id', '=', $xj_id)->orderby('seq', 'asc')->get();
+        $steps = ArticleTWStep::where('type_id', '=', $xj_id)->orderby('seq', 'asc')->get();
         return $steps;
     }
     /*
@@ -156,7 +144,7 @@ class HeZuoManager
      */
     public static function getStepsByFidAndFtable($f_id, $f_table)
     {
-        $steps = HeZuoTWStep::where('f_table', '=', $f_table)->where('f_id', '=', $f_id)->get();
+        $steps = ArticleTWStep::where('f_table', '=', $f_table)->where('f_id', '=', $f_id)->get();
         return $steps;
     }
     /*
@@ -168,7 +156,7 @@ class HeZuoManager
      */
     public static function deleteStepsByFidAndFtable($f_id, $f_table)
     {
-        $steps = HeZuoTWStep::where('f_table', '=', $f_table)->where('f_id', '=', $f_id)->delete();
+        $steps = ArticleTWStep::where('f_table', '=', $f_table)->where('f_id', '=', $f_id)->delete();
     }
     /*
      * 合作细则展示数加1
@@ -193,7 +181,7 @@ class HeZuoManager
      */
     public static function getStepById($id)
     {
-        $tw_step = HeZuoTWStep::where('id', '=', $id)->first();
+        $tw_step = ArticleTWStep::where('id', '=', $id)->first();
         return $tw_step;
     }
     /*

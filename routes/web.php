@@ -158,40 +158,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/goodsexchange/edit', 'Admin\GoodsExchangeController@edit');  //新建或编辑管理员
     Route::post('/goodsexchange/edit', 'Admin\GoodsExchangeController@editPost');  //新建或编辑商品
 
-    //合作细则管理
-    Route::get('/hezuo/index', 'Admin\HeZuoController@index');  //合作细则管理首页
-    Route::get('/hezuo/setStatus/{id}', 'Admin\HeZuoController@setStatus');  //设置合作细则状态
-    Route::get('/hezuo/setStep/{id}', 'Admin\HeZuoController@setStep');  //设置合作细则图文
-    Route::post('/hezuo/setStep/{id}', 'Admin\HeZuoController@setStepPost');  //编辑合作细则步骤信息
-    Route::get('/hezuo/delStep/{id}', 'Admin\HeZuoController@delStep');  //删除合作细则步骤
-    Route::get('/hezuo/edit', 'Admin\HeZuoController@edit');  //新建或编辑合作细则
-    Route::post('/hezuo/edit', 'Admin\HeZuoController@editPost');  //新建或编辑合作细则
-    Route::get('/hezuo/del/{id}', 'Admin\HeZuoController@del');  //删除合作细则
+
+    //文章管理
+    Route::get('/article/index', 'Admin\ArticleController@index');  //文章管理首页
+    Route::get('/article/setStatus/{id}', 'Admin\ArticleController@setStatus');  //设置文章状态
+    Route::get('/article/del/{id}', 'Admin\ArticleController@del');  //删除文章
+    Route::get('/article/edit', 'Admin\ArticleController@edit');  //新建或编辑文章
+    Route::post('/article/edit', 'Admin\ArticleController@editPost');  //新建或编辑文章
     Route::get('/hezuo/editHeZuo', 'Admin\HeZuoController@editHeZuo');  //编辑合作细则页面
     Route::post('/hezuo/editHeZuo', 'Admin\HeZuoController@editHeZuoPost'); //编辑合作细则Post
 
-    //行业白皮书管理
-    Route::get('/whitebook/index', 'Admin\WhiteBookController@index');  //行业白皮书管理首页
-    Route::get('/whitebook/setStatus/{id}', 'Admin\WhiteBookController@setStatus');  //设置行业白皮书状态
-    Route::get('/whitebook/setStep/{id}', 'Admin\WhiteBookController@setStep');  //设置合作细则图文
-    Route::post('/whitebook/setStep/{id}', 'Admin\WhiteBookController@setStepPost');  //编辑行业白皮书步骤信息
-    Route::get('/whitebook/delStep/{id}', 'Admin\WhiteBookController@delStep');  //删除行业白皮书步骤
-    Route::get('/whitebook/edit', 'Admin\WhiteBookController@edit');  //新建或编辑行业白皮书
-    Route::post('/whitebook/edit', 'Admin\WhiteBookController@editPost');  //新建或编辑行业白皮书
-    Route::get('/whitebook/del/{id}', 'Admin\WhiteBookController@del');  //删除行业白皮书
-    Route::get('/whitebook/editWhiteBook', 'Admin\WhiteBookController@editWhiteBook');  //编辑行业白皮书页面
-    Route::post('/whitebook/editWhiteBook', 'Admin\WhiteBookController@editWhiteBookPost'); //编辑行业白皮书Post
-
-    //积分兑换规则管理
-    Route::get('/rule/index', 'Admin\RuleController@index');  //积分兑换规则管理首页
-    Route::get('/rule/setStatus/{id}', 'Admin\RuleController@setStatus');  //设置积分兑换规则状态
-    Route::get('/rule/setStep/{id}', 'Admin\RuleController@setStep');  //设置积分兑换规则图文
-    Route::post('/rule/setStep/{id}', 'Admin\RuleController@setStepPost');  //编辑积分兑换规则步骤信息
-    Route::get('/rule/delStep/{id}', 'Admin\RuleController@delStep');  //删除积分兑换规则步骤
-    Route::get('/rule/edit', 'Admin\RuleController@edit');  //新建或编辑积分兑换规则
-    Route::post('/rule/edit', 'Admin\RuleController@editPost');  //新建或编辑积分兑换规则
-    Route::get('/rule/del/{id}', 'Admin\RuleController@del');  //删除积分兑换规则
-    Route::get('/rule/editRule', 'Admin\RuleController@editRule');  //编辑积分兑换规则页面
-    Route::post('/rule/editRule', 'Admin\RuleController@editRulePost'); //编辑积分兑换规则Post
 
 });
