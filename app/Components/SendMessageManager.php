@@ -19,6 +19,9 @@ class SendMessageManager
     const CLIENT_COMMING = "CLIENT_COMMING";    //客户即将到访通知
     const USERUP_SUCCESS = "USERUP_SUCCESS";  //中介升级为案场负责人成功
     const PAY_ZHONGJIE = "PAY_ZHONGJIE";        //向中介支付
+    const JIFEN_CHANGE = "JIFEN_CHANGE";        //积分变更
+    const ORDER_DEAL = "ORDER_DEAL";        //订单成交
+    const PAY_YONGJIN = "PAY_YONGJIN";        //支付佣金
 
     /*
      * 发送消息
@@ -46,19 +49,27 @@ class SendMessageManager
      */
     private static function setMessageFromFWH($fwh_openid, $message_type, $message_content)
     {
-        $message = self::getTemplateContentFromMessageType($message_type, $message_content);
         $template_id = self::getTemplateIdFromMessageType($message_type);
+        //如果未设定模板，则返回
+        if ($template_id == null) {
+            return;
+        }
+        $message = self::getTemplateContentFromMessageType($message_type, $message_content);
         WechatManager::sendTemplateMessage($fwh_openid, $template_id, $message);
     }
 
     /*
-     * 通过短息下发
+     * 通过短信下发
      *
      */
     private static function setMessageFromSM($phonenum, $message_type, $message_content)
     {
-        $message = self::getSMSTemplateContentFromMessageType($message_type, $message_content);
         $template_id = self::getSMSTemplateIdFromMessageType($message_type);
+        //如果未设定模板，则返回
+        if ($template_id == null) {
+            return;
+        }
+        $message = self::getSMSTemplateContentFromMessageType($message_type, $message_content);
         SMSManager::sendSMS($phonenum, $template_id, $message);
     }
 
@@ -71,13 +82,14 @@ class SendMessageManager
     {
         //根据消息类型选择模板
         switch ($message_type) {
-            case self::CLIENT_COMMING:  //客户即将到访
+            case self::CLIENT_COMMING:  //客户到访通知
                 return [
-                    'first' => '上报信息审核通过',
-                    'keyword1' => $message_content["keyword1"],
-                    'keyword2' => $message_content["keyword2"],
-                    'keyword3' => DateTool::getCurrentTime(),
-                    'remark' => '请在个人中心中查看'
+                    'first' => '预约到访通知',
+                    'keyword1' => $message_content["keyword3"],
+                    'keyword2' => $message_content["keyword4"],
+                    'keyword3' => $message_content["keyword1"],
+                    'keyword4' => $message_content["keyword2"],
+                    'remark' => '报备列表中查看'
                 ];
             case self::USERUP_SUCCESS:  //升级案场负责人成功
                 return [
@@ -85,6 +97,36 @@ class SendMessageManager
                     'keyword1' => $message_content["keyword1"],
                     'keyword2' => '审核通过',
                     'remark' => '下拉刷新个人中心，使用案场负责人相关操作'
+                ];
+            case self::JIFEN_CHANGE:  //积分变更通知
+                return [
+                    'first' => '积分变更通知',
+                    'keyword1' => $message_content["keyword1"],
+                    'keyword2' => $message_content["keyword2"],
+                    'keyword3' => $message_content["keyword3"],
+                    'remark' => '在个人中心的积分商城中兑换商品'
+                ];
+            case self::ORDER_DEAL:  //订单成交
+                return [
+                    'first' => '报备客户成交',
+                    'keyword1' => $message_content["keyword1"],
+                    'keyword2' => $message_content["keyword2"],
+                    'keyword3' => $message_content["keyword3"],
+                    'keyword4' => $message_content["keyword4"],
+                    'remark' => '请及时与案场负责人核对报备单'
+                ];
+            case self::PAY_ZHONGJIE:  //佣金结算
+                return [
+                    'first' => '佣金结算',
+                    'customName' => $message_content["keyword1"],
+                    'customPhone' => $message_content["keyword2"],
+                    'reportBuilding' => $message_content["keyword5"],
+                    'reportTime' => $message_content["keyword6"],
+                    'signAmount' => '--',
+                    'signTime' => '--',
+                    'commissionAmount' => $message_content["keyword3"],
+                    'commissionTime' => $message_content["keyword4"],
+                    'remark' => '请及时查收佣金结算情况'
                 ];
             default:
                 break;
@@ -100,17 +142,22 @@ class SendMessageManager
         //根据消息类型选择模板
         switch ($message_type) {
             case self::CLIENT_COMMING:  //客户即将到访
-                return "bVf14RC9Ts3gbqN2GMUg_czVoEXTtdV7WVtiu2DqKB0";
+                return "xr099vOdxB8bR2isIoCZqSQj5aweHDx-tHAGrnNekHs";
             case self::USERUP_SUCCESS:  //升级案场负责人成功
                 return "4CXYxeuUCJJ5VhRNeoWtk-zCf-F1IMLp5UqXt7lgPfU";
+            case self::JIFEN_CHANGE:  //积分变更
+                return "4pvby9Ld9joWccEn_-71RQWasbw_Z-ME8R2yxa3OJXE";
+            case self::ORDER_DEAL:  //报备单成交
+                return "Ixg4z4X7vgKBcEzHzMu30dEWE8_Ed5zssJtL7cC_3qA";
             default:
                 break;
         }
+        return null;
     }
 
 
     /*
-     * 通过messageType和messageContent获取服务号模板类型
+     * 通过messageType和messageContent获取短信模板类型
      *
      */
     private static function getSMSTemplateContentFromMessageType($message_type, $message_content)
@@ -145,6 +192,7 @@ class SendMessageManager
             default:
                 break;
         }
+        return null;
     }
 
 }

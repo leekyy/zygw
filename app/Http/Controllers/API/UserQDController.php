@@ -10,6 +10,7 @@ namespace App\Http\Controllers\API;
 
 use App\Components\HomeManager;
 use App\Components\HouseManager;
+use App\Components\SendMessageManager;
 use App\Components\SystemManager;
 use App\Components\UserManager;
 use App\Components\UserQDManager;
@@ -66,8 +67,15 @@ class UserQDController extends Controller
         $jifen_change_record->jifen = $userQD->jifen;
         $jifen_change_record->record = "每日签到奖励";
         $jifen_change_record->save();
+        //发送消息
+        $message_content = [
+            'keyword1' => '积分增加',
+            'keyword2' => '签到积分',
+            'keyword3' => $jifen_change_record->jifen,
+        ];
+        SendMessageManager::sendMessage($user->id, SendMessageManager::JIFEN_CHANGE, $message_content);
 
-        //保存用户签到信息
+        //获取用户签到信息
         $userQD = UserQDManager::getUserQDById($userQD->id);
         return ApiResponse::makeResponse(true, $userQD, ApiResponse::SUCCESS_CODE);
     }

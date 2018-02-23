@@ -9,6 +9,7 @@ namespace App\Components;
 class Utils
 {
     const PAGE_SIZE = 10;
+
     /*
      * 判断一个对象是不是空
      *
@@ -24,6 +25,7 @@ class Utils
         }
         return false;
     }
+
     /*
      * 将id字符串数组转换为int数组
      *
@@ -39,6 +41,7 @@ class Utils
         }
         return $int_arr;
     }
+
     /*
      * 判断一个字符串是不是电话号码
      *
@@ -55,6 +58,7 @@ class Utils
             return false;
         }
     }
+
     /*
      * 判断一个宣教数据集的id是否在数组中的id，即用于新建宣教步骤时，判断是否需要删除该步骤
      *
@@ -72,6 +76,7 @@ class Utils
         }
         return false;
     }
+
     /*
  * 生成订单号
  *
@@ -84,6 +89,7 @@ class Utils
     {
         return date('Ymd') . substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);;
     }
+
     /*
      * 根据生日计算年龄
      *
@@ -109,6 +115,7 @@ class Utils
         }
         return $age;
     }
+
     /*
      * 根据times和unit获取以天为单位的数值，用于后续的日期计算
      *
@@ -132,5 +139,23 @@ class Utils
                 break;
         }
         return ($times * $unit_value);
+    }
+
+
+    /*
+     * 模糊化手机号
+     *
+     * By TerryQi
+     *
+     * 2018-02-23
+     */
+    public static function hidePhonenum($phonenum)
+    {
+        $IsWhat = preg_match('/(0[0-9]{2,3}[\-]?[2-9][0-9]{6,7}[\-]?[0-9]?)/i', $phonenum); //固定电话
+        if ($IsWhat == 1) {
+            return preg_replace('/(0[0-9]{2,3}[\-]?[2-9])[0-9]{3,4}([0-9]{3}[\-]?[0-9]?)/i', '$1****$2', $phonenum);
+        } else {
+            return preg_replace('/(1[358]{1}[0-9])[0-9]{4}([0-9]{4})/i', '$1****$2', $phonenum);
+        }
     }
 }

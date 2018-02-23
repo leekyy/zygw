@@ -98,6 +98,14 @@ class GoodsController extends Controller
         $goodsExchange->total_jifen = $goods->jifen;
         $goodsExchange->dh_time = DateTool::getCurrentTime();
         $goodsExchange->save();
+        //发送模板消息
+        $message_content = [
+            'keyword1' => '积分扣减',
+            'keyword2' => '积分商城兑换礼品',
+            'keyword3' => $goodsExchange->total_jifen,
+        ];
+        SendMessageManager::sendMessage($user->id, SendMessageManager::JIFEN_CHANGE, $message_content);
+
         return ApiResponse::makeResponse(true, $goodsExchange, ApiResponse::SUCCESS_CODE);
 
     }

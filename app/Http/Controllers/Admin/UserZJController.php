@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin;
 use App\Components\AdminManager;
 use App\Components\BaobeiManager;
 use App\Components\DateTool;
+use App\Components\HouseManager;
 use App\Components\QNManager;
 use App\Components\SendMessageManager;
 use App\Components\UserManager;
@@ -76,11 +77,15 @@ class UserZJController
         $baobei->save();
         //进行信息通知
         $user = UserManager::getById($baobei->user_id); //中介信息
+        $house = HouseManager::getById($baobei->house_id);  //楼盘信息
         $message_content = [
             'keyword1' => $user->real_name,
             'keyword2' => $baobei->trade_no,
             'keyword3' => $baobei->yongjin,
-            'keyword4' => $baobei->pay_zhongjie_time];
+            'keyword4' => $baobei->pay_zhongjie_time,
+            'keyword5' => $house->title,
+            'keyword6' => $baobei->created_at];
+
         SendMessageManager::sendMessage($user->id, SendMessageManager::PAY_ZHONGJIE, $message_content);
         return redirect('/admin/zhongjie/stmt?id=' . $baobei->user_id);
     }

@@ -342,6 +342,13 @@ class BaobeiController extends Controller
             $jifen_change_record->jifen = $system->df_jifen;
             $jifen_change_record->record = "到访楼盘奖励";
             $jifen_change_record->save();
+            //发送模板消息
+            $message_content = [
+                'keyword1' => '积分增加',
+                'keyword2' => '到访奖励积分',
+                'keyword3' => $jifen_change_record->jifen,
+            ];
+            SendMessageManager::sendMessage($user->id, SendMessageManager::JIFEN_CHANGE, $message_content);
         }
         $baobei = BaobeiManager::getById($data['id']);
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
@@ -401,6 +408,16 @@ class BaobeiController extends Controller
         } else {
             $baobei->deal_time = DateTool::getCurrentTime();
         }
+        $client = ClientManager::getById($baobei->client_id);
+        $house = HouseManager::getById($baobei->house_id);
+        //发送模板消息
+        $message_content = [
+            'keyword1' => $client->name,
+            'keyword2' => $baobei->trade_no,
+            'keyword3' => $house->title,
+            'keyword4' => $baobei->deal_time,
+        ];
+        SendMessageManager::sendMessage($baobei->user_id, SendMessageManager::ORDER_DEAL, $message_content);
         $baobei->save();
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
