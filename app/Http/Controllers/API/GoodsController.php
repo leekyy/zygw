@@ -12,6 +12,7 @@ use App\Components\DateTool;
 use App\Components\GoodsExchangeManager;
 use App\Components\GoodsManager;
 use App\Components\HomeManager;
+use App\Components\SendMessageManager;
 use App\Components\UserManager;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
