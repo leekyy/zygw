@@ -36,6 +36,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //微信相关接口
     Route::get('wechat/miniProgramLogin', 'API\WechatController@miniProgramLogin'); //小程序通过code换取openid接口
     Route::any('wechat', 'API\WechatController@serve');     //微信服务号 加入接口
+    Route::get('wechat/testTemplateMessage', 'API\WechatController@testTemplateMessage'); //测试模板消息
 
     //获取广告图
     Route::get('ad/getADs', 'API\ADController@getADs'); //获取首页轮播图

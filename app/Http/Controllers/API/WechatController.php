@@ -48,6 +48,24 @@ class WechatController extends Controller
         return ApiResponse::makeResponse(true, $result, ApiResponse::SUCCESS_CODE);
     }
 
+    /*
+     * 测试模板消息-测试用
+     *
+     * By TerryQi
+     *
+     * 2018-02-23
+     */
+    public function testTemplateMessage(Request $request)
+    {
+        $data = $request->all();
+        $message_content = [
+            'keyword1' => '测试小区',
+            'keyword2' => '审核通过'
+        ];
+//            dd($message_content);
+        SendMessageManager::sendMessage($data['user_id'], SendMessageManager::USERUP_SUCCESS, $message_content);
+    }
+
 
     //微信服务号Server
 

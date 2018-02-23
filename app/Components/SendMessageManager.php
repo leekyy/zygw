@@ -29,6 +29,7 @@ class SendMessageManager
     public static function sendMessage($user_id, $message_type, $message_content)
     {
         $user = UserManager::getByIdWithToken($user_id);
+//        dd($user);
         //判断服务号是否为空，如果不为空则通过服务号发送消息
         if (!Utils::isObjNull($user->fwh_openid)) {
             self::setMessageFromFWH($user->fwh_openid, $message_type, $message_content);
@@ -78,6 +79,13 @@ class SendMessageManager
                     'keyword3' => DateTool::getCurrentTime(),
                     'remark' => '请在个人中心中查看'
                 ];
+            case self::USERUP_SUCCESS:  //升级案场负责人成功
+                return [
+                    'first' => '升级案场负责人',
+                    'keyword1' => $message_content["keyword1"],
+                    'keyword2' => '审核通过',
+                    'remark' => '下拉刷新个人中心，使用案场负责人相关操作'
+                ];
             default:
                 break;
         }
@@ -93,6 +101,8 @@ class SendMessageManager
         switch ($message_type) {
             case self::CLIENT_COMMING:  //客户即将到访
                 return "bVf14RC9Ts3gbqN2GMUg_czVoEXTtdV7WVtiu2DqKB0";
+            case self::USERUP_SUCCESS:  //升级案场负责人成功
+                return "4CXYxeuUCJJ5VhRNeoWtk-zCf-F1IMLp5UqXt7lgPfU";
             default:
                 break;
         }
