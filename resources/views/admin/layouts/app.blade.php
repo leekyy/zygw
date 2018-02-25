@@ -254,25 +254,25 @@
                         {{--                        <li><a href="{{url('admin/goodsexchange/stmt')}}"><i class="fa fa-circle-o"></i>综合报表</a></li>--}}
                     </ul>
                 </li>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-file-text-o"></i>
-                        <span>规则管理</span>
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{url('admin/rule/index')}}"><i class="fa fa-circle-o"></i>积分兑换规则</a></li>
-                        <li><a href="{{url('/admin/hezuo/index')}}"><i class="fa fa-circle-o"></i>合作细则</a></li>
-                        <li><a href="{{url('admin/whitebook/index')}}"><i class="fa fa-circle-o"></i>行业白皮书</a></li>
-                    </ul>
-                </li>
+                {{--<li class="treeview">--}}
+                    {{--<a href="#">--}}
+                        {{--<i class="fa fa-file-text-o"></i>--}}
+                        {{--<span>规则管理</span>--}}
+                        {{--<span class="pull-right-container">--}}
+                          {{--<i class="fa fa-angle-left pull-right"></i>--}}
+                        {{--</span>--}}
+                    {{--</a>--}}
+                    {{--<ul class="treeview-menu">--}}
+                        {{--<li><a href="{{url('admin/rule/index')}}"><i class="fa fa-circle-o"></i>积分兑换规则</a></li>--}}
+                        {{--<li><a href="{{url('/admin/hezuo/index')}}"><i class="fa fa-circle-o"></i>合作细则</a></li>--}}
+                        {{--<li><a href="{{url('admin/whitebook/index')}}"><i class="fa fa-circle-o"></i>行业白皮书</a></li>--}}
+                    {{--</ul>--}}
+                {{--</li>--}}
 
                 <li>
                     <a href="{{url('/admin/article/index')}}">
                         <i class="fa fa-photo"></i>
-                        <span>文章管理</span>
+                        <span>规则管理</span>
                     </a>
                 </li>
                 <li class="treeview">
