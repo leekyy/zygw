@@ -7,7 +7,7 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">合作细则管理</li>
+                    <li class="active">文章管理</li>
                     <li class="active">新建/编辑</li>
                 </ol>
             </div>
@@ -215,7 +215,7 @@
                                 <label for="stepText" class="col-sm-2 control-label">文字</label>
                                 <div class="col-sm-10">
                                     <textarea id="stepText" class="form-control" rows="10"
-                                              placeholder="请输入 ...">@{{=it.title}}</textarea>
+                                              placeholder="请输入 ...">@{{=it.text}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -465,7 +465,7 @@
         function clickSave() {
             //如果没有步骤信息，说明还没有录入，需要进行录入
             if (xjInfo.steps.length <= 0) {
-                $("#tipModalBody").html('<p>请录入合作细则图文信息</p>');
+                $("#tipModalBody").html('<p>请录入文章图文信息</p>');
                 $("#tipModal").modal('show');
                 return;
             }
@@ -479,12 +479,12 @@
             editHeZuo("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
                 //提示保存成功
                 if (ret.result == true) {
-                    $("#tipModalBody").html('<p>合作细则信息保存成功</p>');
+                    $("#tipModalBody").html('<p>文章信息保存成功</p>');
                     $("#tipModal").modal('show');
                     xjInfo = ret.ret;
                     loadHtml();
                 } else {
-                    $("#tipModalBody").html("<p>合作细则信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
+                    $("#tipModalBody").html("<p>文章信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
                     $("#tipModal").modal('show');
                 }
             })
