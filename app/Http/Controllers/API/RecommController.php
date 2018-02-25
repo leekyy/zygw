@@ -11,6 +11,7 @@ namespace App\Http\Controllers\API;
 use App\Components\ADManager;
 use App\Components\HomeManager;
 use App\Components\RecommInfoManager;
+use App\Components\SystemManager;
 use App\Components\UserManager;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
@@ -50,10 +51,32 @@ class RecommController extends Controller
         if (RecommInfoManager::isUserHasBeenRecommended($data['user_id'])) {
             return ApiResponse::makeResponse(false, "该用户已经被推荐过", ApiResponse::INNER_ERROR);
         }
-
+        //建立推荐关联关系
         $recommInfo = new RecommInfo();
         $recommInfo = RecommInfoManager::setInfo($recommInfo, $data);
         $recommInfo->save();
+        //修改被推荐用户的推荐人信息
+        $user = UserManager::getByIdWithToken($data['user_id']);
+        $user->re_user_id = $data['re_user_id'];
+        $user->save();
+        //增加推荐用户积分
+        $systemInfo = SystemManager::getSystemInfo();   //系统配置信息
+        $user = UserManager::getByIdWithToken($data['re_user_id']);  //推荐用户信息
+        $user->jifen = $user->jifen + $systemInfo->tj_jifen;
+        $user->save();
+        //写入记录
+        $jifen_change_record = new JifenChangeRecord();
+        $jifen_change_record->user_id = $user->id;
+        $jifen_change_record->jifen = $systemInfo->tj_jifen;
+        $jifen_change_record->record = "推荐成功奖励";
+        $jifen_change_record->save();
+        //发送消息
+        $message_content = [
+            'keyword1' => '积分增加',
+            'keyword2' => '推荐成功奖励',
+            'keyword3' => $jifen_change_record->jifen,
+        ];
+        SendMessageManager::sendMessage($user->id, SendMessageManager::JIFEN_CHANGE, $message_content);
         return ApiResponse::makeResponse(true, $recommInfo, ApiResponse::SUCCESS_CODE);
     }
 
