@@ -116,7 +116,7 @@ class HeZuoManager
     {
 
         if ($level >= 3) {
-            $xj->steps = self::getStepsByXJId($xj->id);
+            $xj->steps = self::getStepsByXJId($xj->type);
             self::addShowNum($xj->id);
         }
         return $xj;
@@ -129,9 +129,9 @@ class HeZuoManager
      * 2017-12-07
      *
      */
-    public static function getStepsByXJId($xj_id)
+    public static function getStepsByXJId($type)
     {
-        $steps = ArticleTWStep::where('type_id', '=', $xj_id)->orderby('seq', 'asc')->get();
+        $steps = ArticleTWStep::where('f_id', '=', $type)->orderby('seq', 'asc')->get();
         return $steps;
     }
     /*

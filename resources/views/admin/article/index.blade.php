@@ -11,9 +11,11 @@
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
-                <button type="button" class="btn btn-primary" onclick="clickAdd();">
-                    +新建文章
-                </button>
+                <a href="{{URL::asset('/admin/hezuo/editHeZuo')}}">
+                    <button type="button" class="btn btn-primary">
+                        +新建合作细则
+                    </button>
+                </a>
             </div>
         </div>
     </section>

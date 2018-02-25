@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class HeZuo extends Model
 {
     use SoftDeletes;    //使用软删除
-    protected $table = 't_cooperation_rules';     //表名
+    protected $table = 't_article_info';     //表名
     public $timestamps = true;  //自动管理时间戳
     protected $dates = ['deleted_at'];  //软删除
 }
