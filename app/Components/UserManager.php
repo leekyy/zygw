@@ -74,6 +74,7 @@ class UserManager
         $user = User::where('id', '=', $id)->first();
         if ($user) {
             $user->token = null;
+            $user->xcx_openid = null;
         }
         return $user;
     }
