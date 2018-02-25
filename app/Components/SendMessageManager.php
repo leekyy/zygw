@@ -31,6 +31,7 @@ class SendMessageManager
      */
     public static function sendMessage($user_id, $message_type, $message_content)
     {
+//        dd($message_content);
         $user = UserManager::getByIdWithToken($user_id);
 //        dd($user);
         //判断服务号是否为空，如果不为空则通过服务号发送消息
@@ -149,6 +150,8 @@ class SendMessageManager
                 return "4pvby9Ld9joWccEn_-71RQWasbw_Z-ME8R2yxa3OJXE";
             case self::ORDER_DEAL:  //报备单成交
                 return "Ixg4z4X7vgKBcEzHzMu30dEWE8_Ed5zssJtL7cC_3qA";
+            case self::PAY_ZHONGJIE:  //报备单成交
+                return "ldN3V5ExXJYdtqrvdewdFXZDYZN362fW86cb2dB_yeA";
             default:
                 break;
         }
