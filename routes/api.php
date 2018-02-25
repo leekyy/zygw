@@ -47,6 +47,11 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('user/getUserQDsByUserId', 'API\UserQDController@getUserQDsByUserId')->middleware('CheckToken');        //根据用户id获取签到列表
     Route::get('user/getRecentDatas', 'Admin\UserQDController@getRecentDatas');        //获取近几日综合统计数据
 
+    //用户推荐
+    Route::post('recomm/recommUser', 'API\RecommController@recommUser')->middleware('CheckToken');        //推荐用户
+    Route::get('recomm/getListByReUserId', 'API\RecommController@getListByReUserId')->middleware('CheckToken');        //根据推荐人id获取被推荐人列表
+
+
     //获取积分商品
     Route::get('goods/getGoodsList', 'API\GoodsController@getGoodsList');       //获取商品兑换列表
     Route::get('goods/getGoodsById', 'API\GoodsController@getGoodsById');     //根据id获取商品明细信息

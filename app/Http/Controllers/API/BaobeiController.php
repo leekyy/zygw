@@ -419,6 +419,27 @@ class BaobeiController extends Controller
         ];
         SendMessageManager::sendMessage($baobei->user_id, SendMessageManager::ORDER_DEAL, $message_content);
         $baobei->save();
+        //如果有推荐人，则增加推荐人积分
+        $user = UserManager::getByIdWithToken($baobei->user_id);
+        if (!Utils::isObjNull($user->re_user_id)) {
+            $systemInfo = SystemManager::getSystemInfo();   //系统配置信息
+            $re_user = UserManager::getByIdWithToken($user->re_user_id);
+            $re_user->jifen = $re_user->jifen + $systemInfo->cj_jifen;
+            $re_user->save();
+            //写入记录
+            $jifen_change_record = new JifenChangeRecord();
+            $jifen_change_record->user_id = $re_user->id;
+            $jifen_change_record->jifen = $systemInfo->cj_jifen;
+            $jifen_change_record->record = "推荐用户成交奖励";
+            $jifen_change_record->save();
+            //发送消息
+            $message_content = [
+                'keyword1' => '积分增加',
+                'keyword2' => '推荐用户成交奖励',
+                'keyword3' => $jifen_change_record->jifen,
+            ];
+            SendMessageManager::sendMessage($user->id, SendMessageManager::JIFEN_CHANGE, $message_content);
+        }
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
 
