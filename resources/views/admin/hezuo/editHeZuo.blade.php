@@ -7,7 +7,7 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">文章管理</li>
+                    <li class="active">文章信息管理</li>
                     <li class="active">新建/编辑</li>
                 </ol>
             </div>
