@@ -13,7 +13,7 @@
             <div class="col-lg-6 text-right">
                 <a href="{{URL::asset('/admin/hezuo/editHeZuo')}}">
                     <button type="button" class="btn btn-primary">
-                        +新建合作细则
+                        +新建文章
                     </button>
                 </a>
             </div>
@@ -92,13 +92,7 @@
                                                title="编辑该文章">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </a>
-                                            <span class="btn btn-social-icon btn-danger opt-btn-size"
-                                                  data-toggle="tooltip"
-                                                  data-placement="top"
-                                                  title="删除该文章"
-                                                  onclick="clickDel({{$data->id}})">
-                                                <i class="fa fa-trash-o opt-btn-i-size"></i>
-                                            </span>
+
                                         </span>
                                     </td>
                                 </tr>

@@ -13,7 +13,7 @@
             </div>
             <div class="col-lg-6 text-right">
                 <button type="button" class="btn btn-primary" onclick="clickSave();">
-                    保存合作细则信息
+                    保存文章信息
                 </button>
             </div>
         </div>
@@ -113,7 +113,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理合作细则信息</h4>
+                    <h4 class="modal-title">管理文章信息</h4>
                 </div>
                 <form id="editXJ" action="" method="post" class="form-horizontal">
                     <div class="modal-body">
@@ -215,7 +215,7 @@
                                 <label for="stepText" class="col-sm-2 control-label">文字</label>
                                 <div class="col-sm-10">
                                     <textarea id="stepText" class="form-control" rows="10"
-                                              placeholder="请输入 ...">@{{=it.text}}</textarea>
+                                              placeholder="请输入 ...">@{{=it.title}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -292,7 +292,7 @@
         //如果没有宣教值，则设置为空值
         var empty_xjInfo = {
             "id": null,
-            "title": "在这里输入合作细则标题...",
+            "title": "在这里输入文章标题...",
             "desc": "输入简要描述...",
             "author": "嘉润置业",
             "created_at": getCurrentTime(),
