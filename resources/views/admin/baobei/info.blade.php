@@ -309,8 +309,14 @@
 
                                 <div class="timeline-body">
                                     <div class="">
-                                        案场负责人：<span class="text-primary">{{$data->anchang->real_name}}
-                                            ({{$data->anchang->phonenum}})</span>
+                                        案场负责人：<span class="text-primary">
+                                            @if(isset($data->anchang))
+                                                {{$data->anchang->real_name}}
+                                                ({{$data->anchang->phonenum}})
+                                            @else
+                                                暂无案场负责人接收
+                                            @endif
+                                           </span>
                                     </div>
                                     <div class="margin-top-20">
                                         <img src="{{$data->visit_attach}}" style="width: 300px;">

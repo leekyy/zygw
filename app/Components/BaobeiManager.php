@@ -121,7 +121,7 @@ class BaobeiManager
         }
         //认知途径
         if (!Utils::isObjNull($baobei->way_id)) {
-            $baobei->know_way = BaobeiKnowWayManager::getById($baobei->area_id);
+            $baobei->know_way = BaobeiKnowWayManager::getById($baobei->way_id);
         }
         //购房目的
         if (!Utils::isObjNull($baobei->purpose_id)) {
