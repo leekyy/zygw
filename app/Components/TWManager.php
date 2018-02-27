@@ -19,19 +19,6 @@ class TWManager
 {
 
 
-    /*获取全部的图文类型
-
-     * By Yinyue
-     *
-     * 2018-2-27
-     */
-
-    public static  function getIndexAll(){
-        $tw = TWInfo::where('status','=','0')->orderby('seq','desc')->get();
-        return $tw;
-    }
-
-
     /*
      * 根据id获取信息
      *
@@ -40,7 +27,7 @@ class TWManager
      * 2017-11-27
      *
      */
-    public static function getById($id)
+     public static function getById($id)
     {
         $tw = TWInfo::where('id', '=', $id)->first();
         return $tw;
@@ -52,7 +39,7 @@ class TWManager
      */
     public static function getByType($type)
     {
-        $tw = TWInfo::where('type', '=', $type)->first();
+        $tw = TWInfo::where('type', '=', $type)->first();v
         $tw->tw_steps = TWStepManager::getStepsByFidAndFtable($tw->id,'tw');
         return $tw;
     }
@@ -67,11 +54,11 @@ class TWManager
      */
     public static function getInfoById($info, $level)
     {
-        $info->step =
+        $info->step =[];
         $tw = self::getById($info);
-        if ($tw) {
-            $tw = self::getXJInfoByLevel($tw, $level);
-        }
+//        if ($tw) {
+//            $tw = self::getInfoByLevel($tw, $level);
+//        }
         return $tw;
     }
 
@@ -89,6 +76,20 @@ class TWManager
         return $tw;
     }
 
+
+    /*
+     * 图文展示数加1
+     *
+     * By TerryQi
+     *
+     * 2017-12-07
+     */
+    public static function addShowNum($xj_id)
+    {
+        $xj = self::getById($xj_id);
+        $xj->show_num = $xj->show_num + 1;
+        $xj->save();
+    }
 
     /*
      * 设置相关信息
