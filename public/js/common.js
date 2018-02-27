@@ -79,44 +79,17 @@ function getLPRecentDatas(url, param, callBack) {
 }
 
 
-//根据id获取合作细则
-function getHeZuoInfoById(url, param, callBack) {
-    ajaxRequest(url + "api/hezuo/getXJInfoById", param, "get", callBack);
+//根据id获取图文
+function getInfoById(url, param, callBack) {
+    ajaxRequest(url + "api/tw/getInfoById", param, "get", callBack);
 }
 
 
-//编辑合作细则
-function editHeZuo(url, param, callBack) {
-    ajaxRequest(url + "admin/hezuo/editHeZuo", param, "post", callBack);
+//编辑图文
+function editArticle(url, param, callBack) {
+    ajaxRequest(url + "admin/article/editArticle", param, "post", callBack);
 }
 
-//根据id获取积分兑换规则
-function getRuleInfoById(url, param, callBack) {
-    ajaxRequest(url + "api/rule/getRuleInfoById", param, "get", callBack);
-}
-
-
-//编辑积分兑换规则
-function editRule(url, param, callBack) {
-    ajaxRequest(url + "admin/rule/editRule", param, "post", callBack);
-}
-
-
-//根据id获取行业白皮书
-function getWhiteBookInfoById(url, param, callBack) {
-    ajaxRequest(url + "api/whitebook/getWhiteBookInfoById", param, "get", callBack);
-}
-
-
-//编辑行业白皮书
-function editWhiteBook(url, param, callBack) {
-    ajaxRequest(url + "admin/whitebook/editWhiteBook", param, "post", callBack);
-}
-
-//根据id获取行业白皮书信息
-function getWhiteBookById(url, param, callBack) {
-    ajaxRequest(url + "admin/whitebook/getById", param, "GET", callBack);
-}
 
 //根据id获取积分兑换信息
 function getRuleById(url, param, callBack) {

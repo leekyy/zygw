@@ -160,13 +160,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 
 
     //文章管理
-    Route::get('/article/index', 'Admin\ArticleController@index');  //文章管理首页
-    Route::get('/article/setStatus/{id}', 'Admin\ArticleController@setStatus');  //设置文章状态
-    Route::get('/article/del/{id}', 'Admin\ArticleController@del');  //删除文章
-    Route::get('/article/edit', 'Admin\ArticleController@edit');  //新建或编辑文章
-    Route::post('/article/edit', 'Admin\ArticleController@editPost');  //新建或编辑文章
-    Route::get('/hezuo/editHeZuo', 'Admin\HeZuoController@editHeZuo');  //编辑合作细则页面
-    Route::post('/hezuo/editHeZuo', 'Admin\HeZuoController@editHeZuoPost'); //编辑合作细则Post
+    Route::get('/tw/index', 'Admin\TWController@index');  //文章管理首页
+    Route::get('/tw/setStatus/{id}', 'Admin\TWController@setStatus');  //设置文章状态
+    Route::get('/tw/del/{id}', 'Admin\TWController@del');  //删除文章
+//    Route::get('/tw/edit', 'Admin\TWController@edit');  //新建或编辑文章
+//    Route::post('/tw/edit', 'Admin\TWController@editPost');  //新建或编辑文章
+    Route::get('/tw/editTW', 'Admin\TWController@editTW');  //编辑文章页面
+    Route::post('/tw/editTW', 'Admin\TWController@editTWPost'); //编辑文章Post
 
 
 });
