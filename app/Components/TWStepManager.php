@@ -17,6 +17,22 @@ use Qiniu\Auth;
 
 class TWStepManager
 {
+
+
+
+    /*
+    * 根据图文id获取步骤信息
+    *
+    * By TerryQi
+    *
+    * 2017-12-07
+    *
+    */
+    public static function getStepById($tw_id)
+    {
+        $steps = TWStep::where('f_id', '=', $tw_id)->orderby('seq', 'asc')->get();
+        return $steps;
+    }
     /*
      * 根据f_id和f_table获取信息
      *
