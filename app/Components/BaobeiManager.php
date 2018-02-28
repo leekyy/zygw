@@ -312,6 +312,75 @@ class BaobeiManager
         return $baobeis;
     }
 
+
+    /*
+       * 根据状态获取报备统计
+       *
+       * By TerryQi
+       *
+       * 2018-02-28
+       *
+       */
+    public static function getBaobeiStmtByStatus($baobei_status_arr, $can_jiesuan_status_arr, $pay_zhongjie_status_arr, $house_id, $start_time, $end_time)
+    {
+        $baobeis = Baobei::wherein('status', ['0', '1']);
+        if ($baobei_status_arr != null) {
+            $baobeis = $baobeis->wherein('baobei_status', $baobei_status_arr);
+        }
+        if ($can_jiesuan_status_arr != null) {
+            $baobeis = $baobeis->wherein('can_jiesuan_status', $can_jiesuan_status_arr);
+        }
+        if ($pay_zhongjie_status_arr != null) {
+            $baobeis = $baobeis->wherein('pay_zhongjie_status', $pay_zhongjie_status_arr);
+        }
+        if ($house_id != null) {
+            $baobeis = $baobeis->where('house_id', '=', $house_id);
+        }
+        if ($start_time != null) {
+            $baobeis = $baobeis->where('created_at', '>', $start_time);
+        }
+        if ($end_time != null) {
+            $baobeis = $baobeis->where('created_at', '<=', $end_time);
+        }
+        $count = $baobeis->orderby('id', 'desc')->count();
+        return $count;
+    }
+
+
+    /*
+    * 根据状态获取佣金金额
+    *
+    * By TerryQi
+    *
+    * 2018-02-28
+    *
+    */
+    public static function getYongjinStmtByStatus($baobei_status_arr, $can_jiesuan_status_arr, $pay_zhongjie_status_arr, $house_id, $start_time, $end_time)
+    {
+        $baobeis = Baobei::wherein('status', ['0', '1']);
+        if ($baobei_status_arr != null) {
+            $baobeis = $baobeis->wherein('baobei_status', $baobei_status_arr);
+        }
+        if ($can_jiesuan_status_arr != null) {
+            $baobeis = $baobeis->wherein('can_jiesuan_status', $can_jiesuan_status_arr);
+        }
+        if ($pay_zhongjie_status_arr != null) {
+            $baobeis = $baobeis->wherein('pay_zhongjie_status', $pay_zhongjie_status_arr);
+        }
+        if ($house_id != null) {
+            $baobeis = $baobeis->where('house_id', '=', $house_id);
+        }
+        if ($start_time != null) {
+            $baobeis = $baobeis->where('created_at', '>', $start_time);
+        }
+        if ($end_time != null) {
+            $baobeis = $baobeis->where('created_at', '<=', $end_time);
+        }
+        $yongjin = $baobeis->orderby('id', 'desc')->sum('yongjin');
+        return $yongjin;
+    }
+
+
     /*
      * 根据状态获取报备列表-分页
      *
