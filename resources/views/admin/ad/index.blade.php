@@ -89,6 +89,13 @@
                                                   onclick="clickEdit({{$data->id}})">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
+                                             <a href="{{URL::asset('/admin/tw/editTW')}}?id={{$data->id}}"
+                                                class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
+                                                data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="编辑该轮播图下的轮播详情">
+                                                <i class="fa fa-edit opt-btn-i-size"></i>
+                                            </a>
                                             <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
                                                   data-placement="top"

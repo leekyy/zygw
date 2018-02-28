@@ -33,6 +33,11 @@ class TWStepManager
         $steps = TWStep::where('f_id', '=', $tw_id)->orderby('seq', 'asc')->get();
         return $steps;
     }
+
+    public  static  function getById($id){
+        $step=TWStep::where('id','=',$id)->first();
+        return $step;
+    }
     /*
      * 根据f_id和f_table获取信息
      *

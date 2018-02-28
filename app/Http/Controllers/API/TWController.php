@@ -40,7 +40,7 @@ class TWController
             $tw->created_at_str = DateTool::formateData($tw->created_at, 1);
             $tw = TWManager::getByType($tw->type);
         }
-        return view('admin.hezuo.index', ['admin' => $admin, 'datas' => $xjs]);
+        return view('admin.tw.index', ['admin' => $admin, 'datas' => $xjs]);
     }
 
     /*
@@ -89,7 +89,7 @@ class TWController
         }
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.hezuo.editHeZuo', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token, ]);
+        return view('admin.tw.editTW', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token, ]);
     }
     /*
      * 编辑合作细则详细信息
@@ -163,7 +163,7 @@ class TWController
     public function setStep(Request $request, $id)
     {
         $admin = $request->session()->get('admin');
-        $xj = TWManager::getXJById($id);
+        $xj = TWManager::getById($id);
         $xj->steps = [];
         $xj->created_at_str = DateTool::formateData($xj->created_at, 1);
         $xj = TWManager::getXJInfoByLevel($xj, 3);
@@ -172,7 +172,7 @@ class TWController
         }
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.hezuo.editStep', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token]);
+        return view('admin.tw.editStep', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token]);
     }
     /*
      * 添加宣教步骤信息
@@ -185,11 +185,11 @@ class TWController
     public function setStepPost(Request $request)
     {
         $data = $request->all();
-        $tw_step = new ArticleTWStep();
-        $tw_step = TWManager::setHeZuoStep($tw_step, $data);
-        $tw_step->f_table = "xj";
+        $tw_step = new TWStep();
+        $tw_step = TWStepManager::setInfo($tw_step, $data);
+        $tw_step->f_table = "tw";
         $tw_step->save();
-        return redirect('/admin/hezuo/setStep/' . $tw_step->f_id);
+        return redirect('/admin/tw/setStep/' . $tw_step->f_id);
     }
     //设置状态
     public function setStatus(Request $request, $id)
@@ -207,10 +207,10 @@ class TWController
         if (!($opt == '0' || $opt == '1')) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数,opt必须为0或者1，现值为' . $opt]);
         }
-        $xj = Article::where('id', '=', $id)->first();
+        $xj = TWInfo::where('id', '=', $id)->first();
         $xj->status = $opt;
         $xj->save();
-        return redirect('/admin/hezuo/index');
+        return redirect('/admin/tw/index');
     }
     //删除宣教
     public function del(Request $request, $id)
@@ -218,9 +218,9 @@ class TWController
         if (is_numeric($id) !== true) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数宣教id$id']);
         }
-        $xj = TWManager::getXJById($id);
+        $xj = TWManager::getById($id);
         $xj->delete();
-        return redirect('/admin/hezuo/index');
+        return redirect('/admin/tw/index');
     }
     //删除合作细则步骤
     public function delStep(Request $request, $id)
@@ -228,21 +228,21 @@ class TWController
         if (is_numeric($id) !== true) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数宣教id$id']);
         }
-        $tw_step = TWManager::getStepById($id);
+        $tw_step = TWStepManager::getStepById($id);
         $xj_id = $tw_step->f_id;
         $tw_step->delete();
-        return redirect('/admin/hezuo/setStep/' . $xj_id);
+        return redirect('/admin/tw/setStep/' . $xj_id);
     }
     //新建或编辑宣教-get
     public function edit(Request $request)
     {
         $admin = $request->session()->get('admin');
         $data = $request->all();
-        $xj = new Article();
+        $xj = new TWInfo();
         //types
         //$xj_types = XJType::all();
         if (array_key_exists('id', $data)) {
-            $xj = TWManager::getXJById($data['id']);
+            $xj = TWManager::getById($data['id']);
 //            foreach ($xj_types as $xj_type) {
 //                if (in_array($xj_type->id, explode(",", $xj->type))) {
 //                    $xj_type->checked = true;
@@ -276,14 +276,14 @@ class TWController
     public function editPost(Request $request)
     {
         $data = $request->all();
-        $xj = new Article();
+        $xj = new TWInfo();
         //存在id是保存
         if (array_key_exists('id', $data)) {
-            $xj = TWManager::getXJById($data['id']);
+            $xj = TWManager::getById($data['id']);
         }
-        $xj = TWManager::setXJ($xj, $data);
+        $xj = TWManager::setInfo($xj, $data);
         $xj->save();
-        return redirect('/admin/hezuo/edit' . '?id=' . $xj->id);
+        return redirect('/admin/tw/edit' . '?id=' . $xj->id);
     }
 //    //新建或编辑宣教类别->post
 //    public function editTypePost(Request $request)

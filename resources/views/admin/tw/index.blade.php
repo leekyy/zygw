@@ -40,6 +40,7 @@
                             </thead>
                             <tbody>
                             @foreach($datas as $data)
+                                @if($data->type!=5)
                                 <tr id="tr_{{$data->id}}">
                                     <td>
                                         <div class="line-height-30">
@@ -96,6 +97,7 @@
                                         </span>
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         </table>
@@ -125,7 +127,7 @@
                                 aria-hidden="true">×</span></button>
                     <h4 class="modal-title">管理文章</h4>
                 </div>
-                <form id="editAD" action="{{URL::asset('/admin/tw/edit')}}" method="post" class="form-horizontal"
+                <form id="editTW" action="{{URL::asset('/admin/tw/edit')}}" method="post" class="form-horizontal"
                       onsubmit="return checkValid();">
                     <div class="modal-body">
                         {{csrf_field()}}
@@ -258,7 +260,7 @@
         //点击新建文章
         function clickAdd() {
             //清空模态框
-            $("#editAD")[0].reset();
+            $("#editTW")[0].reset();
             $("#admin_id").val("{{$admin->id}}");
             $("#pickfiles").attr("src", '{{URL::asset('/img/upload.png')}}');
             $("#addADModal").modal('show');
@@ -267,7 +269,7 @@
         //点击编辑
         function clickEdit(ad_id) {
             console.log("clickEdit ad_id:" + ad_id);
-            getADById("{{URL::asset('')}}", {id: ad_id}, function (ret) {
+            getTWById("{{URL::asset('')}}", {id: ad_id}, function (ret) {
                 if (ret.result) {
                     var msgObj = ret.ret;
                     //对象配置

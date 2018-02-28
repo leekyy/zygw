@@ -33,6 +33,7 @@ class TWManager
         return $tw;
     }
 
+
     /*根据type属性获取图文类型
      * By Yinyue
      * 2017-2-26
@@ -40,7 +41,7 @@ class TWManager
     public static function getByType($type)
     {
         $tw = TWInfo::where('type', '=', $type)->first();
-        $tw->tw_steps = TWStepManager::getStepsByFidAndFtable($tw->id,'tw');
+        $tw->steps = TWStepManager::getStepsByFidAndFtable($tw->id,'t_tw_info');
         return $tw;
     }
 

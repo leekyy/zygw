@@ -25,6 +25,7 @@ use App\Models\Article;
 use App\Models\TWInfo;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
+use App\Components\Utils;
 use App\Http\Controllers\ApiResponse;
 use App\Components\RequestValidator;
 use Illuminate\Support\Facades\Redirect;
@@ -72,7 +73,7 @@ class TWController
     }
 
 
-    //编辑合作细则,返回页面
+    //编辑图文,返回页面
     public function editTW(Request $request)
     {
         $admin = $request->session()->get('admin');
@@ -84,6 +85,7 @@ class TWController
             $tw->steps = [];
             $tw = TWManager::getByType($tw->type);
         }
+
         //生成七牛token
         $upload_token = QNManager::uploadToken();
         return view('admin.tw.editTW', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token, ]);
@@ -101,7 +103,7 @@ class TWController
         //获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
         $data = $request->all();
 //        dd($data);
-        //新建/编辑宣教信息
+        //新建/编辑信息
         $tw = new TWInfo();
         if (array_key_exists('id', $data) && $data['id'] != null) {
             $tw = TWManager::getById($data['id']);
@@ -109,7 +111,7 @@ class TWController
         $tw = TWManager::setInfo($tw, $data);
         $tw->save();
         //获取数据库中原有的信息
-        $ori_steps = TWStepManager::getStepsByFidAndFtable($tw->id, 'tw');
+        $ori_steps = TWStepManager::getStepsByFidAndFtable($tw->id, 't_tw_info');
         $new_steps = $data['steps'];
         //删除步骤
         foreach ($ori_steps as $ori_step) {
@@ -119,12 +121,11 @@ class TWController
         }
         //新建/编辑步骤
         foreach ($new_steps as $new_step) {
-            //$new_step['f_id'] = $xj->id;
             $new_step['f_id'] = $tw->id;
-            $new_step['f_table'] = "t_article_info";
+            $new_step['f_table'] = "t_tw_info";
             $twStep = new TWStep();
             if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
-                $twStep = TWStepManager::getStepById($new_step['id']);
+                $twStep = TWStepManager::getById($new_step['id']);
             }
             $twStep = TWStepManager::setInfo($twStep, $new_step);
             $twStep->save();
