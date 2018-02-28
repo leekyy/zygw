@@ -24,8 +24,9 @@ class IndexController
         $data = $request->all();
         $serverInfo = ServerUtils::getServerInfo();
         $admin = $request->session()->get('admin');
-        $start_date = null; //检索的时间段
-        $end_date = null;
+        //检索的时间段
+        $start_date = date("Y-m-d", strtotime("-30 day"));
+        $end_date = date("Y-m-d", time());
         if (array_key_exists('start_date', $data) && !Utils::isObjNull($data['start_date'])) {
             $start_date = $data['start_date'];
         }
@@ -42,6 +43,9 @@ class IndexController
             "baobei_status3" => BaobeiManager::getBaobeiStmtByStatus(['3'], null, null, null, $start_date, $end_date),
             "baobei_status4" => BaobeiManager::getBaobeiStmtByStatus(['4'], null, null, null, $start_date, $end_date),
         ]);
+        //报备趋势
+        $daofang_trend = BaobeiManager::getDaofangTrend(null, $start_date, $end_date);
+//        dd($daofang_trend);
         //结算维度统计信息
         $jiesuan_stmt = array([
             "all" => BaobeiManager::getBaobeiStmtByStatus(['2', '3', '4'], null, null, null, $start_date, $end_date),
@@ -54,15 +58,25 @@ class IndexController
         $yongjin_stmt = array([
             "all" => BaobeiManager::getYongjinStmtByStatus(['2', '3', '4'], null, null, null, $start_date, $end_date),
             "can_jiesuan_status0" => BaobeiManager::getYongjinStmtByStatus(['2', '3', '4'], ['0'], null, null, $start_date, $end_date),
-            "can_jiesuan_status2" => BaobeiManager::getYongjinStmtByStatus(['2', '3', '4'], ['1'], null, null, $start_date, $end_date),
+            "can_jiesuan_status1" => BaobeiManager::getYongjinStmtByStatus(['2', '3', '4'], ['1'], null, null, $start_date, $end_date),
             "pay_zhongjie_status0" => BaobeiManager::getYongjinStmtByStatus(['2', '3', '4'], ['1'], ['0'], null, $start_date, $end_date),
             "pay_zhongjie_status1" => BaobeiManager::getYongjinStmtByStatus(['2', '3', '4'], ['1'], ['1'], null, $start_date, $end_date),
         ]);
 
+        //佣金相关趋势
+        $yongjin_trend = array([
+            'shengcheng_yongjin' => BaobeiManager::getShengchengYongjinTrend(null, $start_date, $end_date),
+            'queren_yongjin' => BaobeiManager::getQueRenYongjinTrend(null, $start_date, $end_date),
+            'zhifu_yongjin' => BaobeiManager::getZhiFuYongjinTrend(null, $start_date, $end_date)]);
+
         return view('admin.index.index', ['serverInfo' => $serverInfo, 'admin' => $admin
+            , 'start_date' => $start_date
+            , 'end_date' => $end_date
             , 'baobei_stmt' => \GuzzleHttp\json_encode($baobei_stmt)
+            , 'daofang_trend' => \GuzzleHttp\json_encode($daofang_trend)
             , 'jiesuan_stmt' => \GuzzleHttp\json_encode($jiesuan_stmt)
-            , 'yongjin_stmt' => \GuzzleHttp\json_encode($yongjin_stmt)]);
+            , 'yongjin_stmt' => \GuzzleHttp\json_encode($yongjin_stmt)
+            , 'yongjin_trend' => \GuzzleHttp\json_encode($yongjin_trend)]);
     }
 
     //错误

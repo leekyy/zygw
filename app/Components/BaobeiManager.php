@@ -337,13 +337,196 @@ class BaobeiManager
             $baobeis = $baobeis->where('house_id', '=', $house_id);
         }
         if ($start_time != null) {
-            $baobeis = $baobeis->where('created_at', '>', $start_time);
+            $baobeis = $baobeis->where('created_at', '>=', $start_time);
         }
         if ($end_time != null) {
-            $baobeis = $baobeis->where('created_at', '<=', $end_time);
+            $baobeis = $baobeis->where('created_at', '<', $end_time);
         }
         $count = $baobeis->orderby('id', 'desc')->count();
         return $count;
+    }
+
+    /*
+     * 报备趋势信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-28
+     */
+    public static function getDaofangTrend($house_id, $start_time, $end_time)
+    {
+        $sql_str = "SELECT DATE_FORMAT(date_list.date, '%Y-%m-%d') as tjdate , COUNT(*) - 1 as nums FROM zygwdb.t_date_list date_list left join zygwdb.t_baobei_info baobei_info on DATE_FORMAT(date_list.date,'%Y-%m-%d') = DATE_FORMAT(baobei_info.visit_time,'%Y-%m-%d') ";
+        $first_con_flag = true;
+        if ($house_id != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " house_id = " . $house_id . " ";
+        }
+        if ($start_time != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " date_list.date >= '" . $start_time . "' ";
+        }
+        if ($end_time != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " date_list.date <= '" . $end_time . "' ";
+        }
+        $sql_str = $sql_str . " GROUP BY tjdate";
+
+//        dd($sql_str); //测试sql用
+        $data = DB::select($sql_str);
+        return $data;
+    }
+
+
+    /*
+    * 成交生成佣金趋势信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-28
+     */
+    public static function getShengchengYongjinTrend($house_id, $start_time, $end_time)
+    {
+        $sql_str = "SELECT DATE_FORMAT(date_list.date, '%Y-%m-%d') as tjdate , SUM(baobei_info.yongjin) as yongjin FROM zygwdb.t_date_list date_list left join zygwdb.t_baobei_info baobei_info on DATE_FORMAT(date_list.date,'%Y-%m-%d') = DATE_FORMAT(baobei_info.deal_time,'%Y-%m-%d') ";
+        $first_con_flag = true;
+        if ($house_id != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " house_id = " . $house_id . " ";
+        }
+        if ($start_time != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " date_list.date >= '" . $start_time . "' ";
+        }
+        if ($end_time != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " date_list.date <= '" . $end_time . "' ";
+        }
+        $sql_str = $sql_str . " GROUP BY tjdate";
+
+//        dd($sql_str); //测试sql用
+        $data = DB::select($sql_str);
+        return $data;
+    }
+
+
+    /*
+    * 确认佣金趋势信息
+     *
+     * By TerryQi
+     *
+     * 2018-02-28
+     */
+    public static function getQueRenYongjinTrend($house_id, $start_time, $end_time)
+    {
+        $sql_str = "SELECT DATE_FORMAT(date_list.date, '%Y-%m-%d') as tjdate , SUM(baobei_info.yongjin) as yongjin FROM zygwdb.t_date_list date_list left join zygwdb.t_baobei_info baobei_info on DATE_FORMAT(date_list.date,'%Y-%m-%d') = DATE_FORMAT(baobei_info.can_jiesuan_time,'%Y-%m-%d') ";
+        $first_con_flag = true;
+        if ($house_id != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " house_id = " . $house_id . " ";
+        }
+        if ($start_time != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " date_list.date >= '" . $start_time . "' ";
+        }
+        if ($end_time != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " date_list.date <= '" . $end_time . "' ";
+        }
+        $sql_str = $sql_str . " GROUP BY tjdate";
+
+//        dd($sql_str); //测试sql用
+        $data = DB::select($sql_str);
+        return $data;
+    }
+
+
+    /*
+   * 支付佣金趋势信息
+    *
+    * By TerryQi
+    *
+    * 2018-02-28
+    */
+    public static function getZhiFuYongjinTrend($house_id, $start_time, $end_time)
+    {
+        $sql_str = "SELECT DATE_FORMAT(date_list.date, '%Y-%m-%d') as tjdate , SUM(baobei_info.yongjin) as yongjin FROM zygwdb.t_date_list date_list left join zygwdb.t_baobei_info baobei_info on DATE_FORMAT(date_list.date,'%Y-%m-%d') = DATE_FORMAT(baobei_info.pay_zhongjie_time,'%Y-%m-%d') ";
+        $first_con_flag = true;
+        if ($house_id != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " house_id = " . $house_id . " ";
+        }
+        if ($start_time != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " date_list.date >= '" . $start_time . "' ";
+        }
+        if ($end_time != null) {
+            if ($first_con_flag) {
+                $sql_str = $sql_str . " where ";
+                $first_con_flag = false;
+            } else {
+                $sql_str = $sql_str . " and ";
+            }
+            $sql_str = $sql_str . " date_list.date <= '" . $end_time . "' ";
+        }
+        $sql_str = $sql_str . " GROUP BY tjdate";
+
+//        dd($sql_str); //测试sql用
+        $data = DB::select($sql_str);
+        return $data;
     }
 
 
