@@ -86,8 +86,8 @@ function getInfoById(url, param, callBack) {
 
 
 //编辑图文
-function editArticle(url, param, callBack) {
-    ajaxRequest(url + "admin/article/editArticle", param, "post", callBack);
+function editTW(url, param, callBack) {
+    ajaxRequest(url + "admin/tw/editTW", param, "post", callBack);
 }
 
 

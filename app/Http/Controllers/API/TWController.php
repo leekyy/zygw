@@ -14,12 +14,14 @@ use App\Components\AdminManager;
 use App\Components\DateTool;
 use App\Components\DoctorManager;
 use App\Components\QNManager;
+use App\Components\TWStepManager;
 use App\Components\XJManager;
 use App\Components\Utils;
 use App\Libs\CommonUtils;
 use App\Models\Article;
 use App\Models\Doctor;
-use App\Models\ArticleTWStep;
+use App\Models\TWStep;
+use App\Models\TWInfo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiResponse;
 use App\Libs\ServerUtils;
@@ -33,10 +35,10 @@ class TWController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $xjs = TWManager::getIndexXJs();
-        foreach ($xjs as $xj) {
-            $xj->created_at_str = DateTool::formateData($xj->created_at, 1);
-            $xj = TWManager::getXJInfoByLevel($xj, 0);
+        $xjs = TWManager::getList();
+        foreach ($xjs as $tw) {
+            $tw->created_at_str = DateTool::formateData($tw->created_at, 1);
+            $tw = TWManager::getByType($tw->type);
         }
         return view('admin.hezuo.index', ['admin' => $admin, 'datas' => $xjs]);
     }
@@ -58,12 +60,12 @@ class TWController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        $xj = TWManager::getXJById($data['id']);
-        if (!$xj) {
+        $tw = TWManager::getById($data['id']);
+        if (!$tw) {
             return ApiResponse::makeResponse(false, '未找到合作细则信息', ApiResponse::INNER_ERROR);
         }
-        $xj = TWManager::getXJInfoByLevel($xj, 3);
-        return ApiResponse::makeResponse(true, $xj, ApiResponse::SUCCESS_CODE);
+        $tw = TWManager::getByType($tw->type);
+        return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
 
 
@@ -72,22 +74,22 @@ class TWController
 
 
     //编辑合作细则,返回页面
-    public function editHeZuo(Request $request)
+    public function editTW(Request $request)
     {
         $admin = $request->session()->get('admin');
         $data = $request->all();
         //types
         //$hposs = HposManager::getHPosList();
-        $xj = new Article();
+        $tw = new TWInfo();
         if (array_key_exists('id', $data)) {
-            $xj = TWManager::getXJById($data['id']);
+            $tw = TWManager::getById($data['id']);
             //步骤信息
-            $xj->steps = [];
-            $xj = TWManager::getXJInfoByLevel($xj, 3);
+            $tw->steps = [];
+            $tw = TWManager::getByType($tw->type);
         }
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.hezuo.editHeZuo', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token, ]);
+        return view('admin.hezuo.editHeZuo', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token, ]);
     }
     /*
      * 编辑合作细则详细信息
@@ -103,14 +105,14 @@ class TWController
         $data = $request->all();
 //        dd($data);
         //新建/编辑宣教信息
-        $xj = new Article();
+        $tw = new TWInfo();
         if (array_key_exists('id', $data) && $data['id'] != null) {
-            $xj = TWManager::getXJById($data['id']);
+            $tw = TWManager::getById($data['id']);
         }
-        $xj = TWManager::setXJ($xj, $data);
-        $xj->save();
+        $tw = TWManager::setInfo($tw, $data);
+        $tw->save();
         //获取数据库中原有的信息
-        $ori_steps = TWManager::getStepsByFidAndFtable($xj->id, 'xj');
+        $ori_steps = TWStepManager::getStepsByFidAndFtable($tw->id, 'tw');
         $new_steps = $data['steps'];
         //删除步骤
         foreach ($ori_steps as $ori_step) {
@@ -120,18 +122,18 @@ class TWController
         }
         //新建/编辑步骤
         foreach ($new_steps as $new_step) {
-            $new_step['f_id'] = $xj->id;
-            $new_step['f_table'] = "xj";
-            $twStep = new ArticleTWStep();
+            $new_step['f_id'] = $tw->id;
+            $new_step['f_table'] = "tw";
+            $twStep = new TWStep();
             if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
-                $twStep = TWManager::getStepById($new_step['id']);
+                $twStep = TWStepManager::getStepById($new_step['id']);
             }
-            $twStep = TWManager::setHeZuoStep($twStep, $new_step);
+            $twStep = TWStepManager::setInfo($twStep, $new_step);
             $twStep->save();
         }
         //重新获取合作细则信息并返回
-        $xj = TWManager::getXJInfoByLevel($xj, 3);
-        return ApiResponse::makeResponse(true, $xj, ApiResponse::SUCCESS_CODE);
+        $tw = TWManager::getByType($tw->type);
+        return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
     /*
      * 分类首页
@@ -144,7 +146,7 @@ class TWController
     public function indexType(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $xjTypes = TWManager::getXJTypes();
+        $xjTypes = TWManager::getByType($xjTypes->type);
         foreach ($xjTypes as $xjType) {
             $xjType->created_at_str = DateTool::formateData($xjType->created_at, 1);
         }

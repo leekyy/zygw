@@ -476,7 +476,7 @@
             xjInfo._token = "{{ csrf_token() }}";
             console.log("cilckSave xjInfo:" + JSON.stringify(xjInfo));
             //调用接口进行编辑
-            editArticle("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
+            editTW("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
                 //提示保存成功
                 if (ret.result == true) {
                     $("#tipModalBody").html('<p>信息保存成功</p>');

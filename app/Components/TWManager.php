@@ -39,7 +39,7 @@ class TWManager
      */
     public static function getByType($type)
     {
-        $tw = TWInfo::where('type', '=', $type)->first();v
+        $tw = TWInfo::where('type', '=', $type)->first();
         $tw->tw_steps = TWStepManager::getStepsByFidAndFtable($tw->id,'tw');
         return $tw;
     }

@@ -38,7 +38,7 @@ class TWController
     {
 
         $admin = $request->session()->get('admin');
-        $ads = TWManager::getIndexAll();
+        $ads = TWManager::getList();
         foreach ($ads as $ad) {
             $ad->admin = AdminManager::getAdminInfoById($ad->admin_id);
             $ad->created_at_str = DateTool::formateData($ad->created_at, 1);
@@ -82,7 +82,7 @@ class TWController
             $tw = TWManager::getById($data['id']);
             //步骤信息
             $tw->steps = [];
-            $tw = TWManager::getXJInfoByLevel($tw, 3);
+            $tw = TWManager::getByType($tw->type);
         }
         //生成七牛token
         $upload_token = QNManager::uploadToken();
@@ -124,13 +124,13 @@ class TWController
             $new_step['f_table'] = "t_article_info";
             $twStep = new TWStep();
             if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
-                $twStep = TWManager::getStepById($new_step['id']);
+                $twStep = TWStepManager::getStepById($new_step['id']);
             }
             $twStep = TWStepManager::setInfo($twStep, $new_step);
             $twStep->save();
         }
         //重新获取合作细则信息并返回
-        $tw = TWManager::getXJInfoByLevel($tw, 3);
+        $tw = TWManager::getByType($tw->type);
         return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
 
