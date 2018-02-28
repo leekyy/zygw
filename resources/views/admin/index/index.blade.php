@@ -478,7 +478,6 @@
 
             var option = {
                 title: {
-                    text: '折线图堆叠'
                 },
                 tooltip: {
                     trigger: 'axis'
