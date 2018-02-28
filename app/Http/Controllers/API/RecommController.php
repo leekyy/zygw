@@ -11,12 +11,14 @@ namespace App\Http\Controllers\API;
 use App\Components\ADManager;
 use App\Components\HomeManager;
 use App\Components\RecommInfoManager;
+use App\Components\SendMessageManager;
 use App\Components\SystemManager;
 use App\Components\UserManager;
 use App\Http\Controllers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Libs\wxDecode\ErrorCode;
 use App\Libs\wxDecode\WXBizDataCrypt;
+use App\Models\JifenChangeRecord;
 use App\Models\RecommInfo;
 use App\Models\ViewModels\HomeView;
 use Illuminate\Http\Request;
@@ -49,7 +51,7 @@ class RecommController extends Controller
             return ApiResponse::makeResponse(false, '推荐人信息不存在', ApiResponse::INNER_ERROR);
         }
         if (RecommInfoManager::isUserHasBeenRecommended($data['user_id'])) {
-            return ApiResponse::makeResponse(false, "该用户已经被推荐过", ApiResponse::INNER_ERROR);
+            return ApiResponse::makeResponse(false, "已经被推荐", ApiResponse::INNER_ERROR);
         }
         //建立推荐关联关系
         $recommInfo = new RecommInfo();
