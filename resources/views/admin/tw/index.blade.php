@@ -10,13 +10,13 @@
                     <li class="active">文章管理</li>
                 </ol>
             </div>
-            <div class="col-lg-6 text-right">
-                <a href="{{URL::asset('/admin/hezuo/editHeZuo')}}">
-                    <button type="button" class="btn btn-primary">
-                        +新建文章
-                    </button>
-                </a>
-            </div>
+            {{--<div class="col-lg-6 text-right">--}}
+                {{--<a href="{{URL::asset('/admin/tw/editTW')}}">--}}
+                    {{--<button type="button" class="btn btn-primary">--}}
+                        {{--+新建文章--}}
+                    {{--</button>--}}
+                {{--</a>--}}
+            {{--</div>--}}
         </div>
     </section>
 
@@ -72,20 +72,20 @@
                                     </td>
                                     <td>
                                         <span class="line-height-30">
-                                            <a href="{{URL::asset('/admin/article/setStatus')}}/{{$data->id}}?opt=0"
+                                            <a href="{{URL::asset('/admin/tw/setStatus')}}/{{$data->id}}?opt=0"
                                                class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top" title="在小程序页面中展示该文章">
                                                 <i class="fa fa-eye opt-btn-i-size"></i>
                                             </a>
-                                            <a href="{{URL::asset('/admin/article/setStatus')}}/{{$data->id}}?opt=1"
+                                            <a href="{{URL::asset('/admin/tw/setStatus')}}/{{$data->id}}?opt=1"
                                                class="btn btn-social-icon btn-warning margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top" title="在小程序页面中隐藏该文章">
                                                 <i class="fa fa-eye-slash opt-btn-i-size"></i>
                                             </a>
 
-                                            <a href="{{URL::asset('/admin/hezuo/editHeZuo')}}?id={{$data->id}}"
+                                            <a href="{{URL::asset('/admin/tw/editTW')}}?id={{$data->id}}"
                                                class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"
                                                data-placement="top"
@@ -125,7 +125,7 @@
                                 aria-hidden="true">×</span></button>
                     <h4 class="modal-title">管理文章</h4>
                 </div>
-                <form id="editAD" action="{{URL::asset('/admin/article/edit')}}" method="post" class="form-horizontal"
+                <form id="editAD" action="{{URL::asset('/admin/tw/edit')}}" method="post" class="form-horizontal"
                       onsubmit="return checkValid();">
                     <div class="modal-body">
                         {{csrf_field()}}
@@ -156,7 +156,7 @@
 
                                 <div class="col-sm-10">
                                     <input id="title" name="title" type="text" class="form-control"
-                                           placeholder="轮播图说明"
+                                           placeholder="文章说明"
                                            value="">
                                 </div>
                             </div>
@@ -252,7 +252,7 @@
             //进行tr隐藏
             $("#tr_" + ad_id).fadeOut();
             //进行页面跳转
-            window.location.href = "{{URL::asset('/admin/article/del')}}/" + ad_id;
+            window.location.href = "{{URL::asset('/admin/tw/del')}}/" + ad_id;
         }
 
         //点击新建文章

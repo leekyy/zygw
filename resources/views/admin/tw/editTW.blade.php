@@ -7,13 +7,13 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">合作细则管理</li>
+                    <li class="active">图文管理</li>
                     <li class="active">新建/编辑</li>
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
                 <button type="button" class="btn btn-primary" onclick="clickSave();">
-                    保存合作细则信息
+                    保存图文信息
                 </button>
             </div>
         </div>
@@ -113,7 +113,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理合作细则信息</h4>
+                    <h4 class="modal-title">管理图文信息</h4>
                 </div>
                 <form id="editXJ" action="" method="post" class="form-horizontal">
                     <div class="modal-body">
@@ -317,7 +317,7 @@
                 var param = {
                     id: xj_id
                 }
-                getHeZuoInfoById("{{URL::asset('')}}", param, function (ret, err) {
+                getInfoById("{{URL::asset('')}}", param, function (ret, err) {
                     //提示保存成功
                     if (ret.result == true) {
                         xjInfo = ret.ret;
@@ -465,7 +465,7 @@
         function clickSave() {
             //如果没有步骤信息，说明还没有录入，需要进行录入
             if (xjInfo.steps.length <= 0) {
-                $("#tipModalBody").html('<p>请录入合作细则图文信息</p>');
+                $("#tipModalBody").html('<p>请录入图文信息</p>');
                 $("#tipModal").modal('show');
                 return;
             }
@@ -476,15 +476,15 @@
             xjInfo._token = "{{ csrf_token() }}";
             console.log("cilckSave xjInfo:" + JSON.stringify(xjInfo));
             //调用接口进行编辑
-            editHeZuo("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
+            editArticle("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
                 //提示保存成功
                 if (ret.result == true) {
-                    $("#tipModalBody").html('<p>合作细则信息保存成功</p>');
+                    $("#tipModalBody").html('<p>信息保存成功</p>');
                     $("#tipModal").modal('show');
                     xjInfo = ret.ret;
                     loadHtml();
                 } else {
-                    $("#tipModalBody").html("<p>合作细则信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
+                    $("#tipModalBody").html("<p>信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
                     $("#tipModal").modal('show');
                 }
             })

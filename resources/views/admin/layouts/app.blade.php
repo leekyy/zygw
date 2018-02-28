@@ -270,7 +270,7 @@
                 {{--</li>--}}
 
                 <li>
-                    <a href="{{url('/admin/article/index')}}">
+                    <a href="{{url('/admin/tw/index')}}">
                         <i class="fa fa-photo"></i>
                         <span>规则管理</span>
                     </a>
