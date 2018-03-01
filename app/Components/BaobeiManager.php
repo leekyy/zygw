@@ -906,4 +906,55 @@ class BaobeiManager
             ->where('can_jiesuan_status', '=', '1')->where('pay_zhongjie_status', '=', '0')->sum('yongjin');
         return $waingtingForPay_yongjin;
     }
+
+
+    //获取报备状态中文
+    public static function getBaobeiStr($baobei_status)
+    {
+        switch ($baobei_status) {
+            case '0':
+                return "报备";
+            case '1':
+                return "到访";
+            case '2':
+                return '成交';
+            case '3':
+                return "签约";
+            case '4':
+                return "全款到账";
+        }
+    }
+
+    //是否可结算状态
+    public static function getCanJieSuanStr($can_jiesuan_status)
+    {
+        switch ($can_jiesuan_status) {
+            case '0':
+                return "不可结算";
+            case '1':
+                return "可以结算";
+        }
+    }
+
+    //是否支付
+    public static function getPayZhongJieStr($pay_zhongjie_status)
+    {
+        switch ($pay_zhongjie_status) {
+            case '0':
+                return "未支付";
+            case '1':
+                return "已支付";
+        }
+    }
+
+    //到访方式
+    public static function getVisitWayStr($visit_way)
+    {
+        switch ($visit_way) {
+            case '0':
+                return "中介带访";
+            case '1':
+                return "自行到访";
+        }
+    }
 }
