@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Components\ADManager;
 use App\Components\AdminManager;
+use App\Components\ADStepManager;
 use App\Components\DateTool;
 use App\Components\DoctorManager;
 use App\Components\QNManager;
@@ -18,6 +19,9 @@ use App\Components\XJManager;
 use App\Libs\CommonUtils;
 use App\Models\AD;
 use App\Models\Doctor;
+use App\Components\Utils;
+use App\Models\TWStep;
+use App\Http\Controllers\ApiResponse;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
@@ -100,9 +104,71 @@ class ADController
         if (array_key_exists('id', $data) && $data['id'] != null) {
             $ad = AD::find($data['id']);
         }
-        $ad = ADManager::setAD($ad, $data);
+        $ad = ADManager::setInfo($ad, $data);
         $ad->save();
         return redirect('/admin/ad/index');
+    }
+
+    //编辑图文,返回页面
+    public function editAD(Request $request)
+    {
+        $admin = $request->session()->get('admin');
+        $data = $request->all();
+        $tw = new AD();
+        if (array_key_exists('id', $data)) {
+            $tw = ADManager::getADById($data['id']);
+            //步骤信息
+            $tw->steps = [];
+            $tw = ADManager::getByType($tw->type);
+        }
+
+        //生成七牛token
+        $upload_token = QNManager::uploadToken();
+        return view('admin.ad.editAD', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token, ]);
+    }
+    /*
+        * 编辑详细信息
+        *
+        * By TerryQi
+        *
+        * 2017-12-31
+        *
+        */
+    public function editADPost(Request $request)
+    {
+        //获取数据，要求ajax设置Content-Type为application/json; charset=utf-8
+        $data = $request->all();
+//        dd($data);
+        //新建/编辑信息
+        $tw = new AD();
+        if (array_key_exists('id', $data) && $data['id'] != null) {
+            $tw = ADManager::getADById($data['id']);
+        }
+        $tw = ADManager::setInfo($tw, $data);
+        $tw->save();
+        //获取数据库中原有的信息
+        $ori_steps = ADStepManager::getStepsByFidAndFtable($tw->id, 't_ad_info');
+        $new_steps = $data['steps'];
+        //删除步骤
+        foreach ($ori_steps as $ori_step) {
+            if (!Utils::isIdInArray($ori_step->id, $new_steps)) {
+                $ori_step->delete();
+            }
+        }
+        //新建/编辑步骤
+        foreach ($new_steps as $new_step) {
+            $new_step['f_id'] = $tw->id;
+            $new_step['f_table'] = "t_ad_info";
+            $twStep = new TWStep();
+            if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
+                $twStep = ADStepManager::getById($new_step['id']);
+            }
+            $twStep = ADStepManager::setInfo($twStep, $new_step);
+            $twStep->save();
+        }
+        //重新获取合作细则信息并返回
+        $tw = ADManager::getByType($tw->type);
+        return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
 
 }

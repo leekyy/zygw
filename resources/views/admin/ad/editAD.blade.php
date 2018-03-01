@@ -7,13 +7,13 @@
             <div class="col-lg-6">
                 <ol class="breadcrumb" style="float: none;background: none;">
                     <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-                    <li class="active">文章信息管理</li>
+                    <li class="active">图文管理</li>
                     <li class="active">新建/编辑</li>
                 </ol>
             </div>
             <div class="col-lg-6 text-right">
                 <button type="button" class="btn btn-primary" onclick="clickSave();">
-                    保存文章信息
+                    保存图文信息
                 </button>
             </div>
         </div>
@@ -55,7 +55,7 @@
                 @{{=it.desc_html}}
             </div>
             <div class="text-right margin-top-15">
-                <img src="{{URL::asset('/img/edit_icon.png')}}" class="opt-btn-size" onclick="editXJInfo();">
+                <img src="{{URL::asset('/img/edit_icon.png')}}" class="opt-btn-size" onclick="editTWInfo();">
             </div>
             <div style="border: 1px #F1F1F1 dashed;" class="margin-top-20 margin-bottom-20"></div>
         </div>
@@ -102,18 +102,18 @@
 
 
     <!--新建编辑宣教对话框-->
-    <div class="modal fade -m" id="editXJModal" tabindex="-1" role="dialog">
+    <div class="modal fade -m" id="editTWModal" tabindex="-1" role="dialog">
 
 
     </div>
     <!-- /.modal -->
-    <script id="editXJModal-content-template" type="text/x-dot-template">
+    <script id="editTWModal-content-template" type="text/x-dot-template">
         <div class="modal-dialog">
             <div class="modal-content message_align">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">管理文章信息</h4>
+                    <h4 class="modal-title">管理图文信息</h4>
                 </div>
                 <form id="editXJ" action="" method="post" class="form-horizontal">
                     <div class="modal-body">
@@ -184,7 +184,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                         <button type="button" data-value="" class="btn btn-success"
-                                onclick="clickEditXJ();">确定
+                                onclick="clickEditTW();">确定
                         </button>
                     </div>
                 </form>
@@ -288,11 +288,11 @@
             })
         }
         //初始化宣教值
-        var xjInfo = {};
+        var twInfo = {};
         //如果没有宣教值，则设置为空值
-        var empty_xjInfo = {
+        var empty_twInfo = {
             "id": null,
-            "title": "在这里输入文章标题...",
+            "title": "在这里输入标题...",
             "desc": "输入简要描述...",
             "author": "嘉润置业",
             "created_at": getCurrentTime(),
@@ -310,17 +310,17 @@
             var xj_id = getQueryString("id");
             if (judgeIsNullStr(xj_id)) {
                 //加载页面，空页面
-                xjInfo = empty_xjInfo;
+                twInfo = empty_twInfo;
                 loadHtml();
             } else {
                 //加载计划页面
                 var param = {
                     id: xj_id
                 }
-                getHeZuoInfoById("{{URL::asset('')}}", param, function (ret, err) {
+                getADById("{{URL::asset('')}}", param, function (ret, err) {
                     //提示保存成功
                     if (ret.result == true) {
-                        xjInfo = ret.ret;
+                        twInfo = ret.ret;
                         loadHtml();
                     }
                 })
@@ -331,73 +331,73 @@
             //清理页面
             $("#message-content").empty();
             //整理数据
-            xjInfo.created_at_str = convertDateToChinese(xjInfo.created_at);
-            xjInfo.desc_html = Text2Html(xjInfo.desc);
-            for (var i = 0; i < xjInfo.steps.length; i++) {
-                xjInfo.steps[i].text_html = Text2Html(xjInfo.steps[i].text);
+            twInfo.created_at_str = convertDateToChinese(twInfo.created_at);
+            twInfo.desc_html = Text2Html(twInfo.desc);
+            for (var i = 0; i < twInfo.steps.length; i++) {
+                twInfo.steps[i].text_html = Text2Html(twInfo.steps[i].text);
             }
             //加载页面
             var interText = doT.template($("#message-content-template").text());
-            $("#message-content").html(interText(xjInfo));
+            $("#message-content").html(interText(twInfo));
         }
-        function editXJInfo() {
-            console.log("editXJInfo");
-            var interText = doT.template($("#editXJModal-content-template").text());
-            $("#editXJModal").html(interText(xjInfo));
+        function editTWInfo() {
+            console.log("editTWInfo");
+            var interText = doT.template($("#editTWModal-content-template").text());
+            $("#editTWModal").html(interText(twInfo));
             //专门设置位置
             var hpos_arr = [];
-            if (!judgeIsNullStr(xjInfo.hpos_ids)) {
-                var hpos_arr = xjInfo.hpos_ids.split(',');
+            if (!judgeIsNullStr(twInfo.hpos_ids)) {
+                var hpos_arr = twInfo.hpos_ids.split(',');
             }
             for (var i = 0; i < hpos_arr.length; i++) {
                 $("#hpos_id" + hpos_arr[i]).attr('checked', 'true');
             }
             //初始化七牛
             initQNUploader('container', 'img', 'pickfiles');
-            $("#editXJModal").modal('show');
+            $("#editTWModal").modal('show');
             setICheck();
         }
-        //点击编辑合作细则
-        function clickEditXJ() {
+        //点击编辑图文
+        function clickEditTW() {
             //对宣教对象基础信息进行赋值
-            xjInfo.title = $("#title").val();
-            xjInfo.author = $("#author").val();
-            xjInfo.desc = $("#desc").val();
-            xjInfo.img = $("#img").val();
-            xjInfo.hpos_ids = "";
+            twInfo.title = $("#title").val();
+            twInfo.author = $("#author").val();
+            twInfo.desc = $("#desc").val();
+            twInfo.img = $("#img").val();
+            twInfo.hpos_ids = "";
             var hpos_arr = [];
             $('input:checkbox').each(function () {
                 if ($(this).is(':checked') == true) {
                     hpos_arr.push($(this).attr('value'));
                 }
             });
-            xjInfo.hpos_ids = hpos_arr.toString();
+            twInfo.hpos_ids = hpos_arr.toString();
             //合规校验
-            if (judgeIsNullStr(xjInfo.title)) {
+            if (judgeIsNullStr(twInfo.title)) {
                 $("#title").focus();
                 return;
             }
-            if (judgeIsNullStr(xjInfo.author)) {
+            if (judgeIsNullStr(twInfo.author)) {
                 $("#author").focus();
                 return;
             }
-            if (judgeIsNullStr(xjInfo.desc)) {
+            if (judgeIsNullStr(twInfo.desc)) {
                 $("#desc").focus();
                 return;
             }
-            if (judgeIsNullStr(xjInfo.img)) {
+            if (judgeIsNullStr(twInfo.img)) {
                 $("#img").focus();
                 return;
             }
             //加载页面
             loadHtml();
-            console.log("xjInfo:" + JSON.stringify(xjInfo));
-            $("#editXJModal").modal('hide');
+            console.log("twInfo:" + JSON.stringify(twInfo));
+            $("#editTWModal").modal('hide');
         }
         //点击编辑步骤信息
         function editStep(index, edit_or_add) {
             console.log("editStep index:" + index + " edit_or_add:" + edit_or_add);
-            var steps = xjInfo.steps;
+            var steps = twInfo.steps;
             var stepObj = {
                 "text": "",
                 "img": "",
@@ -407,8 +407,8 @@
             //如果是新建
             if (edit_or_add == "add") {
             } else {        //如果是编辑
-                stepObj.text = nullToEmptyStr(xjInfo.steps[index].text);
-                stepObj.img = nullToEmptyStr(xjInfo.steps[index].img);
+                stepObj.text = nullToEmptyStr(twInfo.steps[index].text);
+                stepObj.img = nullToEmptyStr(twInfo.steps[index].img);
             }
             console.log("stepObj:" + JSON.stringify(stepObj));
             var interText = doT.template($("#editStepModal-content-template").text());
@@ -428,17 +428,17 @@
                 return;
             }
             if (edit_or_add == "add") {
-                xjInfo.steps.splice(index, 0, stepObj);
+                twInfo.steps.splice(index, 0, stepObj);
             } else {
-                xjInfo.steps[index] = stepObj;
+                twInfo.steps[index] = stepObj;
             }
-            console.log("xjInfo:" + JSON.stringify(xjInfo));
+            console.log("twInfo:" + JSON.stringify(twInfo));
             loadHtml();
             $("#editStepModal").modal('hide');
         }
         //删除步骤
         function delStep(index) {
-            xjInfo.steps.splice(index, 1);
+            twInfo.steps.splice(index, 1);
             loadHtml();
         }
         //上移宣教信息
@@ -446,45 +446,45 @@
             if (index == 0) {
                 return;
             }
-            var tempObj = xjInfo.steps[index];
-            xjInfo.steps[index] = xjInfo.steps[index - 1];
-            xjInfo.steps[index - 1] = tempObj;
+            var tempObj = twInfo.steps[index];
+            twInfo.steps[index] = twInfo.steps[index - 1];
+            twInfo.steps[index - 1] = tempObj;
             loadHtml();
         }
         //下移宣教信息
         function moveDownStep(index) {
-            if (index == xjInfo.steps.length - 1) {
+            if (index == twInfo.steps.length - 1) {
                 return;
             }
-            var tempObj = xjInfo.steps[index];
-            xjInfo.steps[index] = xjInfo.steps[index + 1];
-            xjInfo.steps[index + 1] = tempObj;
+            var tempObj = twInfo.steps[index];
+            twInfo.steps[index] = twInfo.steps[index + 1];
+            twInfo.steps[index + 1] = tempObj;
             loadHtml();
         }
         //保存宣教信息
         function clickSave() {
             //如果没有步骤信息，说明还没有录入，需要进行录入
-            if (xjInfo.steps.length <= 0) {
-                $("#tipModalBody").html('<p>请录入文章图文信息</p>');
+            if (twInfo.steps.length <= 0) {
+                $("#tipModalBody").html('<p>请录入图文信息</p>');
                 $("#tipModal").modal('show');
                 return;
             }
             //进行排序
-            for (var i = 0; i < xjInfo.steps.length; i++) {
-                xjInfo.steps[i].seq = i;
+            for (var i = 0; i < twInfo.steps.length; i++) {
+                twInfo.steps[i].seq = i;
             }
-            xjInfo._token = "{{ csrf_token() }}";
-            console.log("cilckSave xjInfo:" + JSON.stringify(xjInfo));
+            twInfo._token = "{{ csrf_token() }}";
+            console.log("cilckSave twInfo:" + JSON.stringify(twInfo));
             //调用接口进行编辑
-            editHeZuo("{{URL::asset('')}}", JSON.stringify(xjInfo), function (ret, err) {
+            editAD("{{URL::asset('')}}", JSON.stringify(twInfo), function (ret, err) {
                 //提示保存成功
                 if (ret.result == true) {
-                    $("#tipModalBody").html('<p>文章信息保存成功</p>');
+                    $("#tipModalBody").html('<p>信息保存成功</p>');
                     $("#tipModal").modal('show');
-                    xjInfo = ret.ret;
+                    twInfo = ret.ret;
                     loadHtml();
                 } else {
-                    $("#tipModalBody").html("<p>文章信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
+                    $("#tipModalBody").html("<p>信息保存失败，请联系<span class='text-info'>管理员处理</span></p>");
                     $("#tipModal").modal('show');
                 }
             })

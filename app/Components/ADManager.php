@@ -57,13 +57,25 @@ class ADManager
     }
 
 
+    /*根据type属性获取轮播图类型
+     * By Yinyue
+     * 2017-2-26
+     */
+    public static function getByType($type)
+    {
+        $tw = AD::where('type', '=', $type)->first();
+        $tw->steps = ADStepManager::getStepsByFidAndFtable($tw->id,'t_ad_info');
+        return $tw;
+    }
+
+
     /*
      * 设置广告信息，用于编辑、
      *
      * By TerryQi
      *
      */
-    public static function setAD($ad, $data)
+    public static function setInfo($ad, $data)
     {
         if (array_key_exists('admin_id', $data)) {
             $ad->admin_id = array_get($data, 'admin_id');

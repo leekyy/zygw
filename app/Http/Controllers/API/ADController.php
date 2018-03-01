@@ -56,6 +56,12 @@ class ADController extends Controller
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
         $ad = ADManager::getADById($data['id']);
+        if (!$ad) {
+            return ApiResponse::makeResponse(false, '未找到合作细则信息', ApiResponse::INNER_ERROR);
+        }
+        $ad = ADManager::getByType($ad->type);
         return ApiResponse::makeResponse(true, $ad, ApiResponse::SUCCESS_CODE);
     }
+
+
 }

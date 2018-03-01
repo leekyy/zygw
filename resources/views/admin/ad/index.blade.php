@@ -89,7 +89,7 @@
                                                   onclick="clickEdit({{$data->id}})">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
-                                             <a href="{{URL::asset('/admin/tw/editTW')}}?id={{$data->id}}"
+                                             <a href="{{URL::asset('/admin/ad/editAD')}}?id={{$data->id}}"
                                                 class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                 data-toggle="tooltip"
                                                 data-placement="top"

@@ -44,13 +44,13 @@ class TWController
     }
 
     /*
-    * 根据id获取合作细则详情
-    *
-    * By TerryQi
-    *
-    * 2017-12-08
-    *
-    */
+      * 根据id获取合作细则详情
+      *
+      * By TerryQi
+      *
+      * 2017-12-08
+      *
+      */
     public function getInfoById(Request $request)
     {
         $data = $request->all();

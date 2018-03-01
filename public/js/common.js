@@ -22,7 +22,12 @@ function ajaxRequest(url, param, method, callBack) {
 
 //根据id获取轮播图信息
 function getADById(url, param, callBack) {
-    ajaxRequest(url + "api/ad/getById", param, "GET", callBack);
+    ajaxRequest(url + "api/ad/getADById", param, "GET", callBack);
+}
+
+//编辑轮播图
+function editAD(url, param, callBack) {
+    ajaxRequest(url + "admin/ad/editAD", param, "post", callBack);
 }
 
 //根据id获取楼盘信息

@@ -34,6 +34,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/ad/del/{id}', 'Admin\ADController@del');  //删除轮播
     Route::get('/ad/edit', 'Admin\ADController@edit');  //新建或编辑轮播
     Route::post('/ad/edit', 'Admin\ADController@editPost');  //新建或编辑轮播
+    Route::get('/ad/editAD', 'Admin\ADController@editAD');  //编辑文章页面
+    Route::post('/ad/editAD', 'Admin\ADController@editADPost'); //编辑文章Post
 
     //管理员管理
     Route::get('/admin/index', 'Admin\AdminController@index');  //管理员管理首页
@@ -163,8 +165,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/tw/index', 'Admin\TWController@index');  //文章管理首页
     Route::get('/tw/setStatus/{id}', 'Admin\TWController@setStatus');  //设置文章状态
     Route::get('/tw/del/{id}', 'Admin\TWController@del');  //删除文章
-//    Route::get('/tw/edit', 'Admin\TWController@edit');  //新建或编辑文章
-//    Route::post('/tw/edit', 'Admin\TWController@editPost');  //新建或编辑文章
     Route::get('/tw/editTW', 'Admin\TWController@editTW');  //编辑文章页面
     Route::post('/tw/editTW', 'Admin\TWController@editTWPost'); //编辑文章Post
 
