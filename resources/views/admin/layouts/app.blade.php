@@ -172,8 +172,8 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">功能面板</li>
-                <li class="active treeview">
-                    <a href="#">
+                <li class="active">
+                    <a href="{{url('/admin/dashboard/index')}}">
                         <i class="fa fa-bar-chart"></i> <span>业务概览</span>
                     </a>
                 </li>
@@ -255,18 +255,18 @@
                     </ul>
                 </li>
                 {{--<li class="treeview">--}}
-                    {{--<a href="#">--}}
-                        {{--<i class="fa fa-file-text-o"></i>--}}
-                        {{--<span>规则管理</span>--}}
-                        {{--<span class="pull-right-container">--}}
-                          {{--<i class="fa fa-angle-left pull-right"></i>--}}
-                        {{--</span>--}}
-                    {{--</a>--}}
-                    {{--<ul class="treeview-menu">--}}
-                        {{--<li><a href="{{url('admin/rule/index')}}"><i class="fa fa-circle-o"></i>积分兑换规则</a></li>--}}
-                        {{--<li><a href="{{url('/admin/hezuo/index')}}"><i class="fa fa-circle-o"></i>合作细则</a></li>--}}
-                        {{--<li><a href="{{url('admin/whitebook/index')}}"><i class="fa fa-circle-o"></i>行业白皮书</a></li>--}}
-                    {{--</ul>--}}
+                {{--<a href="#">--}}
+                {{--<i class="fa fa-file-text-o"></i>--}}
+                {{--<span>规则管理</span>--}}
+                {{--<span class="pull-right-container">--}}
+                {{--<i class="fa fa-angle-left pull-right"></i>--}}
+                {{--</span>--}}
+                {{--</a>--}}
+                {{--<ul class="treeview-menu">--}}
+                {{--<li><a href="{{url('admin/rule/index')}}"><i class="fa fa-circle-o"></i>积分兑换规则</a></li>--}}
+                {{--<li><a href="{{url('/admin/hezuo/index')}}"><i class="fa fa-circle-o"></i>合作细则</a></li>--}}
+                {{--<li><a href="{{url('admin/whitebook/index')}}"><i class="fa fa-circle-o"></i>行业白皮书</a></li>--}}
+                {{--</ul>--}}
                 {{--</li>--}}
 
                 <li>

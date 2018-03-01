@@ -90,8 +90,9 @@ class TWController
 
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.tw.editTW', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token, ]);
+        return view('admin.tw.editTW', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token,]);
     }
+
     /*
         * 编辑详细信息
         *
