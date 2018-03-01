@@ -10,6 +10,7 @@ namespace App\Http\Controllers\API;
 
 use App\Components\ADManager;
 use App\Components\HomeManager;
+use App\Components\HouseDetailManager;
 use App\Components\HouseManager;
 use App\Components\HuxingManager;
 use App\Components\HouselabelManager;
@@ -121,6 +122,23 @@ class HouseController extends Controller
         return ApiResponse::makeResponse(true, $huxings, ApiResponse::SUCCESS_CODE);
     }
 
+    /*根据楼盘id获取楼盘参数
+     * By yinyue
+     * 2018-3-01
+     */
+
+    public function getHouseDetailByHouseId(Request $request){
+        $data = $request->all();
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'house_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $housedetail = HouseDetailManager::getHouseDetailByHouseId($data['house_id']);
+        return ApiResponse::makeResponse(true, $housedetail, ApiResponse::SUCCESS_CODE);
+
+    }
     /*
      * 获取楼盘下的置业顾问列表
      *

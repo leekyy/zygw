@@ -65,6 +65,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::post('house/searchByName', 'API\HouseController@searchByName');       //根据名称获取楼盘列表
     Route::post('house/searchByCon', 'API\HouseController@searchByCon');       //根据名称获取楼盘列表
     Route::get('house/getHuxings', 'API\HouseController@getHuxingsByHouseId');       //获取楼盘下所有生效的产品（户型）
+    Route::get('house/getHouseDetail', 'API\HouseController@getHouseDetailByHouseId');       //获取楼盘下的楼盘参数
     Route::get('house/getZYGWs', 'API\HouseController@getZYGWsByHouseId')->middleware('CheckToken');       //获取楼盘下所有生效的置业顾问
 
     //报备相关
