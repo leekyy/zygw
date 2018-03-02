@@ -93,8 +93,8 @@
                                                 class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
                                                 data-toggle="tooltip"
                                                 data-placement="top"
-                                                title="编辑该轮播图下的轮播详情">
-                                                <i class="fa fa-edit opt-btn-i-size"></i>
+                                                title="编辑该轮播图下的轮播图文">
+                                                <i class="fa fa-building-o opt-btn-i-size"></i>
                                             </a>
                                             <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"

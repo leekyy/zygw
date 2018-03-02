@@ -30,7 +30,8 @@
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <a href="" target="_blank">
+                    <a href="{{URL::asset('/admin/dashboard/export')}}?start_date={{$start_date}}&end_date={{$end_date}}"
+                       target="_blank">
                         下载报表
                     </a>
                 </div>
@@ -477,8 +478,7 @@
             }
 
             var option = {
-                title: {
-                },
+                title: {},
                 tooltip: {
                     trigger: 'axis'
                 },

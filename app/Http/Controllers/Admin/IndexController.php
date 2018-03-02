@@ -15,9 +15,78 @@ use App\Models\Baobei;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
 
 class IndexController
 {
+
+    //数据导出
+    public function export(Request $request)
+    {
+        $data = $request->all();
+        $start_date = null;
+        $end_date = null;
+        if (array_key_exists('start_date', $data) && !Utils::isObjNull($start_date)) {
+            $start_date = $data['start_date'];
+        }
+        if (array_key_exists('end_date', $data) && !Utils::isObjNull($end_date)) {
+            $end_date = $data['end_date'];
+        }
+        $baobeis = BaobeiManager::getListByStatus(null, null, null, null, $start_date, $end_date);
+        foreach ($baobeis as $baobei) {
+            $baobei = BaobeiManager::getInfoByLevel($baobei, "0");
+        }
+//        dd($baobeis->get(18));
+        $cellData = [['报备流水', '客户姓名', '客户电话', '报备单状态', '是否可结算', '是否已结算', '佣金金额'
+            , '中介姓名', '中介电话', '案场负责人姓名', '案场负责人电话', '意向楼盘', '报备时间', '计划到访时间', '到访方式'
+            , '到访时间', '成交时间', '成交面积', '成交户型', '成交房号', '付款方式', '签约时间', '全款到账时间'
+            , '顾问', '客户住址', '意向面积', '关注要点', '认知途径', '购房目的']];
+
+
+        foreach ($baobeis as $baobei) {
+            $cell_data = array();
+            array_push($cell_data, $baobei->trade_no);
+            array_push($cell_data, $baobei->client->name);
+            array_push($cell_data, $baobei->client->phonenum);
+            array_push($cell_data, BaobeiManager::getBaobeiStr($baobei->baobei_status));
+            array_push($cell_data, BaobeiManager::getCanJieSuanStr($baobei->can_jiesuan_status));
+            array_push($cell_data, BaobeiManager::getPayZhongJieStr($baobei->pay_zhongjie_status));
+            array_push($cell_data, $baobei->yongjin);
+            array_push($cell_data, isset($baobei->user) ? $baobei->user->real_name : '--');
+            array_push($cell_data, isset($baobei->user) ? $baobei->user->phonenum : '--');
+            array_push($cell_data, isset($baobei->anchang) ? $baobei->anchang->real_name : '--');
+            array_push($cell_data, isset($baobei->anchang) ? $baobei->anchang->phonenum : '--');
+            array_push($cell_data, isset($baobei->house) ? $baobei->house->title : '--');
+            array_push($cell_data, $baobei->created_at);
+            array_push($cell_data, isset($baobei->plan_visit_time) ? $baobei->plan_visit_time : '--');
+            array_push($cell_data, BaobeiManager::getVisitWayTxt($baobei->visit_way));
+            array_push($cell_data, isset($baobei->visit_time) ? $baobei->visit_time : '--');
+            array_push($cell_data, isset($baobei->deal_time) ? $baobei->deal_time : '--');
+            array_push($cell_data, isset($baobei->deal_size) ? $baobei->deal_size : '--');
+            array_push($cell_data, isset($baobei->deal_huxing) ? $baobei->deal_huxing->name : '--');
+            array_push($cell_data, isset($baobei->deal_room) ? $baobei->deal_room : '--');
+            array_push($cell_data, isset($baobei->pay_way) ? $baobei->pay_way->name : '--');
+            array_push($cell_data, isset($baobei->sign_time) ? $baobei->sign_time : '--');
+            array_push($cell_data, isset($baobei->qkdz_time) ? $baobei->qkdz_time : '--');
+            array_push($cell_data, isset($baobei->guwen) ? $baobei->guwen->name : '--');
+            array_push($cell_data, isset($baobei->address) ? $baobei->address : '--');
+            array_push($cell_data, isset($baobei->size) ? $baobei->size : '--');
+            array_push($cell_data, isset($baobei->care) ? $baobei->care->name : '--');
+            array_push($cell_data, isset($baobei->know_way) ? $baobei->know_way->name : '--');
+            array_push($cell_data, isset($baobei->purpose) ? $baobei->purpose->name : '--');
+
+            //推入表格
+            array_push($cellData, $cell_data);
+        }
+//        dd($cellData);
+        Excel::create('报备单详情', function ($excel) use ($cellData) {
+            $excel->sheet('报备单详情', function ($sheet) use ($cellData) {
+                $sheet->rows($cellData);
+            });
+        })->export('xls');
+    }
+
+
     //首页
     public function index(Request $request)
     {
