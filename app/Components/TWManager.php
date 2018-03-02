@@ -59,7 +59,7 @@ class TWManager
         $tw->steps = TWStepManager::getStepsByFidAndFtable($tw->id,'t_tw_info');
         return $tw;
     }
-    
+
 
     /*
      * 根据宣教和level获取信息
