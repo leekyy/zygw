@@ -33,6 +33,21 @@ class TWManager
         return $tw;
     }
 
+    /*
+   * 根据图文类型获取信息
+   *
+   * By TerryQi
+   *
+   * 2018-3-2
+   *
+   */
+    public static function getTWByType($type)
+    {
+        $tw = TWInfo::where('type', '=', $type)->first();
+        return $tw;
+    }
+
+
 
     /*根据type属性获取图文类型
      * By Yinyue
@@ -44,7 +59,7 @@ class TWManager
         $tw->steps = TWStepManager::getStepsByFidAndFtable($tw->id,'t_tw_info');
         return $tw;
     }
-
+    
 
     /*
      * 根据宣教和level获取信息

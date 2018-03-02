@@ -85,5 +85,6 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('baobei/getWaitingForAcceptListByAnchangId', 'API\BaobeiController@getWaitingForAcceptListByAnchangId')->middleware('CheckToken');   //根据案场负责人id获取其楼盘下未接收的报备列表
     //文章管理
 
-    Route::get('tw/getInfoById', 'API\TWController@getInfoById');//
+    Route::get('tw/getInfoById', 'API\TWController@getInfoById');//图文
+    Route::get('tw/getTWByType', 'API\TWController@getByType');//根据图文类型获取相关图文
 });

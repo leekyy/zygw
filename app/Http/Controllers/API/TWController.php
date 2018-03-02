@@ -68,6 +68,26 @@ class TWController
         return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
 
+    public function getByType(Request $request){
+        $data=$request->all();
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'type' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+//        $tw=TWManager::getById($data['id']);
+        $tw=TWManager::getTWByType($data['type']);
+
+        if (!$tw) {
+            return ApiResponse::makeResponse(false, '未找到合作细则信息', ApiResponse::INNER_ERROR);
+        }
+        $tw = TWManager::getByType($tw->type);
+        return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
+
+    }
+
+
 
 
 
