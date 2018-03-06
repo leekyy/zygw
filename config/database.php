@@ -39,14 +39,14 @@ return [
             'prefix' => '',
         ],
 
-        //测试数据库
+        //生产数据库
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '182.92.235.154'),
+            'host' => env('DB_HOST', '47.93.127.4'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'zygwdb'),
             'username' => env('DB_USERNAME', 'zygw'),
-            'password' => env('DB_PASSWORD', 'Aa123456'),
+            'password' => env('DB_PASSWORD', 'bK0ObsmK'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
