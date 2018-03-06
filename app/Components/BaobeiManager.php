@@ -60,7 +60,7 @@ class BaobeiManager
     {
 //        dd($house_ids_arr);
         $house_arr_str = "(" . implode(',', $house_ids_arr) . ")";
-        $baobeis = DB::select("SELECT * FROM zygwdb.t_baobei_info where baobei_status in ('0','1') and anchang_id is null and house_id in " . $house_arr_str . " order by id desc;");
+        $baobeis = DB::select("SELECT * FROM zygwdb.t_baobei_info where baobei_status in ('0','1') and status =='1' and anchang_id is null and house_id in " . $house_arr_str . " order by id desc;");
         return $baobeis;
     }
 
@@ -956,5 +956,33 @@ class BaobeiManager
             case '1':
                 return "自行到访";
         }
+    }
+
+
+    //计划任务，获取全部的超期报备数据
+    /*
+     * 超期逻辑为status==1且baobei_status==0且created_at时间超过当前时间
+     *
+     */
+    public static function getAllBaobeiExceedList()
+    {
+        $curr = DateTool::getCurrentTime();
+        $baobeis = Baobei::where('status', '=', '1')->where('baobei_status', '=', '0')->where('created_at', '<', $curr)->get();
+        return $baobeis;
+    }
+
+    //计划任务，获取全部的超期成交数据
+    /*
+     * 超期逻辑为status==1且baobei_status==1且visit_time大于30天
+     *
+     *
+     */
+    public static function getAllDealExceedList()
+    {
+        $curr = DateTool::getCurrentTime();
+        $exceed_date = DateTool::dateAdd('D', -30, $curr, null);
+//        dd($exceed_date);
+        $baobeis = Baobei::where('status', '=', '1')->where('baobei_status', '=', '1')->where('visit_time', '<', $exceed_date)->get();
+        return $baobeis;
     }
 }

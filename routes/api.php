@@ -83,8 +83,12 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('baobei/getListForZJByStatus', 'API\BaobeiController@getListForZJByStatus')->middleware('CheckToken');   //获取中介维度的报备列表
     Route::get('baobei/getListForACByStatus', 'API\BaobeiController@getListForACByStatus')->middleware('CheckToken');   //获取案场负责人维度的报备列表
     Route::get('baobei/getWaitingForAcceptListByAnchangId', 'API\BaobeiController@getWaitingForAcceptListByAnchangId')->middleware('CheckToken');   //根据案场负责人id获取其楼盘下未接收的报备列表
-    //文章管理
 
+    //文章管理
     Route::get('tw/getInfoById', 'API\TWController@getInfoById');//图文
     Route::get('tw/getTWByType', 'API\TWController@getByType');//根据图文类型获取相关图文
+
+    //手动执行计划任务
+    Route::get('schedule/execBaobeiExceedSchedule', 'API\BaobeiController@execBaobeiExceedSchedule');   //执行报备超期计划任务
+    Route::get('schedule/execDealExceedSchedule', 'API\BaobeiController@execDealExceedSchedule');   //执行到访超期计划任务
 });

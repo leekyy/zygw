@@ -53,6 +53,11 @@ class RecommController extends Controller
         if (RecommInfoManager::isUserHasBeenRecommended($data['user_id'])) {
             return ApiResponse::makeResponse(false, "已经被推荐", ApiResponse::INNER_ERROR);
         }
+        //不能互相推荐的逻辑判断
+        $re_user = UserManager::getById($data['re_user_id']);
+        if ($re_user->re_user_id == $data['user_id']) {   //推荐用户的推荐用户id与被推荐用户的user_id一致，代表在互相推荐
+            return ApiResponse::makeResponse(false, "不能互相推荐", ApiResponse::INNER_ERROR);
+        }
         //建立推荐关联关系
         $recommInfo = new RecommInfo();
         $recommInfo = RecommInfoManager::setInfo($recommInfo, $data);

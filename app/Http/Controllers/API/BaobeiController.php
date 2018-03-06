@@ -692,4 +692,31 @@ class BaobeiController extends Controller
         }
         return ApiResponse::makeResponse(true, $baobeis, ApiResponse::SUCCESS_CODE);
     }
+
+    //手动执行计划任务-到访超期
+    /*
+     * By TerryQi
+     *
+     * 2018-03-06
+     */
+    public function execBaobeiExceedSchedule()
+    {
+        $baobeis = BaobeiManager::getAllBaobeiExceedList();
+        foreach ($baobeis as $baobei) {
+            $baobei->status = '0';
+            $baobei->save();
+        }
+        return ApiResponse::makeResponse(true, $baobeis, ApiResponse::SUCCESS_CODE);
+    }
+
+    //手动执行计划任务-成交超期
+    public function execDealExceedSchedule()
+    {
+        $baobeis = BaobeiManager::getAllDealExceedList();
+        foreach ($baobeis as $baobei) {
+            $baobei->status = '0';
+            $baobei->save();
+        }
+        return ApiResponse::makeResponse(true, $baobeis, ApiResponse::SUCCESS_CODE);
+    }
 }
