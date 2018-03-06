@@ -60,7 +60,7 @@ class BaobeiManager
     {
 //        dd($house_ids_arr);
         $house_arr_str = "(" . implode(',', $house_ids_arr) . ")";
-        $baobeis = DB::select("SELECT * FROM zygwdb.t_baobei_info where baobei_status in ('0','1') and status =='1' and anchang_id is null and house_id in " . $house_arr_str . " order by id desc;");
+        $baobeis = DB::select("SELECT * FROM zygwdb.t_baobei_info where baobei_status in ('0','1') and status = '1' and anchang_id is null and house_id in " . $house_arr_str . " order by id desc;");
         return $baobeis;
     }
 

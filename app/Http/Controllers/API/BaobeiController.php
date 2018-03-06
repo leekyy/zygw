@@ -674,6 +674,7 @@ class BaobeiController extends Controller
         //如果全部为空，则搜索该案场负责人下属的待接收楼盘
         if ($baobei_status == null && $can_jiesuan_status == null && $pay_zhongjie_status == null) {
             $userUps = UserUpManager::getUserUpHousesByUserId($data['user_id']);
+//            dd($userUps);
             $house_ids = array();
             foreach ($userUps as $userUp) {
                 array_push($house_ids, $userUp->house_id);      //案场负责人所属楼盘id数组
