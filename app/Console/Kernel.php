@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Components\ScheduleManger;
+use App\Components\ScheduleManager;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -29,8 +29,8 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         //到访超期计划任务
         $schedule->call(function () {
-            ScheduleManger::execBaobeiExceedSchedule();
-            ScheduleManger::execDealExceedSchedult();
+            ScheduleManager::execBaobeiExceedSchedule();
+            ScheduleManager::execDealExceedSchedult();
         })->dailyAt('1:00');
     }
 

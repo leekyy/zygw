@@ -12,7 +12,7 @@ namespace App\Components;
 use App\Models\AD;
 use Qiniu\Auth;
 
-class ScheduleManger
+class ScheduleManager
 {
     /*
      * 报备超期计划任务
