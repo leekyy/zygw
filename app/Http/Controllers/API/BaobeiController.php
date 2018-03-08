@@ -294,12 +294,12 @@ class BaobeiController extends Controller
         }
         //控制visit_time时间，要求在报备时间之后、到访时间之前
         $diff1 = DateTool::dateDiff('N', $baobei->created_at, $baobei->visit_time);
-        if ($diff1 <= 0) {
-            return ApiResponse::makeResponse(false, '要求到访时间在报备时间之后', ApiResponse::INNER_ERROR);
+        if ($diff1 <= 30) {
+            return ApiResponse::makeResponse(false, '到访时间应在报备时间30分钟之后', ApiResponse::INNER_ERROR);
         }
         $diff2 = DateTool::dateDiff('N', $baobei->visit_time, DateTool::getCurrentTime());
         if ($diff2 <= 0) {
-            return ApiResponse::makeResponse(false, '要求到访时间在当前时间之前', ApiResponse::INNER_ERROR);
+            return ApiResponse::makeResponse(false, '到访时间早于当前时间', ApiResponse::INNER_ERROR);
         }
         $baobei->baobei_status = "1";
         $baobei->save();
