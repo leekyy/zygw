@@ -60,6 +60,7 @@ class Kernel extends HttpKernel
         //自定义中间件
         'BeforeRequest' => \App\Http\Middleware\BeforeRequest::class,
         'CheckToken' => \App\Http\Middleware\CheckToken::class,
+        'CheckStatus' => \App\Http\Middleware\CheckStatus::class,
         'admin.login' => \App\Http\Middleware\CheckAdminLogin::class,//后台登录中间件
     ];
 }

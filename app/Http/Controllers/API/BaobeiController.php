@@ -227,10 +227,10 @@ class BaobeiController extends Controller
         if (UserUpManager::isUserAlreadyACFZ($user->id, $house->id)) {
             return ApiResponse::makeResponse(false, '案场负责人不能报备自己楼盘', ApiResponse::INNER_ERROR);
         }
-        //4）预约到访时间超过3天
-        $data_diff = DateTool::dateDiff('D', DateTool::getToday(), $data['plan_visit_time']);
-        if ($data_diff > 3) {
-            return ApiResponse::makeResponse(false, '报备时间超过3天', ApiResponse::INNER_ERROR);
+        //4）报备时，预计到访时间应该在当天且在当前时间30分钟之后
+        $data_diff = DateTool::dateDiff('N', DateTool::getCurrentTime(), $data['plan_visit_time']);
+        if ($data_diff < 30) {
+            return ApiResponse::makeResponse(false, '要求报备时间在30分钟之后', ApiResponse::INNER_ERROR);
         }
         //进行客户信息报备
         $baobei = new Baobei();
@@ -291,6 +291,15 @@ class BaobeiController extends Controller
             $baobei->visit_time = $data['visit_time'];
         } else {
             $baobei->visit_time = DateTool::getCurrentTime();
+        }
+        //控制visit_time时间，要求在报备时间之后、到访时间之前
+        $diff1 = DateTool::dateDiff('N', $baobei->created_at, $baobei->visit_time);
+        if ($diff1 <= 0) {
+            return ApiResponse::makeResponse(false, '要求到访时间在报备时间之后', ApiResponse::INNER_ERROR);
+        }
+        $diff2 = DateTool::dateDiff('N', $baobei->visit_time, DateTool::getCurrentTime());
+        if ($diff2 <= 0) {
+            return ApiResponse::makeResponse(false, '要求到访时间在当前时间之前', ApiResponse::INNER_ERROR);
         }
         $baobei->baobei_status = "1";
         $baobei->save();

@@ -44,7 +44,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
 //    Route::get('ad/getADById', 'API\ADController@getADById');//根据轮播图的id获取相应的信息
 
     //用户签到-By TerryQi
-    Route::post('user/userQDToday', 'API\UserQDController@userQDToday')->middleware('CheckToken');        //用户签到接口
+    Route::post('user/userQDToday', 'API\UserQDController@userQDToday')->middleware('CheckToken', 'CheckStatus');        //用户签到接口
     Route::get('user/getUserQDsByUserId', 'API\UserQDController@getUserQDsByUserId')->middleware('CheckToken');        //根据用户id获取签到列表
     Route::get('user/getRecentDatas', 'Admin\UserQDController@getRecentDatas');        //获取近几日综合统计数据
 
@@ -71,15 +71,15 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     //报备相关
     Route::get('baobei/getById', 'API\BaobeiController@getById');       //获取报备选项
     Route::get('baobei/getOptions', 'API\BaobeiController@getBaobeiOption');       //获取报备选项
-    Route::post('baobei/acceptClient', 'API\BaobeiController@acceptClient')->middleware('CheckToken');     //中介/案场负责人报备客户
-    Route::post('baobei/setNormalInfo', 'API\BaobeiController@setNormalInfo')->middleware('CheckToken');     //中介/案场负责人报备客户
-    Route::post('baobei/baobeiClient', 'API\BaobeiController@baobeiClient')->middleware('CheckToken');     //中介/案场负责人报备客户
-    Route::post('baobei/daofang', 'API\BaobeiController@daofang')->middleware('CheckToken');     //中介/案场负责人报备客户
-    Route::post('baobei/deal', 'API\BaobeiController@deal')->middleware('CheckToken');     //案场负责人报备成交信息
-    Route::post('baobei/sign', 'API\BaobeiController@sign')->middleware('CheckToken');     //案场负责人报备签约信息
-    Route::post('baobei/qkdz', 'API\BaobeiController@qkdz')->middleware('CheckToken');     //案场负责人报备全款到账信息
-    Route::post('baobei/setZYGW', 'API\BaobeiController@setZYGW')->middleware('CheckToken');     //设置报备记录的置业顾问
-    Route::post('baobei/canjiesuan', 'API\BaobeiController@canjiesuan')->middleware('CheckToken');     //案场负责人设置报备单可结算
+    Route::post('baobei/acceptClient', 'API\BaobeiController@acceptClient')->middleware('CheckToken', 'CheckStatus');     //中介/案场负责人报备客户
+    Route::post('baobei/setNormalInfo', 'API\BaobeiController@setNormalInfo')->middleware('CheckToken', 'CheckStatus');     //中介/案场负责人报备客户
+    Route::post('baobei/baobeiClient', 'API\BaobeiController@baobeiClient')->middleware('CheckToken', 'CheckStatus');     //中介/案场负责人报备客户
+    Route::post('baobei/daofang', 'API\BaobeiController@daofang')->middleware('CheckToken', 'CheckStatus');     //中介/案场负责人设置客户到访
+    Route::post('baobei/deal', 'API\BaobeiController@deal')->middleware('CheckToken', 'CheckStatus');     //案场负责人报备成交信息
+    Route::post('baobei/sign', 'API\BaobeiController@sign')->middleware('CheckToken', 'CheckStatus');     //案场负责人报备签约信息
+    Route::post('baobei/qkdz', 'API\BaobeiController@qkdz')->middleware('CheckToken', 'CheckStatus');     //案场负责人报备全款到账信息
+    Route::post('baobei/setZYGW', 'API\BaobeiController@setZYGW')->middleware('CheckToken', 'CheckStatus');     //设置报备记录的置业顾问
+    Route::post('baobei/canjiesuan', 'API\BaobeiController@canjiesuan')->middleware('CheckToken', 'CheckStatus');     //案场负责人设置报备单可结算
     Route::get('baobei/getListForZJByStatus', 'API\BaobeiController@getListForZJByStatus')->middleware('CheckToken');   //获取中介维度的报备列表
     Route::get('baobei/getListForACByStatus', 'API\BaobeiController@getListForACByStatus')->middleware('CheckToken');   //获取案场负责人维度的报备列表
     Route::get('baobei/getWaitingForAcceptListByAnchangId', 'API\BaobeiController@getWaitingForAcceptListByAnchangId')->middleware('CheckToken');   //根据案场负责人id获取其楼盘下未接收的报备列表
