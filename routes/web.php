@@ -132,6 +132,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/houseType/index', 'Admin\HouseTypeController@index');  //楼盘类型管理首页
     Route::post('/houseType/edit', 'Admin\HouseTypeController@editPost');  //编辑楼盘标签
 
+    //产品图片
+    Route::get('/houseImage/index', 'Admin\HouseImageController@index');  //楼盘相关图片管理首页
+    Route::post('/houseImage/edit', 'Admin\HouseImageController@editPost');  //编辑楼盘图片
 
     //系统配置信息相关
     Route::get('/system/index', 'Admin\SystemController@index');  //系统配置首页信息

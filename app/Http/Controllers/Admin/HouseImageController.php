@@ -37,28 +37,28 @@ class HouseImageController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
-        $houseTypes = HouseTypeManager::getList();
-        foreach ($houseTypes as $houseType) {
-            $houseType->admin = AdminManager::getAdminInfoById($houseType->admin_id);
-            $houseType->created_at_str = DateTool::formateData($houseType->created_at, 1);
+        $houseImages = HouseImageManager::getList();
+        foreach ($houseImages as $houseImage) {
+            $houseImage->admin = AdminManager::getAdminInfoById($houseImage->admin_id);
+            $houseImage->created_at_str = DateTool::formateData($houseImage->created_at, 1);
         }
-        return view('admin.houseType.index', ['admin' => $admin, 'datas' => $houseTypes]);
+        return view('admin.houseImage.index', ['admin' => $admin, 'datas' => $houseImages]);
     }
 
 
-    //新建或编辑楼盘标签->post
+    //新建或编辑楼盘图片->post
     public function editPost(Request $request)
     {
         $data = $request->all();
-        $houseType = new HouseImage();
+        $houseImage = new HouseImage();
         //存在id是保存
         if (array_key_exists('id', $data) && $data['id'] != null) {
-            $houseType = HouseType::find($data['id']);
+            $houseImage = HouseImage::find($data['id']);
         }
 //        dd($data);
-        $houseType = HouseTypeManager::setHouseType($houseType, $data);
-        $houseType->save();
+        $houseImage = HouseImageManager::setHouseImage($houseImage, $data);
+        $houseImage->save();
 
-        return redirect('/admin/houseType/index');
+        return redirect('/admin/houseImage/index');
     }
 }

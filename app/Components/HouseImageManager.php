@@ -16,7 +16,7 @@ use App\Models\Huxing;
 use Illuminate\Support\Facades\DB;
 use Qiniu\Auth;
 
-class HouseTypeManager
+class HouseImageManager
 {
 
 
