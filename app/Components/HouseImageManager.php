@@ -28,8 +28,8 @@ class HouseImageManager
 
     public static function getList()
     {
-        $houseImage = HouseImage::orderby('id', 'asc')->get();
-        return $houseImage;
+        $houseImages = HouseImage::orderby('id', 'asc')->get();
+        return $houseImages;
     }
 
     /*
@@ -56,8 +56,8 @@ class HouseImageManager
      */
     public static function getListByIds($ids)
     {
-        $houseImage = HouseImage::wherein('id', $ids)->get();
-        return $houseImage;
+        $houseImages = HouseImage::wherein('id', $ids)->get();
+        return $houseImages;
     }
 
     /*
@@ -73,7 +73,7 @@ class HouseImageManager
             $houseImage->admin_id = array_get($data, 'admin_id');
         }
         if (array_key_exists('image', $data)) {
-            $houseImage->name = array_get($data, 'image');
+            $houseImage->image = array_get($data, 'image');
         }
         return $houseImage;
     }

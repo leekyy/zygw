@@ -244,6 +244,7 @@
                                            placeholder="图片网路链接地址"
                                            value="">
                                 </div>
+
                             </div>
                             <div style="margin-top: 10px;" class="text-center">
                                 <div id="container">
@@ -387,7 +388,8 @@
                     $("#id").val(msgObj.id);
                     $("#title").val(msgObj.title);
                     $("#address").val(msgObj.address);
-                    $("#image").val(msgObj.image)
+                   $("#image").val(msgObj.image);
+                    //$("#image_id").val(msgObj.image_ids);
                     $("#pickfiles").attr("src", msgObj.image);
                     $("#price").val(msgObj.price);
                     $("#size_min").val(msgObj.size_min);
@@ -403,6 +405,8 @@
                     for (var i = 0; i < type_arr.length; i++) {
                         $("#type_id" + type_arr[i]).attr('checked', 'true');
                     }
+
+
                     //设置label
                     var label_arr = [];
                     if (!judgeIsNullStr(msgObj.label_ids)) {

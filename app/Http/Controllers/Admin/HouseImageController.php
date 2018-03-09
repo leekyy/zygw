@@ -37,12 +37,13 @@ class HouseImageController
     public function index(Request $request)
     {
         $admin = $request->session()->get('admin');
+        $upload_token = QNManager::uploadToken();
         $houseImages = HouseImageManager::getList();
         foreach ($houseImages as $houseImage) {
             $houseImage->admin = AdminManager::getAdminInfoById($houseImage->admin_id);
             $houseImage->created_at_str = DateTool::formateData($houseImage->created_at, 1);
         }
-        return view('admin.houseImage.index', ['admin' => $admin, 'datas' => $houseImages]);
+        return view('admin.houseImage.index', ['admin' => $admin, 'datas' => $houseImages,'upload_token' => $upload_token]);
     }
 
 

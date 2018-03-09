@@ -45,7 +45,7 @@
                                     </td>
                                     <td>
                                         <div class="line-height-30 text-info text-oneline">
-                                            {{$data->image}}
+                                           <img src="{{$data->image }}"  style="width: 80px;height: 80px;" />
                                         </div>
                                     </td>
                                     <td><span class="line-height-30">{{$data->created_at_str}}</span>
