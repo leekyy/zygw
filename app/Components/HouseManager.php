@@ -91,6 +91,10 @@ class HouseManager
             $houses = $houses->where('type_ids', 'like', '%' . $con['type_id'] . '%');
         }
         //如果楼盘类型的选项不为空
+        if (array_key_exists('image_id', $con) && !Utils::isObjNull($con['image_id'])) {
+            $houses = $houses->where('image_ids', 'like', '%' . $con['image_id'] . '%');
+        }
+        //如果楼盘类型的选项不为空
         if (array_key_exists('label_id', $con) && !Utils::isObjNull($con['label_id'])) {
             $houses = $houses->where('label_ids', 'like', '%' . $con['label_id'] . '%');
         }
@@ -173,6 +177,8 @@ class HouseManager
             $house->types = HouseTypeManager::getListByIds($types);
             $labels = explode(',', $house->label_ids);
             $house->labels = HouselabelManager::getListByIds($labels);
+            $images=explode(',',$house->image_ids);
+            $house->images =HouseImageManager::getListByIds($images);
             $house->area = HouseAreaManager::getById($house->area_id);
         }
         if (strpos($level, '1') !== false) {
@@ -216,6 +222,7 @@ class HouseManager
         if (array_key_exists('image', $data)) {
             $house->image = array_get($data, 'image');
         }
+
         if (array_key_exists('title', $data)) {
             $house->title = array_get($data, 'title');
         }
@@ -268,10 +275,12 @@ class HouseManager
         $area = HouseAreaManager::getList();
         $type = HouseTypeManager::getList();
         $label = HouselabelManager::getList();
+        $image = HouseImageManager::getList();
         $houseOptions = new Collection([
             'area' => $area,
             'type' => $type,
             'label' => $label,
+            'image'=>$image,
         ]);
         return $houseOptions;
     }
