@@ -34,10 +34,11 @@ class ApiResponse
     const NO_USER = 105;
     //验证码验证失败
     const VERTIFY_ERROR = 106;
-    //医师编码丢失
-    const DOCTOR_ID_LOST = 107;
+    //报备单已经失效
+    const BAOBEI_INVALID = 107;
     //用户失效
     const USER_INVALID = 108;
+
 
     //映射错误信息
     public static $errorMassage = [
@@ -48,6 +49,7 @@ class ApiResponse
         self::USER_ID_LOST => '缺少用户编码',
         self::NO_USER => '未找到用户',
         self::REGISTER_FAILED => '注册失败',
+        self::BAOBEI_INVALID => '报备单失效',
         self::USER_INVALID => '用户失效'
     ];
 
