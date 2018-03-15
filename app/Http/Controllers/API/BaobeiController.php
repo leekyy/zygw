@@ -492,11 +492,23 @@ class BaobeiController extends Controller
         if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
+
+        $baobei = BaobeiManager::setBaoBei($baobei, $data);
         //sign_time不为空
         if (array_key_exists('sign_time', $data) && !Utils::isObjNull($data['sign_time'])) {
             $baobei->sign_time = $data['sign_time'];
         } else {
             $baobei->sign_time = DateTool::getCurrentTime();
+        }
+
+        //控制sign_time时间，成交时间之后
+        $diff1 = DateTool::dateDiff('N', $baobei->deal_time, $baobei->sign_time);
+        if ($diff1 <= 0) {
+            return ApiResponse::makeResponse(false, '签约时间应在成交时间之后', ApiResponse::INNER_ERROR);
+        }
+        $diff2 = DateTool::dateDiff('N', $baobei->sign_time, DateTool::getCurrentTime());
+        if ($diff2 <= 0) {
+            return ApiResponse::makeResponse(false, '签约时间早于当前时间', ApiResponse::INNER_ERROR);
         }
         $baobei->baobei_status = "3";
         $baobei->save();
@@ -532,11 +544,22 @@ class BaobeiController extends Controller
         if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
+        $baobei = BaobeiManager::setBaoBei($baobei, $data);
         //qkdz_time不为空
         if (array_key_exists('qkdz_time', $data) && !Utils::isObjNull($data['qkdz_time'])) {
             $baobei->qkdz_time = $data['qkdz_time'];
         } else {
             $baobei->qkdz_time = DateTool::getCurrentTime();
+        }
+
+        //控制qkdz_time时间，签约时间之后
+        $diff1 = DateTool::dateDiff('N', $baobei->sign_time, $baobei->qkdz_time);
+        if ($diff1 <= 0) {
+            return ApiResponse::makeResponse(false, '全款到账时间应在签约时间之后', ApiResponse::INNER_ERROR);
+        }
+        $diff2 = DateTool::dateDiff('N', $baobei->qkdz_time, DateTool::getCurrentTime());
+        if ($diff2 <= 0) {
+            return ApiResponse::makeResponse(false, '全款到账时间早于当前时间', ApiResponse::INNER_ERROR);
         }
         $baobei->baobei_status = "4";
         $baobei->save();
@@ -583,14 +606,18 @@ class BaobeiController extends Controller
             $baobei->can_jiesuan_time = DateTool::getCurrentTime();
         }
 
-        //控制deal_time时间，要求在报备时间之后、到访时间之前
+        //控制can_jiesuan_time时间，要求在报备时间之后、到访时间之前
         $diff1 = DateTool::dateDiff('N', $baobei->deal_time, $baobei->can_jiesuan_time);
-        if ($diff1 <= $data['deal_time']) {
+        if ($diff1 <= 0) {
             return ApiResponse::makeResponse(false, '结算时间应在成交时间之后', ApiResponse::INNER_ERROR);
         }
         $diff2 = DateTool::dateDiff('N', $baobei->can_jiesuan_time, DateTool::getCurrentTime());
         if ($diff2 <= 0) {
             return ApiResponse::makeResponse(false, '结算时间早于当前时间', ApiResponse::INNER_ERROR);
+        }
+        $diff3 = DateTool::dateDiff('N', $baobei->sign_time, $baobei->can_jiesuan_time);
+        if ($diff3 <= 0) {
+            return ApiResponse::makeResponse(false, '结算时间应在签约时间之后', ApiResponse::INNER_ERROR);
         }
         $baobei->save();
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
