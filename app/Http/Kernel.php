@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'BeforeRequest' => \App\Http\Middleware\BeforeRequest::class,
         'CheckToken' => \App\Http\Middleware\CheckToken::class,
         'CheckStatus' => \App\Http\Middleware\CheckStatus::class,
+        'CheckBaobeiStatus' => \App\Http\Middleware\CheckBaobeiStatus::class,
         'admin.login' => \App\Http\Middleware\CheckAdminLogin::class,//后台登录中间件
     ];
 }
