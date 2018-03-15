@@ -417,6 +417,16 @@ class BaobeiController extends Controller
         } else {
             $baobei->deal_time = DateTool::getCurrentTime();
         }
+        //控制deal_time时间，要求在报备时间之后、到访时间之前
+        $diff1 = DateTool::dateDiff('N', $baobei->visit_time, $baobei->deal_time);
+        if ($diff1 <= $data['visit_time']) {
+            return ApiResponse::makeResponse(false, '成交时间应在到访时间之后', ApiResponse::INNER_ERROR);
+        }
+        $diff2 = DateTool::dateDiff('N', $baobei->deal_time, DateTool::getCurrentTime());
+        if ($diff2 <= 0) {
+            return ApiResponse::makeResponse(false, '成交时间早于当前时间', ApiResponse::INNER_ERROR);
+        }
+
         $client = ClientManager::getById($baobei->client_id);
         $house = HouseManager::getById($baobei->house_id);
         //发送模板消息
@@ -562,6 +572,7 @@ class BaobeiController extends Controller
         if ($baobei->anchang_id != $data['user_id']) {      //该条报备记录属于该案场负责人
             return ApiResponse::makeResponse(false, '非楼盘案场负责人，无法接收客户', ApiResponse::INNER_ERROR);
         }
+        $baobei = BaobeiManager::setBaoBei($baobei, $data);
         $baobei->can_jiesuan_status = "1";
 
         //can_jiesuan_time不为空
@@ -569,6 +580,16 @@ class BaobeiController extends Controller
             $baobei->can_jiesuan_time = $data['can_jiesuan_time'];
         } else {
             $baobei->can_jiesuan_time = DateTool::getCurrentTime();
+        }
+
+        //控制deal_time时间，要求在报备时间之后、到访时间之前
+        $diff1 = DateTool::dateDiff('N', $baobei->deal_time, $baobei->can_jiesuan_time);
+        if ($diff1 <= $data['deal_time']) {
+            return ApiResponse::makeResponse(false, '结算时间应在成交时间之后', ApiResponse::INNER_ERROR);
+        }
+        $diff2 = DateTool::dateDiff('N', $baobei->can_jiesuan_time, DateTool::getCurrentTime());
+        if ($diff2 <= 0) {
+            return ApiResponse::makeResponse(false, '结算时间早于当前时间', ApiResponse::INNER_ERROR);
         }
         $baobei->save();
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
