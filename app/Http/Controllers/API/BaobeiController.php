@@ -382,6 +382,7 @@ class BaobeiController extends Controller
             'deal_price' => 'required',
             'deal_huxing_id' => 'required',
             'pay_way_id' => 'required',
+
         ]);
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
@@ -417,9 +418,9 @@ class BaobeiController extends Controller
         } else {
             $baobei->deal_time = DateTool::getCurrentTime();
         }
-        //控制deal_time时间，要求在报备时间之后、到访时间之前
+        //控制deal_time时间，到访时间之后
         $diff1 = DateTool::dateDiff('N', $baobei->visit_time, $baobei->deal_time);
-        if ($diff1 <= $data['visit_time']) {
+        if ($diff1 <= 0) {
             return ApiResponse::makeResponse(false, '成交时间应在到访时间之后', ApiResponse::INNER_ERROR);
         }
         $diff2 = DateTool::dateDiff('N', $baobei->deal_time, DateTool::getCurrentTime());
