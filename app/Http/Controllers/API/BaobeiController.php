@@ -450,15 +450,15 @@ class BaobeiController extends Controller
             $jifen_change_record = new JifenChangeRecord();
             $jifen_change_record->user_id = $re_user->id;
             $jifen_change_record->jifen = $systemInfo->cj_jifen;
-            $jifen_change_record->record = "推荐用户成交奖励";
+            $jifen_change_record->record = "推荐用户（" . $user->real_name . "）成交奖励";
             $jifen_change_record->save();
             //发送消息
             $message_content = [
                 'keyword1' => '积分增加',
-                'keyword2' => '推荐用户成交奖励',
+                'keyword2' => '推荐用户（' . $user->real_name . '）成交奖励',
                 'keyword3' => $jifen_change_record->jifen,
             ];
-            SendMessageManager::sendMessage($user->id, SendMessageManager::JIFEN_CHANGE, $message_content);
+            SendMessageManager::sendMessage($re_user->id, SendMessageManager::JIFEN_CHANGE, $message_content);
         }
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }
