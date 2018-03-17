@@ -427,7 +427,9 @@ class BaobeiController extends Controller
         if ($diff2 <= 0) {
             return ApiResponse::makeResponse(false, '成交时间早于当前时间', ApiResponse::INNER_ERROR);
         }
-
+        //保存报备信息
+        $baobei->save();
+        //客户信息
         $client = ClientManager::getById($baobei->client_id);
         $house = HouseManager::getById($baobei->house_id);
         //发送模板消息
@@ -438,9 +440,9 @@ class BaobeiController extends Controller
             'keyword4' => $baobei->deal_time,
         ];
         SendMessageManager::sendMessage($baobei->user_id, SendMessageManager::ORDER_DEAL, $message_content);
-        $baobei->save();
+
         //如果有推荐人，则增加推荐人积分
-        $user = UserManager::getByIdWithToken($baobei->user_id);
+        $user = UserManager::getById($baobei->user_id);
         if (!Utils::isObjNull($user->re_user_id)) {
             $systemInfo = SystemManager::getSystemInfo();   //系统配置信息
             $re_user = UserManager::getByIdWithToken($user->re_user_id);
