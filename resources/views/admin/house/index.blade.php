@@ -138,6 +138,12 @@
                                                data-placement="top" title="查看该楼盘下产品">
                                                 <i class="fa fa-building-o opt-btn-i-size"></i>
                                             </a>
+                                             <a href="{{URL::asset('/admin/house/detail')}}?house_id={{$data->id}}"
+                                                class="btn btn-social-icon btn-danger opt-btn-size"
+                                                data-toggle="tooltip"
+                                                data-placement="top" title="查看该楼盘的楼盘详情">
+                                                <i class="fa fa-bar-chart opt-btn-i-size"></i>
+                                            </a>
                                             <a href="{{URL::asset('/admin/zygw/index')}}?house_id={{$data->id}}"
                                                class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
                                                data-toggle="tooltip"

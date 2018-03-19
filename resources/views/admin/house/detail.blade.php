@@ -43,13 +43,13 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>楼盘图片</th>
-                                <th>楼盘名</th>
+                                {{--<th>楼盘图片</th>--}}
+                                {{--<th>楼盘名</th>--}}
                                 <th>开盘时间</th>
                                 <th>交盘时间</th>
                                 <th>开发商</th>
                                 <th>物业</th>
-                                <th>建筑面积</th>
+                                <th>面积</th>
                                 <th>总户数</th>
                                 <th>容积率</th>
                                 <th>绿化率</th>
@@ -64,7 +64,7 @@
                                 <th>教育配套</th>
                                 <th>交通配套</th>
                                 <th>环境配套</th>
-                                <th>状态</th>
+                                {{--<th>状态</th>--}}
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -77,15 +77,15 @@
                                         </div>
                                     </td>
 
-                                    <td>
-                                        <img src="{{ $data->house->image ? $data->image.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/default_headicon.png')}}"
-                                             class="img-rect-30 radius-5">
-                                    </td>
-                                    <td>
-                                        <div class="line-height-30">
-                                            {{$data->house->title}}
-                                        </div>
-                                    </td>
+                                    {{--<td>--}}
+                                        {{--<img src="{{ $data->house->image ? $data->image.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/default_headicon.png')}}"--}}
+                                             {{--class="img-rect-30 radius-5">--}}
+                                    {{--</td>--}}
+                                    {{--<td>--}}
+                                        {{--<div class="line-height-30">--}}
+                                            {{--{{$data->title}}--}}
+                                        {{--</div>--}}
+                                    {{--</td>--}}
                                     <td>
                                         <div class="line-height-30">
                                             {{$data->kaipantime}}
@@ -105,6 +105,11 @@
                                     <td>
                                         <div class="line-height-30">
                                             {{$data->property}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="line-height-30">
+                                            {{$data->size}}
                                         </div>
                                     </td>
                                     <td>
@@ -178,14 +183,14 @@
                                         </div>
                                     </td>
 
-                                    <td>
-                                        @if($data->status === '0')
-                                            <span class="label label-success line-height-30">展示</span>
-                                        @else
-                                            <span class="label label-default line-height-30">隐藏</span>
-                                        @endif
+                                    {{--<td>--}}
+                                        {{--@if($data->status === '0')--}}
+                                            {{--<span class="label label-success line-height-30">展示</span>--}}
+                                        {{--@else--}}
+                                            {{--<span class="label label-default line-height-30">隐藏</span>--}}
+                                        {{--@endif--}}
 
-                                    </td>
+                                    {{--</td>--}}
                                     <td class="opt-th-width-m">
                                         <span class="line-height-30">
 
@@ -193,7 +198,7 @@
                                                   data-toggle="tooltip"
                                                   data-placement="top"
                                                   onclick="clickEdit({{$data->id}})"
-                                                  title="编辑详细信息">
+                                                  title="编辑楼盘参数详细信息">
                                                 <i class="fa fa-edit opt-btn-i-size"></i>
                                             </span>
                                             <span class="btn btn-social-icon btn-danger opt-btn-size"
@@ -269,69 +274,205 @@
                                            value="{{$admin->name}}" disabled>
                                 </div>
                             </div>
+
+                            <div class="form-group hidden">
+                                <label for="type_id" class="col-sm-2 control-label">楼盘id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="house_id" id="house_id" class="form-control"
+                                           value="{{$house->id}}">
+                                </div>
+                            </div>
+                            {{--<div class="form-group">--}}
+                                {{--<label for="image" class="col-sm-2 control-label">楼盘图片</label>--}}
+
+                                {{--<div class="col-sm-10">--}}
+                                    {{--<input id="image" name="image" type="text" class="form-control"--}}
+                                           {{--placeholder="图片网路链接地址"--}}
+                                           {{--value="">--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group">--}}
+                                {{--<label for="title" class="col-sm-2 control-label">楼盘名</label>--}}
+
+                                {{--<div class="col-sm-10">--}}
+                                    {{--<input id="title" name="title" type="text" class="form-control"--}}
+                                           {{--placeholder="楼盘名"--}}
+                                           {{--value="">--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
                             <div class="form-group">
-                                <label for="image" class="col-sm-2 control-label">房源图片</label>
+                                <label for="kaipantime" class="col-sm-2 control-label">开盘时间</label>
 
                                 <div class="col-sm-10">
-                                    <input id="image" name="image" type="text" class="form-control"
-                                           placeholder="图片网路链接地址"
+                                    <input id="kaipantime" name="kaipantime" type="text" class="form-control"
+                                           placeholder="开盘时间"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="type" class="col-sm-2 control-label">房源类型</label>
+                                <label for="jiaopantime" class="col-sm-2 control-label">交盘时间</label>
 
                                 <div class="col-sm-10">
-                                    <input id="type" name="type" type="text" class="form-control"
-                                           placeholder="房源类型"
+                                    <input id="jiaopantime" name="jiaopantime" type="text" class="form-control"
+                                           placeholder="交盘时间"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="size" class="col-sm-2 control-label">房源面积</label>
+                                <label for="developer" class="col-sm-2 control-label">开发商</label>
+
+                                <div class="col-sm-10">
+                                    <input id="developer" name="developer" type="text" class="form-control"
+                                           placeholder="开发商"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="property" class="col-sm-2 control-label">物业</label>
+
+                                <div class="col-sm-10">
+                                    <input id="property" name="property" type="text" class="form-control"
+                                           placeholder="物业"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="size" class="col-sm-2 control-label">面积</label>
 
                                 <div class="col-sm-10">
                                     <input id="size" name="size" type="text" class="form-control"
-                                           placeholder="房源面积"
+                                           placeholder="面积"
+                                           value="">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="households" class="col-sm-2 control-label">总户数</label>
+
+                                <div class="col-sm-10">
+                                    <input id="households" name="households" type="text" class="form-control"
+                                           placeholder="总户数"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="price" class="col-sm-2 control-label">房源价格</label>
+                                <label for="plotratio" class="col-sm-2 control-label">容积率</label>
+
+                                <div class="col-sm-10">
+                                    <input id="plotratio" name="plotratio" type="text" class="form-control"
+                                           placeholder="容积率"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="green" class="col-sm-2 control-label">绿化率</label>
+
+                                <div class="col-sm-10">
+                                    <input id="green" name="green" type="text" class="form-control"
+                                           placeholder="绿化率"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="park" class="col-sm-2 control-label">车位数</label>
+
+                                <div class="col-sm-10">
+                                    <input id="park" name="park" type="text" class="form-control"
+                                           placeholder="车位数"
+                                           value="">
+                                </div>
+                            </div> <div class="form-group">
+                                <label for="parkper" class="col-sm-2 control-label">车位比</label>
+
+                                <div class="col-sm-10">
+                                    <input id="parkper" name="parkper" type="text" class="form-control"
+                                           placeholder="车位比"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="price" class="col-sm-2 control-label">均价</label>
 
                                 <div class="col-sm-10">
                                     <input id="price" name="price" type="text" class="form-control"
-                                           placeholder="房源价格"
+                                           placeholder="均价"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="benefit" class="col-sm-2 control-label">房源优点</label>
+                                <label for="propertyfee" class="col-sm-2 control-label">物业费</label>
 
                                 <div class="col-sm-10">
-                                    <input id="benefit" name="benefit" type="text" class="form-control"
-                                           placeholder="房源优点"
+                                    <input id="propertyfee" name="propertyfee" type="text" class="form-control"
+                                           placeholder="物业费"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="orientation" class="col-sm-2 control-label">房源朝向</label>
+                                <label for="buildtype" class="col-sm-2 control-label">建筑类型</label>
 
                                 <div class="col-sm-10">
-                                    <input id="orientation" name="orientation" type="text" class="form-control"
-                                           placeholder="房源朝向"
+                                    <input id="buildtype" name="buildtype" type="text" class="form-control"
+                                           placeholder="建筑类型"
                                            value="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="reason" class="col-sm-2 control-label">购买理由</label>
+                                <label for="decorate" class="col-sm-2 control-label">装修状态</label>
 
                                 <div class="col-sm-10">
-                                    <input id="reason" name="reason" type="text" class="form-control"
-                                           placeholder="购买理由"
+                                    <input id="decorate" name="decorate" type="text" class="form-control"
+                                           placeholder="装修状态"
                                            value="">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="years" class="col-sm-2 control-label">产权年限</label>
+
+                                <div class="col-sm-10">
+                                    <input id="years" name="years" type="text" class="form-control"
+                                           placeholder="产权年限"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="shangye" class="col-sm-2 control-label">商业配套</label>
+
+                                <div class="col-sm-10">
+                                    <input id="shangye" name="shangye" type="text" class="form-control"
+                                           placeholder="商业配套"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="jiaoyu" class="col-sm-2 control-label">教育配套</label>
+
+                                <div class="col-sm-10">
+                                    <input id="jiaoyu" name="jiaoyu" type="text" class="form-control"
+                                           placeholder="教育配套"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="jiaotong" class="col-sm-2 control-label">交通配套</label>
+
+                                <div class="col-sm-10">
+                                    <input id="jiaotong" name="jiaotong" type="text" class="form-control"
+                                           placeholder="交通配套"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="huanjing" class="col-sm-2 control-label">环境配套</label>
+
+                                <div class="col-sm-10">
+                                    <input id="huanjing" name="huanjing" type="text" class="form-control"
+                                           placeholder="环境配套"
+                                           value="">
+                                </div>
+                            </div>
+
+
 
 
                             <div style="margin-top: 10px;" class="text-center">
@@ -369,7 +510,7 @@
                     <h4 class="modal-title">提示信息</h4>
                 </div>
                 <div class="modal-body">
-                    <p>您确认要删除该楼盘吗？</p>
+                    <p>您确认要删除该楼盘参数吗？</p>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" id="url"/>
@@ -423,10 +564,10 @@
             $("#tr_" + admin_id).fadeOut();
             //进行页面跳转
             //var huxing =window.location.search
-            window.location.href = "{{URL::asset('/admin/huxing/del')}}/" + admin_id+"/?house_id="+house_id;
+            window.location.href = "{{URL::asset('/admin/detail/del')}}/" + admin_id+"/?house_id="+house_id;
         }
 
-        //点击新建楼盘
+        //点击新建楼盘参数
         function clickAdd() {
             //清空模态框
             $("#editHouse")[0].reset();
@@ -439,20 +580,32 @@
         //点击编辑
         function clickEdit(id) {
             console.log("clickEdit id:" + id);
-            getHuxingById("{{URL::asset('')}}", {id: id, _token: "{{ csrf_token() }}"}, function (ret) {
+            getHouseDetailById("{{URL::asset('')}}", {id: id, _token: "{{ csrf_token() }}"}, function (ret) {
                 if (ret.result) {
                     var msgObj = ret.ret;
                     //对象配置
                     $("#id").val(msgObj.id);
                     $("#house_id").val(msgObj.house_id);
-                    $("#type").val(msgObj.type);
+//                    $("#image").val(msgObj.image);
+//                    $("#title").val(msgObj.title);
+                    $("#kaipantime").val(msgObj.kaipantime);
+                    $("#jiaopantime").val(msgObj.jiaopantime);
+                    $("#developer").val(msgObj.developer)
+                    $("#property").attr("src", msgObj.property);
                     $("#size").val(msgObj.size);
-                    $("#image").val(msgObj.image)
-                    $("#pickfiles").attr("src", msgObj.image);
+                    $("#households").val(msgObj.households);
+                    $("#plotratio").val(msgObj.plotratio);
+                    $("#green").val(msgObj.green);
+                    $("#park").attr("src", msgObj.park);
+                    $("#parkper").val(msgObj.parkper);
                     $("#price").val(msgObj.price);
-                    $("#reason").val(msgObj.reason);
-                    $("#orientation").val(msgObj.orientation);
-                    $("#benefit").val(msgObj.benefit);
+                    $("#propertyfee").val(msgObj.propertyfee);
+                    $("#buildtype").val(msgObj.buildtype);
+                    $("#decorate").attr("src", msgObj.decorate);
+                    $("#years").val(msgObj.years);
+                    $("#shangye").val(msgObj.shangye);
+                    $("#jiaoyu").val(msgObj.jiaoyu);
+                    $("#jiaotong").val(msgObj.jiaotong);
 
                     //展示modal
                     $("#addHouseModal").modal('show');
@@ -464,9 +617,55 @@
         //合规校验
         function checkValid() {
             //合规校验
-            var type = $("#type").val();
-            if (judgeIsNullStr(type)) {
-                $("#type").focus();
+            var kaipantime = $("#kaipantime").val();
+            if (judgeIsNullStr(kaipantime)) {
+                $("#kaipantime").focus();
+                return false;
+            }
+            var jiaopantime = $("#jiaopantime").val();
+            if (judgeIsNullStr(jiaopantime)) {
+                $("#jiaopantime").focus();
+                return false;
+            }
+            var developer = $("#developer").val();
+            if (judgeIsNullStr(developer)) {
+                $("#developer").focus();
+                return false;
+            }
+            var property = $("#property").val();
+            if (judgeIsNullStr(property)) {
+                $("#property").focus();
+                return false;
+            }
+
+            var size = $("#size").val();
+            if (judgeIsNullStr(size)) {
+                $("#size").focus();
+                return false;
+            }
+            var households = $("#households").val();
+            if (judgeIsNullStr(households)) {
+                $("#households").focus();
+                return false;
+            }
+            var plotratio = $("#plotratio").val();
+            if (judgeIsNullStr(plotratio)) {
+                $("#plotratio").focus();
+                return false;
+            }
+            var green = $("#green").val();
+            if (judgeIsNullStr(green)) {
+                $("#green").focus();
+                return false;
+            }
+            var park = $("#park").val();
+            if (judgeIsNullStr(park)) {
+                $("#park").focus();
+                return false;
+            }
+            var parkper = $("#parkper").val();
+            if (judgeIsNullStr(parkper)) {
+                $("#parkper").focus();
                 return false;
             }
             var price = $("#price").val();
@@ -474,32 +673,42 @@
                 $("#price").focus();
                 return false;
             }
-            var image = $("#image").val();
-            if (judgeIsNullStr(image)) {
-                $("#image").focus();
+            var propertyfee = $("#propertyfee").val();
+            if (judgeIsNullStr(propertyfee)) {
+                $("#propertyfee").focus();
                 return false;
             }
-            var size = $("#size").val();
-            if (judgeIsNullStr(size)) {
-                $("#size").focus();
+            var decorate = $("#decorate").val();
+            if (judgeIsNullStr(decorate)) {
+                $("#decorate").focus();
+                return false;
+            }
+            var buildtype = $("#buildtype").val();
+            if (judgeIsNullStr(buildtype)) {
+                $("#buildtype").focus();
+                return false;
+            }
+            var years = $("#years").val();
+            if (judgeIsNullStr(years)) {
+                $("#years").focus();
+                return false;
+            }
+            var shangye = $("#shangye").val();
+            if (judgeIsNullStr(shangye)) {
+                $("#shangye").focus();
+                return false;
+            }
+            var jiaoyu = $("#jiaoyu").val();
+            if (judgeIsNullStr(jiaoyu)) {
+                $("#jiaoyu").focus();
+                return false;
+            }
+            var jiaotong = $("#jiaotong").val();
+            if (judgeIsNullStr(jiaotong)) {
+                $("#jiaotong").focus();
                 return false;
             }
 
-            var benefit = $("#benefit").val();
-            if (judgeIsNullStr(benefit)) {
-                $("#benefit").focus();
-                return false;
-            }
-            var reason = $("#reason").val();
-            if (judgeIsNullStr(reason)) {
-                $("#reason").focus();
-                return false;
-            }
-            var orientation = $("#orientation").val();
-            if (judgeIsNullStr(orientation)) {
-                $("#orientation").focus();
-                return false;
-            }
 
 
             return true;

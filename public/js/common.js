@@ -39,6 +39,10 @@ function getHouseById(url, param, callBack) {
 function getHuxingById(url, param, callBack) {
     ajaxRequest(url + "admin/huxing/getById", param, "GET", callBack);
 }
+//根据id获取房源信息
+function getHouseDetailById(url, param, callBack) {
+    ajaxRequest(url + "admin/house/getHouseDetailById", param, "GET", callBack);
+}
 
 //根据id获取顾问信息
 function getZYGWById(url, param, callBack) {

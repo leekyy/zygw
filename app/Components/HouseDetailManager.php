@@ -26,7 +26,7 @@ class HouseDetailManager
         return $housedetail;
     }
     /*
-     * 根据id获取户型详细信息
+     * 根据id获取楼盘参数
      *
      * By TerryQi
      *
@@ -35,8 +35,8 @@ class HouseDetailManager
      */
     public static function getById($id)
     {
-        $huxing = Huxing::where('id', '=', $id)->first();
-        return $huxing;
+        $detail = HouseDetail::where('id', '=', $id)->first();
+        return $detail;
     }
     /*根据楼盘id获取该楼盘下的所有产品
      *
@@ -115,50 +115,74 @@ class HouseDetailManager
      *
      * 2018-01-31
      */
-    public static function setHuxing($huxing, $data)
+    public static function setInfo($detail, $data)
     {
         if (array_key_exists('house_id', $data)) {
-            $huxing->house_id = array_get($data, 'house_id');
+            $detail->house_id = array_get($data, 'house_id');
         }
         if (array_key_exists('admin_id', $data)) {
-            $huxing->admin_id = array_get($data, 'admin_id');
+            $detail->admin_id = array_get($data, 'admin_id');
         }
-        if (array_key_exists('name', $data)) {
-            $huxing->name = array_get($data, 'name');
+        if (array_key_exists('kaipantime', $data)) {
+            $detail->kaipantime = array_get($data, 'kaipantime');
         }
-        if (array_key_exists('image', $data)) {
-            $huxing->image = array_get($data, 'image');
+        if (array_key_exists('jiaopantime', $data)) {
+            $detail->jiaopantime = array_get($data, 'jiaopantime');
         }
-        if (array_key_exists('type_id', $data)) {
-            $huxing->type_id = array_get($data, 'type_id');
+        if (array_key_exists('developer', $data)) {
+            $detail->developer = array_get($data, 'developer');
         }
-        if (array_key_exists('size_min', $data)) {
-            $huxing->size_min = array_get($data, 'size_min');
+        if (array_key_exists('property', $data)) {
+            $detail->property = array_get($data, 'property');
         }
-        if (array_key_exists('size_max', $data)) {
-            $huxing->size_max = array_get($data, 'size_max');
+        if (array_key_exists('size', $data)) {
+            $detail->size = array_get($data, 'size');
         }
-        if (array_key_exists('huxing', $data)) {
-            $huxing->huxing = array_get($data, 'huxing');
+        if (array_key_exists('households', $data)) {
+            $detail->households = array_get($data, 'households');
         }
-        if (array_key_exists('benefit', $data)) {
-            $huxing->benefit = array_get($data, 'benefit');
+        if (array_key_exists('plotratio', $data)) {
+            $detail->plotratio = array_get($data, 'plotratio');
         }
         if (array_key_exists('orientation', $data)) {
-            $huxing->orientation = array_get($data, 'orientation');
+            $detail->orientation = array_get($data, 'orientation');
         }
-        if (array_key_exists('reason', $data)) {
-            $huxing->reason = array_get($data, 'reason');
+        if (array_key_exists('green', $data)) {
+            $detail->green = array_get($data, 'green');
         }
-        if (array_key_exists('status', $data)) {
-            $huxing->status = array_get($data, 'status');
+        if (array_key_exists('park', $data)) {
+            $detail->park = array_get($data, 'park');
         }
-        if (array_key_exists('yongjin_type', $data)) {
-            $huxing->yongjin_type = array_get($data, 'yongjin_type');
+        if (array_key_exists('parkper', $data)) {
+            $detail->parkper = array_get($data, 'parkper');
         }
-        if (array_key_exists('yongjin_value', $data)) {
-            $huxing->yongjin_value = array_get($data, 'yongjin_value');
+        if (array_key_exists('price', $data)) {
+            $detail->price = array_get($data, 'price');
         }
-        return $huxing;
+        if (array_key_exists('propertyfee', $data)) {
+            $detail->propertyfee = array_get($data, 'propertyfee');
+        }
+        if (array_key_exists('buildtype', $data)) {
+            $detail->buildtype = array_get($data, 'buildtype');
+        }
+        if (array_key_exists('decorate', $data)) {
+            $detail->decorate = array_get($data, 'decorate');
+        }
+        if (array_key_exists('years', $data)) {
+            $detail->years = array_get($data, 'years');
+        }
+        if (array_key_exists('shangye', $data)) {
+            $detail->shangye = array_get($data, 'shangye');
+        }
+        if (array_key_exists('jiaoyu', $data)) {
+            $detail->jiaoyu = array_get($data, 'jiaoyu');
+        }
+        if (array_key_exists('jiaotong', $data)) {
+            $detail->jiaotong = array_get($data, 'jiaotong');
+        }
+        if (array_key_exists('huanjing', $data)) {
+            $detail->huanjing = array_get($data, 'huanjing');
+        }
+        return $detail;
     }
 }

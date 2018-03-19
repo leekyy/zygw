@@ -616,9 +616,9 @@ class BaobeiController extends Controller
             return ApiResponse::makeResponse(false, '结算时间早于当前时间', ApiResponse::INNER_ERROR);
         }
         $diff3 = DateTool::dateDiff('N', $baobei->sign_time, $baobei->can_jiesuan_time);
-        if ($diff3 <= 0) {
-            return ApiResponse::makeResponse(false, '结算时间应在签约时间之后', ApiResponse::INNER_ERROR);
-        }
+//        if ($diff3 <= 0) {
+//            return ApiResponse::makeResponse(false, '结算时间应在签约时间之后', ApiResponse::INNER_ERROR);
+//        }
         $baobei->save();
         return ApiResponse::makeResponse(true, $baobei, ApiResponse::SUCCESS_CODE);
     }

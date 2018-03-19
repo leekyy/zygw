@@ -86,9 +86,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
 
     //楼盘详细信息
     Route::get('/house/detail', 'Admin\HouseController@detail');//根据id获取楼盘详细信息
-    Route::get('/detail/del/{id}', 'Admin\HouseController@del');//删除楼盘
-    Route::post('/detail/edit', 'Admin\HouseController@edit');//新建或编辑楼盘
-    Route::post('/detail/edit', 'Admin\HouseController@editPost');//新建或编辑楼盘
+    Route::get('/detail/del/{id}', 'Admin\HouseController@delHouseDetail');//删除楼盘
+    Route::get('/detail/getHouseDetailById', 'Admin\HouseController@getHouseDetailById');//根据id获取产品信息
+    Route::post('/detail/edit', 'Admin\HouseController@editHouseDetail');//新建或编辑楼盘
+    Route::post('/detail/edit', 'Admin\HouseController@editPostHouseDetail');//新建或编辑楼盘
 
     //楼盘下的产品管理
     Route::get('/huxing/index', 'Admin\HuxingController@index');//根据楼盘id获取相应的产品

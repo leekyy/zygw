@@ -14,6 +14,7 @@ use App\Components\AdminManager;
 use App\Components\BaobeiManager;
 use App\Components\DateTool;
 use App\Components\HouseAreaManager;
+use App\Components\HouseDetailManager;
 use App\Components\HouseImageManager;
 use App\Components\HouselabelManager;
 use App\Components\HouseTypeManager;
@@ -26,6 +27,7 @@ use App\Components\Utils;
 use App\Libs\CommonUtils;
 use App\Models\AD;
 use App\Models\House;
+use App\Models\HouseDetail;
 use App\Models\HouseType;
 use App\Models\Huxing;
 use Illuminate\Http\Request;
@@ -156,6 +158,21 @@ class HouseController
         return redirect('/admin/house/index');
     }
 
+    //删除楼盘
+    public function delHouseDetail(Request $request, $id)
+    {
+        //广告位id非数字
+        if (!is_numeric($id)) {
+            return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请检查参数广告id$id']);
+        }
+        $huxing = HouseDetail::find($id);
+        $huxing->delete();
+        // $huxing =$request->all()['search'];
+        $data = $request->all();
+        return redirect('/admin/house/detail?house_id=' . $data['house_id']);
+    }
+
+
 
     //新建或编辑楼盘-get
     public function edit(Request $request)
@@ -169,6 +186,36 @@ class HouseController
         //生成七牛token
         $upload_token = QNManager::uploadToken();
         return view('admin.house.edit', ['admin' => $admin, 'data' => $house, 'upload_token' => $upload_token]);
+    }
+
+    //新建或编辑楼盘-get
+    public function editHouseDetail(Request $request)
+    {
+        $data = $request->all();
+        $house = new HouseDetail();
+        if (array_key_exists('id', $data)) {
+            $house = HouseDetailManager::getById($data['id']);
+        }
+        $admin = $request->session()->get('admin');
+        //生成七牛token
+        $upload_token = QNManager::uploadToken();
+        return view('admin.detail.edit', ['admin' => $admin, 'data' => $house, 'upload_token' => $upload_token]);
+    }
+
+    //新建或编辑楼盘标签->post
+    public function editPostHouseDetail(Request $request)
+    {
+        $data = $request->all();
+        $detail = new HouseDetail();
+        //存在id是保存
+        if (array_key_exists('id', $data) && $data['id'] != null) {
+            $detail = HouseDetail::find($data['id']);
+        }
+//        dd($data);
+        $detail = HouseDetailManager::setInfo($detail, $data);
+        $detail->save();
+
+        return redirect('/admin/house/detail?house_id=' . $detail->house_id);
     }
 
 
@@ -230,8 +277,14 @@ class HouseController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
-        $admin = HouseManager::detail($data['house_id']);
-        return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
+        $house_id = $data['house_id'];
+        $house = HouseManager::getById($house_id);
+        $houses = HouseDetailManager::getHouseDetailByHouseId($data['house_id']);
+       // return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
+        $admin = $request->session()->get('admin');
+        //生成七牛token
+        $upload_token = QNManager::uploadToken();
+        return view('admin.house.detail', ['admin' => $admin, 'datas' => $houses,'house' => $house,  'upload_token' => $upload_token]);
 
     }
 
@@ -253,6 +306,26 @@ class HouseController
         //$house = HouseManager::getById($data['id']);
         return ApiResponse::makeResponse(true, $house, ApiResponse::SUCCESS_CODE);
 
+
+    }
+
+
+    /*
+  * 根据id获取楼盘参数
+  *
+  */
+    public function getHouseDetailById(Request $request)
+    {
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $detail = HouseDetailManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $detail, ApiResponse::SUCCESS_CODE);
 
     }
 
