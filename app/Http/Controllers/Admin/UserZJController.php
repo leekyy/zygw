@@ -112,6 +112,28 @@ class UserZJController
         return redirect('/admin/zhongjie/index');
     }
 
+    /*
+     * 中介到访量排名
+     *
+     * By TerryQi
+     *
+     * 2018-03-19
+     *
+     */
+    public function paiming(Request $request)
+    {
+        $data = $request->all();
+        $admin = $request->session()->get('admin');
+
+        $paimings = BaobeiManager::zhongjiePaiming();
+        foreach ($paimings as $paiming) {
+            $paiming->user = UserManager::getById($paiming->user_id);
+        }
+//        dd($paimings);
+
+        return view('admin.zhongjie.paiming', ['admin' => $admin, 'datas' => $paimings]);
+    }
+
     //统计页面
     public function stmt(Request $request)
     {

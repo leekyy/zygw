@@ -65,7 +65,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/zhongjie/index', 'Admin\UserZJController@index');  //中介管理首页
     Route::get('/zhongjie/search', 'Admin\UserZJController@search');  //搜索中介
     Route::get('/zhongjie/setStatus/{id}', 'Admin\UserZJController@setStatus');  //设置状态
-    Route::get('/zhongjie/stmt', 'Admin\UserZJController@stmt');  //案场负责人统计页面
+    Route::get('/zhongjie/stmt', 'Admin\UserZJController@stmt');  //中介统计页面
+    Route::get('/zhongjie/paiming', 'Admin\UserZJController@paiming');  //中介排名页面
     Route::post('/zhongjie/payYongjin', 'Admin\UserZJController@payYongjin');  //支付中介佣金
 
     //报备

@@ -985,4 +985,19 @@ class BaobeiManager
         $baobeis = Baobei::where('status', '=', '1')->where('baobei_status', '=', '1')->where('visit_time', '<', $exceed_date)->get();
         return $baobeis;
     }
+
+
+    /*
+     * 中介按照到访量进行排名
+     *
+     * By TerryQi
+     *
+     * 2018-03-19
+     */
+    public static function zhongjiePaiming()
+    {
+        $sql_str = "SELECT count(*) as num,user_id FROM zygwdb.t_baobei_info where baobei_status in ('1','2','3','4') group by user_id order by num desc;";
+        $data = DB::select($sql_str);
+        return $data;
+    }
 }
