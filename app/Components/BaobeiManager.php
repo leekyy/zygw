@@ -176,9 +176,9 @@ class BaobeiManager
         if (array_key_exists('client_id', $data)) {
             $baobei->client_id = array_get($data, 'client_id');
         }
-        if (array_key_exists('user_id', $data)) {         //不能在此处设置user_id，即中介的id，否则多处接口将收到影响
-            $baobei->user_id = array_get($data, 'user_id');
-        }
+//        if (array_key_exists('user_id', $data)) {         //不能在此处设置user_id，即中介的id，否则多处接口将收到影响
+//            $baobei->user_id = array_get($data, 'user_id');
+//        }
         if (array_key_exists('house_id', $data)) {
             $baobei->house_id = array_get($data, 'house_id');
         }
