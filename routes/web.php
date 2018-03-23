@@ -128,10 +128,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     //产品标签
     Route::get('/houseLabel/index', 'Admin\HouseLabelController@index');  //楼盘标签管理首页
     Route::post('/houseLabel/edit', 'Admin\HouseLabelController@editPost');  //楼盘编辑产品标签
+    Route::get('/houseLabel/del/{id}', 'Admin\HouseLabelController@del');//删除楼盘
 
     //产品类型
     Route::get('/houseType/index', 'Admin\HouseTypeController@index');  //楼盘类型管理首页
     Route::post('/houseType/edit', 'Admin\HouseTypeController@editPost');  //编辑楼盘标签
+    Route::get('/houseType/del/{id}', 'Admin\HouseTypeController@del');//删除楼盘
 
     //产品图片
     Route::get('/houseImage/index', 'Admin\HouseImageController@index');  //楼盘相关图片管理首页

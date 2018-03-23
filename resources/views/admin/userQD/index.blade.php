@@ -27,7 +27,7 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="col-sm-10">
-                                    <input id="search_phonenum" name="search_phonenum" type="text" class="form-control"
+                                    <input id="phonenum" name="phonenum" type="text" class="form-control"
                                            placeholder="根据手机号码搜索用户签到明细"
                                            value="">
                                 </div>

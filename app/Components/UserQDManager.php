@@ -11,6 +11,7 @@ namespace App\Components;
 
 use App\Models\AD;
 use App\Models\UserQD;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Qiniu\Auth;
 
@@ -30,6 +31,20 @@ class UserQDManager
         return $userQDs;
     }
 
+
+    /*
+   * 根据手机号获取姓名搜索
+   *
+   * By TerryQi
+   *
+   * 2018-02-19
+   *
+   */
+    public static function search($phonenum)
+    {
+        $user = User::where('phonenum', '=', $phonenum)->orderBy('id', 'desc')->first();
+        return $user;
+    }
     /*
      * 根据id获取签到信息详情
      *

@@ -88,7 +88,7 @@ class UserManager
      */
     public static function getByTel($phonenum)
     {
-        $user = User::where('phonenum', '=', $phonenum)->first();
+        $user = User::where('phonenum', '=', $phonenum)->get();
         return $user;
     }
 

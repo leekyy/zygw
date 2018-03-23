@@ -22,6 +22,7 @@ use App\Http\Controllers\ApiResponse;
 use App\Libs\CommonUtils;
 use App\Models\AD;
 use App\Models\Doctor;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Libs\ServerUtils;
 use App\Components\RequestValidator;
@@ -56,16 +57,16 @@ class UserQDController
         $data = $request->all();
         //合规校验account_type
         $requestValidationResult = RequestValidator::validator($request->all(), [
-            'search_phonenum' => 'required',
+            'phonenum' => 'required',
         ]);
         if ($requestValidationResult !== true) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，请输入查询手机号']);
         }
-        if (!Utils::isPhonenum($data['search_phonenum'])) {
+        if (!Utils::isPhonenum($data['phonenum'])) {
             return redirect()->action('\App\Http\Controllers\Admin\IndexController@error', ['msg' => '合规校验失败，检索手机号码格式不正确']);
         }
         $userQDs = [];
-        $user = UserManager::getUserInfoByTel($data['search_phonenum']);
+        $user = UserQDManager::search($data['phonenum']);
         if ($user) {
             $userQDs = UserQDManager::getQDListByUserIdPaginate($user->id);
         }
@@ -73,6 +74,8 @@ class UserQDController
             $userQD = UserQDManager::getUserQDInfoByLevel($userQD, 0);
         }
         return view('admin.userQD.index', ['admin' => $admin, 'datas' => $userQDs]);
+
+
     }
 
     /*
