@@ -199,6 +199,7 @@
                         <li><a href="{{url('admin/userUp/index')}}"><i class="fa fa-circle-o"></i>升级审核</a></li>
                         <li><a href="{{url('admin/acfzr/index')}}"><i class="fa fa-circle-o"></i>案场负责人管理</a></li>
                         <li><a href="{{url('admin/zhongjie/index')}}"><i class="fa fa-circle-o"></i>中介人员管理</a></li>
+                        <li><a href="{{url('admin/zhongjie/paiming')}}"><i class="fa fa-circle-o"></i>中介排名</a></li>
                         <li><a href="{{url('admin/userQD/index')}}"><i class="fa fa-circle-o"></i>签到明细</a></li>
                     </ul>
                 </li>
@@ -289,8 +290,8 @@
                             </a>
                         </li>
                         {{--<li><a href="{{url('/admin/houseImage/index')}}"><i class="fa fa-circle-o"></i>楼盘图片管理--}}
-                                {{--<small class="label bg-red pull-right">！</small>--}}
-                            {{--</a>--}}
+                        {{--<small class="label bg-red pull-right">！</small>--}}
+                        {{--</a>--}}
                         {{--</li>--}}
                         <li><a href="{{url('/admin/houseLabel/index')}}"><i class="fa fa-circle-o"></i>楼盘标签管理
                                 <small class="label bg-red pull-right">！</small>
