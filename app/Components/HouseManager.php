@@ -223,6 +223,10 @@ class HouseManager
             $house->image = array_get($data, 'image');
         }
 
+        if (array_key_exists('video', $data)) {
+            $house->video = array_get($data, 'video');
+        }
+
         if (array_key_exists('title', $data)) {
             $house->title = array_get($data, 'title');
         }

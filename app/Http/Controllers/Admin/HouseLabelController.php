@@ -44,6 +44,22 @@ class HouseLabelController
         return view('admin.houseLabel.index', ['admin' => $admin, 'datas' => $houseLabels]);
     }
 
+    public function getById(Request $request)
+    {
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $houseLabel = HouselabelManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $houseLabel, ApiResponse::SUCCESS_CODE);
+
+    }
+
+
 
     //新建或编辑楼盘标签->post
     public function editPost(Request $request)

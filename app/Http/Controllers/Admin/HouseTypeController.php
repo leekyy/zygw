@@ -60,4 +60,23 @@ class HouseTypeController
 
         return redirect('/admin/houseType/index');
     }
+
+    public function getById(Request $request)
+    {
+        $data = $request->all();
+        //合规校验account_type
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $houseLabel = HouseTypeManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $houseLabel, ApiResponse::SUCCESS_CODE);
+
+    }
+
+
+
+
 }

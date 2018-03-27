@@ -615,7 +615,7 @@ class BaobeiController extends Controller
         }
         $diff2 = DateTool::dateDiff('N', $baobei->can_jiesuan_time, DateTool::getCurrentTime());
         if ($diff2 <= 0) {
-            return ApiResponse::makeResponse(false, '结算时间早于当前时间', ApiResponse::INNER_ERROR);
+            return ApiResponse::makeResponse(false, '结算时间晚于当前时间', ApiResponse::INNER_ERROR);
         }
         $diff3 = DateTool::dateDiff('N', $baobei->sign_time, $baobei->can_jiesuan_time);
 //        if ($diff3 <= 0) {

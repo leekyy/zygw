@@ -51,12 +51,14 @@ class SystemController
         $data = $request->all();
         //获取系统配置
         $system = SystemManager::getSystemInfo();
+
         return ApiResponse::makeResponse(true, $system, ApiResponse::SUCCESS_CODE);
     }
 
     //新建或编辑系统配置->post
     public function editPost(Request $request)
     {
+        $admin = $request->session()->get('admin');
         $data = $request->all();
         //合规校验
         $requestValidationResult = RequestValidator::validator($request->all(), [
@@ -69,6 +71,7 @@ class SystemController
         if ($requestValidationResult !== true) {
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
+
         //保存设置的系统配置
         $system = SystemManager::getSystemInfo();
         $system = SystemManager::setSystemInfo($system, $data);

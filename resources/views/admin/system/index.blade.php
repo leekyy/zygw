@@ -237,6 +237,28 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    {{--提示Modal--}}
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body" id="tipModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button id="delConfrimModal_confirm_btn" data-value=""
+                            class="btn btn-success"
+                            data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @section('script')
@@ -257,6 +279,12 @@
 
         //点击编辑
         function clickEdit(systemInfo_id) {
+            //普通管理员没有修改权限
+            if ("{{$admin->role}}" == "0") {
+                $("#tipModalBody").html('<p>普通管理员没有新建/管理管理员权限，请联系超级管理员处理</p>');
+                $("#tipModal").modal('show');
+                return;
+            }
             console.log("clickEdit systemInfo_id:" + systemInfo_id);
             getSystemInfo("{{URL::asset('')}}", {_token: "{{ csrf_token() }}"}, function (ret) {
                 if (ret.result) {

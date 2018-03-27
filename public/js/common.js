@@ -110,6 +110,15 @@ function getRuleById(url, param, callBack) {
 function getSystemInfo(url, param, callBack) {
     ajaxRequest(url + "admin/system/edit", param, "GET", callBack);
 }
+//获取楼盘标签信息
+function getHouseLabelInfo(url, param, callBack) {
+    ajaxRequest(url + "admin/houseLabel/getById", param, "GET", callBack);
+}
+
+//获取楼盘类型信息
+function getHouseTypeInfo(url, param, callBack) {
+    ajaxRequest(url + "admin/houseType/getById", param, "GET", callBack);
+}
 
 //修改管理员密码
 function changeAdminPasswordPost(url, param, callBack) {

@@ -229,13 +229,13 @@
                             <div style="margin-top: 10px;" class="text-center">
                                 <div id="stepContainer">
                                     @{{? it.img}}
-                                    <img id="stepPickfiles" src="@{{=it.img}}" style="width: 260px;">
+                                    <img id="stepPickfiles" src="@{{=it.img}}" style="width: 100%;">
                                     @{{??}}
                                     <img id="stepPickfiles" src="{{URL::asset('/img/upload.png')}}"
                                          style="width: 260px;">
                                     @{{?}}
                                 </div>
-                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片</div>
+                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传图片</div>
                             </div>
                         </div>
                         <!-- /.box-body -->

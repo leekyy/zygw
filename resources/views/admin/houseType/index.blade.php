@@ -60,6 +60,16 @@
                                         </span>
                                     </td>
                                     <td>
+
+                                         <span class="line-height-30">
+                                        <span class="btn btn-social-icon btn-success margin-right-10 opt-btn-size"
+                                              data-toggle="tooltip"
+                                              data-placement="top"
+                                              title="编辑该楼盘类型"
+                                              onclick="clickEdit({{$data->id}})">
+                                                <i class="fa fa-edit opt-btn-i-size"></i>
+                                        </span>
+                                    </span>
                                         <span class="line-height-30">
                                             <span class="btn btn-social-icon btn-danger opt-btn-size"
                                                   data-toggle="tooltip"
@@ -199,6 +209,28 @@
             $("#admin_id").val("{{$admin->id}}");
             $("#pickfiles").attr("src", '{{URL::asset('/img/upload.png')}}');
             $("#addHouseLabelModal").modal('show');
+        }
+
+        //点击编辑
+        function clickEdit(id) {
+            //普通管理员没有修改权限
+            if ("{{$admin->role}}" == "0") {
+                $("#tipModalBody").html('<p>普通管理员没有新建/管理管理员权限，请联系超级管理员处理</p>');
+                $("#tipModal").modal('show');
+                return;
+            }
+            console.log("clickEdit id:" + id);
+            getHouseTypeInfo("{{URL::asset('')}}", {id: id,_token: "{{ csrf_token() }}"}, function (ret) {
+                if (ret.result) {
+                    var msgObj = ret.ret;
+                    //对象配置
+                    $("#id").val(msgObj.id);
+                    $("#name").val(msgObj.name);
+
+                    //展示modal
+                    $("#addHouseLabelModal").modal('show');
+                }
+            })
         }
 
         //合规校验

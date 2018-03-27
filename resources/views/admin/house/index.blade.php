@@ -60,6 +60,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>楼盘名</th>
+                                {{--<th>视频</th>--}}
                                 <th>区域</th>
                                 <th>面积(㎡)</th>
                                 <th>价格(元/㎡)</th>
@@ -81,6 +82,11 @@
                                             {{$data->title}}
                                         </div>
                                     </td>
+                                    {{--<td>--}}
+                                        {{--<div class="line-height-30">--}}
+                                            {{--{{$data->video}}--}}
+                                        {{--</div>--}}
+                                    {{--</td>--}}
                                     <td>
                                         <div class="line-height-30">
                                             {{isset($data->area) ? $data->area->name:'--'}}
@@ -227,6 +233,15 @@
                                 <div class="col-sm-10">
                                     <input id="title" name="title" type="text" class="form-control"
                                            placeholder="楼盘名"
+                                           value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="video" class="col-sm-2 control-label">楼盘视频</label>
+
+                                <div class="col-sm-10">
+                                    <input id="video" name="video" type="text" class="form-control"
+                                           placeholder="楼盘视频"
                                            value="">
                                 </div>
                             </div>
@@ -393,6 +408,7 @@
                     //对象配置
                     $("#id").val(msgObj.id);
                     $("#title").val(msgObj.title);
+                    $("#video").val(msgObj.video);
                     $("#address").val(msgObj.address);
                    $("#image").val(msgObj.image);
                     //$("#image_id").val(msgObj.image_ids);
@@ -437,6 +453,12 @@
             if (judgeIsNullStr(title)) {
                 $("#title").focus();
                 console.log("title is error");
+                return false;
+            }
+            var video = $("#video").val();
+            if (judgeIsNullStr(video)) {
+                $("#video").focus();
+                console.log("video is error");
                 return false;
             }
             var price = $("#price").val();
