@@ -402,6 +402,7 @@
                                             value="" onchange="changeYongjinType();">
                                         <option value="0">按固定金额</option>
                                         <option value="1">按千分比分成</option>
+                                        {{--<option value="1">按百分比分成</option>--}}
                                     </select>
                                 </div>
                             </div>
@@ -555,12 +556,14 @@
                 return false;
             }
             //如果是千分比
-            if (yongjin_type == 1 && yongjin_value > 5) {
+            if (yongjin_type == 1 && yongjin_value > 100) {
                 $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
                 $("#tipModal").modal('show');
                 console.log("yongjin set error");
                 return false;
             }
+
+
             return true;
         }
 

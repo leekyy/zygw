@@ -105,6 +105,10 @@ class HuxingManager
         if ($yongjin_type == '1') {
             $text = $text . "按千分比 " . $yongjin_value . "‰";
         }
+
+//        if ($yongjin_type == '2') {
+//            $text = $text . "按百分比 " . $yongjin_value . "%";
+//        }
         return $text;
     }
     /*
