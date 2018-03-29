@@ -523,6 +523,31 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+
+
+
+    {{--提示Modal--}}
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body" id="tipModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button id="delConfrimModal_confirm_btn" data-value=""
+                            class="btn btn-success"
+                            data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 @endsection
 
 @section('script')
@@ -591,22 +616,22 @@
                     $("#kaipantime").val(msgObj.kaipantime);
                     $("#jiaopantime").val(msgObj.jiaopantime);
                     $("#developer").val(msgObj.developer)
-                    $("#property").attr("src", msgObj.property);
+                    $("#property").val( msgObj.property);
                     $("#size").val(msgObj.size);
                     $("#households").val(msgObj.households);
                     $("#plotratio").val(msgObj.plotratio);
                     $("#green").val(msgObj.green);
-                    $("#park").attr("src", msgObj.park);
+                    $("#park").val( msgObj.park);
                     $("#parkper").val(msgObj.parkper);
                     $("#price").val(msgObj.price);
                     $("#propertyfee").val(msgObj.propertyfee);
                     $("#buildtype").val(msgObj.buildtype);
-                    $("#decorate").attr("src", msgObj.decorate);
+                    $("#decorate").val( msgObj.decorate);
                     $("#years").val(msgObj.years);
                     $("#shangye").val(msgObj.shangye);
                     $("#jiaoyu").val(msgObj.jiaoyu);
                     $("#jiaotong").val(msgObj.jiaotong);
-
+                    $("#huanjing").val(msgObj.huanjing);
                     //展示modal
                     $("#addHouseModal").modal('show');
                 }
@@ -706,6 +731,12 @@
             var jiaotong = $("#jiaotong").val();
             if (judgeIsNullStr(jiaotong)) {
                 $("#jiaotong").focus();
+                return false;
+            }
+
+            var huanjing = $("#huanjing").val();
+            if (judgeIsNullStr(huanjing)) {
+                $("#huanjing").focus();
                 return false;
             }
 
