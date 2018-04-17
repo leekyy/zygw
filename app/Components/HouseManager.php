@@ -52,7 +52,7 @@ class HouseManager
      */
     public static function searchByName($search_word)
     {
-        $hourses = House::where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->get();
+        $hourses = House::where('title', 'like', '%' . $search_word . '%')->orderby('id', 'desc')->paginate(Utils::PAGE_SIZE);
         return $hourses;
     }
 
@@ -177,8 +177,8 @@ class HouseManager
             $house->types = HouseTypeManager::getListByIds($types);
             $labels = explode(',', $house->label_ids);
             $house->labels = HouselabelManager::getListByIds($labels);
-            $images=explode(',',$house->image_ids);
-            $house->images =HouseImageManager::getListByIds($images);
+            $images = explode(',', $house->image_ids);
+            $house->images = HouseImageManager::getListByIds($images);
             $house->area = HouseAreaManager::getById($house->area_id);
         }
         if (strpos($level, '1') !== false) {
@@ -284,7 +284,7 @@ class HouseManager
             'area' => $area,
             'type' => $type,
             'label' => $label,
-            'image'=>$image,
+            'image' => $image,
         ]);
         return $houseOptions;
     }

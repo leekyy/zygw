@@ -141,8 +141,10 @@ class HouseController
         $upload_token = QNManager::uploadToken();
         $houseTypes = HouseTypeManager::getList(); //获取房源类型
         $houseLabels = HouselabelManager::getList();        //获取房源标签
+        $houseAreas = HouseAreaManager::getList();  //获取楼盘区域
+
         return view('admin.house.index', ['admin' => $admin, 'datas' => $houses, 'upload_token' => $upload_token
-            , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels]);
+            , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels, 'houseAreas' => $houseAreas]);
     }
 
 
@@ -171,7 +173,6 @@ class HouseController
         $data = $request->all();
         return redirect('/admin/house/detail?house_id=' . $data['house_id']);
     }
-
 
 
     //新建或编辑楼盘-get
@@ -280,11 +281,11 @@ class HouseController
         $house_id = $data['house_id'];
         $house = HouseManager::getById($house_id);
         $houses = HouseDetailManager::getHouseDetailByHouseId($data['house_id']);
-       // return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
+        // return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
         $admin = $request->session()->get('admin');
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.house.detail', ['admin' => $admin, 'datas' => $houses,'house' => $house,  'upload_token' => $upload_token]);
+        return view('admin.house.detail', ['admin' => $admin, 'datas' => $houses, 'house' => $house, 'upload_token' => $upload_token]);
 
     }
 
