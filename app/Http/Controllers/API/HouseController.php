@@ -122,6 +122,29 @@ class HouseController extends Controller
         return ApiResponse::makeResponse(true, $huxings, ApiResponse::SUCCESS_CODE);
     }
 
+    /*
+     * 根据id获取户型详情
+     *
+     * By TerryQi
+     *
+     * 2018-02-03
+     */
+    public function getHuxingById(Request $request)
+    {
+        $data = $request->all();
+        //合规校验
+        $requestValidationResult = RequestValidator::validator($request->all(), [
+            'huxing_id' => 'required',
+        ]);
+        if ($requestValidationResult !== true) {
+            return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
+        }
+        $huxing = HuxingManager::getById($data['huxing_id']);
+        $huxing = HuxingManager::getInfoByLevel($huxing, '0');
+        return ApiResponse::makeResponse(true, $huxing, ApiResponse::SUCCESS_CODE);
+    }
+
+
     /*根据楼盘id获取楼盘参数
 
      * By yinyue
@@ -129,7 +152,8 @@ class HouseController extends Controller
      * 2018-3-01
      */
 
-    public function getHouseDetailByHouseId(Request $request){
+    public function getHouseDetailByHouseId(Request $request)
+    {
         $data = $request->all();
         $requestValidationResult = RequestValidator::validator($request->all(), [
             'house_id' => 'required',
@@ -141,6 +165,7 @@ class HouseController extends Controller
         return ApiResponse::makeResponse(true, $housedetail, ApiResponse::SUCCESS_CODE);
 
     }
+
     /*
      * 获取楼盘下的置业顾问列表
      *
