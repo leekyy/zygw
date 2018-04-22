@@ -608,6 +608,8 @@ class BaobeiManager
         }
         if ($can_jiesuan_status != null) {
             $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+            //只有成交以后的报备单才面临可结算的状态，因此增加baobei_status = 2\3\4
+            $baobeis = $baobeis->wherein('baobei_status', ['2', '3', '4']);
         }
         if ($pay_zhongjie_status != null) {
             $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
@@ -641,6 +643,8 @@ class BaobeiManager
         }
         if ($can_jiesuan_status != null) {
             $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+            //只有成交以后的报备单才面临可结算的状态，因此增加baobei_status = 2\3\4
+            $baobeis = $baobeis->wherein('baobei_status', ['2', '3', '4']);
         }
         if ($pay_zhongjie_status != null) {
             $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
@@ -667,6 +671,8 @@ class BaobeiManager
         }
         if ($can_jiesuan_status != null) {
             $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+            //只有成交以后的报备单才面临可结算的状态，因此增加baobei_status = 2\3\4
+            $baobeis = $baobeis->wherein('baobei_status', ['2', '3', '4']);
         }
         if ($pay_zhongjie_status != null) {
             $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);
@@ -701,6 +707,8 @@ class BaobeiManager
         }
         if ($can_jiesuan_status != null) {
             $baobeis = $baobeis->where('can_jiesuan_status', '=', $can_jiesuan_status);
+            //只有成交以后的报备单才面临可结算的状态，因此增加baobei_status = 2\3\4
+            $baobeis = $baobeis->wherein('baobei_status', ['2', '3', '4']);
         }
         if ($pay_zhongjie_status != null) {
             $baobeis = $baobeis->where('pay_zhongjie_status', '=', $pay_zhongjie_status);

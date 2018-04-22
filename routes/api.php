@@ -67,7 +67,7 @@ Route::group(['prefix' => '', 'middleware' => ['BeforeRequest']], function () {
     Route::get('house/getHuxings', 'API\HouseController@getHuxingsByHouseId');       //获取楼盘下所有生效的产品（户型）
     Route::get('house/getHouseDetail', 'API\HouseController@getHouseDetailByHouseId');       //获取楼盘下的楼盘参数
     Route::get('house/getZYGWs', 'API\HouseController@getZYGWsByHouseId')->middleware('CheckToken');       //获取楼盘下所有生效的置业顾问
-    Route::get('huxing/getById', 'API\HouseController@getHuxingById');       //根据id获取户型信息
+    Route::get('huxing/getById', 'API\HouseController@getHuxingById');       //根据id获取户型信息-调整controller By TerryQi 需要建立HuxingContoller
 
     //报备相关
     Route::get('baobei/getById', 'API\BaobeiController@getById');       //获取报备选项
