@@ -14,6 +14,7 @@ use App\Components\HouseDetailManager;
 use App\Components\HouseManager;
 use App\Components\HuxingManager;
 use App\Components\HouselabelManager;
+use App\Components\HuxingStyleManager;
 use App\Components\UserManager;
 use App\Components\Utils;
 use App\Components\ZYGWManager;
@@ -141,6 +142,14 @@ class HouseController extends Controller
         }
         $huxing = HuxingManager::getById($data['huxing_id']);
         $huxing = HuxingManager::getInfoByLevel($huxing, '0');
+
+        $con_arr = array(
+            'huxing_id' => $huxing->id,
+            'status' => '1'
+        );
+        $huxingStyles = HuxingStyleManager::getListByCon($con_arr, false);
+        $huxing->huxingStyles = $huxingStyles;
+
         return ApiResponse::makeResponse(true, $huxing, ApiResponse::SUCCESS_CODE);
     }
 
