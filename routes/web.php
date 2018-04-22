@@ -89,7 +89,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/house/detail', 'Admin\HouseController@detail');//根据id获取楼盘详细信息
     Route::get('/house/del/{id}', 'Admin\HouseController@delHouseDetail');//删除楼盘
     Route::get('/house/getHouseDetailById', 'Admin\HouseController@getHouseDetailById');//根据id获取产品信息
-   Route::post('/detail/edit', 'Admin\HouseController@editHouseDetail');//新建或编辑楼盘
+    Route::post('/detail/edit', 'Admin\HouseController@editHouseDetail');//新建或编辑楼盘
     Route::post('/detail/edit', 'Admin\HouseController@editPostHouseDetail');//新建或编辑楼盘
 
     //楼盘下的产品管理
@@ -100,6 +100,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::get('/huxing/getById', 'Admin\HuxingController@getById');//根据id获取产品信息
     Route::get('/huxing/setStatus/{id}', 'Admin\HuxingController@setStatus');  //设置产品状态
     Route::post('/huxing/editYongjin', 'Admin\HuxingController@editYongjin');//新建或编辑产品的佣金
+
+    //产品下的户型样式
+    Route::get('/huxingStyle/index', 'Admin\HuxingStyleController@index');//根据户型id获取户型样式
+    Route::post('/huxingStyle/edit', 'Admin\HuxingStyleController@edit');//新建或编辑户型样式
+    Route::post('/huxingStyle/edit', 'Admin\HuxingStyleController@editPost');//新建或编辑户型样式
+    Route::get('/huxingStyle/getById', 'Admin\HuxingStyleController@getById');//根据id获取户型样式信息
+    Route::get('/huxingStyle/setStatus/{id}', 'Admin\HuxingStyleController@setStatus');  //设置户型样式状态
+    Route::get('/huxingStyle/del/{id}', 'Admin\HuxingStyleController@del');//删除户型样式
+
 
     //产品佣金设置记录
     Route::get('/huxingYongjinRecord/index', 'Admin\HuxingYongjinRecordController@index');//查看佣金记录
@@ -137,10 +146,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin.login']], function ()
     Route::post('/houseType/edit', 'Admin\HouseTypeController@editPost');  //编辑楼盘标签
     Route::get('/houseType/getById', 'Admin\HouseTypeController@getById');  //根据id获取商品信息
     Route::get('/houseType/del/{id}', 'Admin\HouseTypeController@del');//删除楼盘
-
-    //产品图片
-    Route::get('/houseImage/index', 'Admin\HouseImageController@index');  //楼盘相关图片管理首页
-    Route::post('/houseImage/edit', 'Admin\HouseImageController@editPost');  //编辑楼盘图片
 
     //系统配置信息相关
     Route::get('/system/index', 'Admin\SystemController@index');  //系统配置首页信息

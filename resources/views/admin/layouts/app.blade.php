@@ -84,6 +84,11 @@
             max-width: 140px !important;
         }
 
+        .con-th-width-mm {
+            min-width: 180px !important;
+            max-width: 180px !important;
+        }
+
         .con-th-width-l {
             min-width: 280px !important;
             max-width: 280px !important;
@@ -289,10 +294,6 @@
                                 <small class="label bg-red pull-right">！</small>
                             </a>
                         </li>
-                        {{--<li><a href="{{url('/admin/houseImage/index')}}"><i class="fa fa-circle-o"></i>楼盘图片管理--}}
-                        {{--<small class="label bg-red pull-right">！</small>--}}
-                        {{--</a>--}}
-                        {{--</li>--}}
                         <li><a href="{{url('/admin/houseLabel/index')}}"><i class="fa fa-circle-o"></i>楼盘标签管理
                                 <small class="label bg-red pull-right">！</small>
                             </a>

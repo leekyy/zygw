@@ -39,6 +39,12 @@ function getHouseById(url, param, callBack) {
 function getHuxingById(url, param, callBack) {
     ajaxRequest(url + "admin/huxing/getById", param, "GET", callBack);
 }
+
+//根据id获取户型样式详情
+function getHuxingStyleById(url, param, callBack) {
+    ajaxRequest(url + "admin/huxingStyle/getById", param, "GET", callBack);
+}
+
 //根据id获取房源信息
 function getHouseDetailById(url, param, callBack) {
     ajaxRequest(url + "admin/house/getHouseDetailById", param, "GET", callBack);
@@ -99,12 +105,10 @@ function editTW(url, param, callBack) {
     ajaxRequest(url + "admin/tw/editTW", param, "post", callBack);
 }
 
-
 //根据id获取积分兑换信息
 function getRuleById(url, param, callBack) {
     ajaxRequest(url + "admin/rule/getById", param, "GET", callBack);
 }
-
 
 //获取系统设置信息
 function getSystemInfo(url, param, callBack) {

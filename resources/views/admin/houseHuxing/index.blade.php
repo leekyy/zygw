@@ -104,8 +104,8 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <img src="{{ $data->image ? $data->image.'?imageView2/1/w/200/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/default_headicon.png')}}"
-                                             class="img-rect-30 radius-5">
+                                        <img src="{{ $data->image ? $data->image.'?imageView2/1/w/300/h/200/interlace/1/q/75|imageslim' : URL::asset('/img/default_headicon.png')}}"
+                                             style="width: 40px;height: 30px;">
                                     </td>
                                     <td>
                                         <div class="line-height-30">
@@ -140,7 +140,7 @@
                                         @endif
 
                                     </td>
-                                    <td class="con-th-width-m">
+                                    <td class="con-th-width-mm">
                                         <span class="line-height-30">
                                               <a href="{{URL::asset('/admin/huxing/setStatus')}}/{{$data->id}}?opt=1"
                                                  class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
@@ -174,6 +174,13 @@
                                                data-toggle="tooltip"
                                                data-placement="top" title="佣金设置记录">
                                                 <i class="fa fa-align-justify opt-btn-i-size"></i>
+                                            </a>
+                                            <a href="{{URL::asset('/admin/huxingStyle/index')}}?huxing_id={{$data->id}}"
+                                               class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="产品下户型管理">
+                                                <i class="fa fa-gg opt-btn-i-size"></i>
                                             </a>
                                         </span>
                                     </td>
@@ -399,7 +406,7 @@
                                 <label for="set_yongjin_type" class="col-sm-2 control-label">佣金类型</label>
                                 <div class="col-sm-10">
                                     <select id="set_yongjin_type" name="set_yongjin_type" class="form-control"
-                                            value="" onchange="changeYongjinType();">
+                                            value="" onchange="changeSetYongjinType();">
                                         <option value="0">按固定金额</option>
                                         <option value="1">按千分比分成</option>
                                         {{--<option value="1">按百分比分成</option>--}}
@@ -407,7 +414,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label id="set_yongjin_value_text" for="yongjin_value"
+                                <label id="set_yongjin_value_text" for="set_yongjin_value"
                                        class="col-sm-2 control-label">佣金(元)</label>
                                 <div class="col-sm-10">
                                     <input id="set_yongjin_value" name="set_yongjin_value" type="text"
@@ -717,22 +724,30 @@
         //监听更改佣金类型
         function changeYongjinType() {
             //同时控制2个modal
-            var set_yongjin_type = $("#set_yongjin_type").val();
             var yongjin_type = $("#yongjin_type").val();
 
             //如果是固定金额
             if (yongjin_type == "0") {
                 $("#yongjin_value_text").text("金额(元)");
             }
-            if (set_yongjin_type == "0") {
-                $("#set_yongjin_value_text").text("金额(元)");
-            }
             //如果是千分比
             if (yongjin_type == "1") {
                 $("#yongjin_value_text").text("千分比(‰)");
             }
+        }
+
+        //监听更改佣金类型
+        function changeSetYongjinType() {
+            //同时控制2个modal
+            var set_yongjin_type = $("#set_yongjin_type").val();
+
+            //如果是固定金额
+            if (set_yongjin_type == "0") {
+                $("#set_yongjin_value_text").text("金额(元)");
+            }
+            //如果是千分比
             if (set_yongjin_type == "1") {
-                $("#yongjin_value_text").text("千分比(‰)");
+                $("#set_yongjin_value_text").text("千分比(‰)");
             }
         }
 

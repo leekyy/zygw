@@ -15,7 +15,6 @@ use App\Components\BaobeiManager;
 use App\Components\DateTool;
 use App\Components\HouseAreaManager;
 use App\Components\HouseDetailManager;
-use App\Components\HouseImageManager;
 use App\Components\HouselabelManager;
 use App\Components\HouseTypeManager;
 use App\Components\QNManager;
@@ -53,7 +52,6 @@ class HouseController
         $houseTypes = HouseTypeManager::getList(); //获取楼盘类型
         $houseLabels = HouselabelManager::getList();        //获取楼盘标签
         $houseAreas = HouseAreaManager::getList();  //获取楼盘区域
-
 
         return view('admin.house.index', ['admin' => $admin, 'datas' => $houses, 'upload_token' => $upload_token
             , 'houseTypes' => $houseTypes, 'houseLabels' => $houseLabels, 'houseAreas' => $houseAreas]);
@@ -263,8 +261,8 @@ class HouseController
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
 
-        $admin = HouseManager::getById($data['id']);
-        return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);
+        $house = HouseManager::getById($data['id']);
+        return ApiResponse::makeResponse(true, $house, ApiResponse::SUCCESS_CODE);
 
     }
 

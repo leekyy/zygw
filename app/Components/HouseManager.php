@@ -41,6 +41,7 @@ class HouseManager
      */
     public static function getListByCon($con)
     {
+
     }
 
     /*
@@ -178,7 +179,6 @@ class HouseManager
             $labels = explode(',', $house->label_ids);
             $house->labels = HouselabelManager::getListByIds($labels);
             $images = explode(',', $house->image_ids);
-            $house->images = HouseImageManager::getListByIds($images);
             $house->area = HouseAreaManager::getById($house->area_id);
         }
         if (strpos($level, '1') !== false) {
@@ -279,12 +279,10 @@ class HouseManager
         $area = HouseAreaManager::getList();
         $type = HouseTypeManager::getList();
         $label = HouselabelManager::getList();
-        $image = HouseImageManager::getList();
         $houseOptions = new Collection([
             'area' => $area,
             'type' => $type,
             'label' => $label,
-            'image' => $image,
         ]);
         return $houseOptions;
     }

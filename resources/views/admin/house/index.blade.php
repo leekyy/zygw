@@ -148,7 +148,7 @@
                                                 class="btn btn-social-icon btn-danger margin-right-10 opt-btn-size"
                                                 data-toggle="tooltip"
                                                 data-placement="top" title="查看该楼盘的楼盘详情">
-                                                <i class="fa fa-bar-chart opt-btn-i-size"></i>
+                                                <i class="fa fa-th opt-btn-i-size"></i>
                                             </a>
                                             <a href="{{URL::asset('/admin/zygw/index')}}?house_id={{$data->id}}"
                                                class="btn btn-social-icon btn-info margin-right-10 opt-btn-size"
@@ -370,7 +370,6 @@
 
 @section('script')
     <script type="application/javascript">
-
 
         //优化icheck展示
         function setICheck() {
