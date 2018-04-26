@@ -246,6 +246,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="seq" class="col-sm-2 control-label">展示顺序</label>
+                                <div class="col-sm-10">
+                                        <input id="seq" name="seq" type="number" class="form-control"
+                                               placeholder="展示顺序"
+                                               value="0">
+                                        <span>值越大越靠前</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="area_id" class="col-sm-2 control-label">区域</label>
 
                                 <div class="col-sm-10">
@@ -407,6 +416,7 @@
                     //对象配置
                     $("#id").val(msgObj.id);
                     $("#title").val(msgObj.title);
+                    $("#seq").val(msgObj.seq);
                     $("#video").val(msgObj.video);
                     $("#address").val(msgObj.address);
                     $("#image").val(msgObj.image);

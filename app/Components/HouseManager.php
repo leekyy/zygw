@@ -115,7 +115,7 @@ class HouseManager
         if (array_key_exists('price_max', $con) && !Utils::isObjNull($con['price_max'])) {
             $houses = $houses->where('price', '<=', $con['price_max']);
         }
-        $houses = $houses->orderby('id', 'desc')->get();
+        $houses = $houses->orderby('seq', 'desc')->orderby('id', 'desc')->get();
         return $houses;
     }
 
@@ -222,11 +222,12 @@ class HouseManager
         if (array_key_exists('image', $data)) {
             $house->image = array_get($data, 'image');
         }
-
         if (array_key_exists('video', $data)) {
             $house->video = array_get($data, 'video');
         }
-
+        if (array_key_exists('seq', $data)) {
+            $house->seq = array_get($data, 'seq');
+        }
         if (array_key_exists('title', $data)) {
             $house->title = array_get($data, 'title');
         }
