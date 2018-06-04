@@ -307,10 +307,10 @@
                                 <label for="size" class="col-sm-2 control-label">面积区间</label>
 
                                 <div class="col-sm-10">
-                                    <input id="size_min" name="size_min" type="text" class="form-control"
+                                    <input id="size_min" name="size_min" type="number" class="form-control"
                                            placeholder="面积区间左侧边界，例如56.6"
                                            value="">
-                                    <input id="size_max" name="size_max" type="text"
+                                    <input id="size_max" name="size_max" type="number"
                                            class="form-control margin-top-10"
                                            placeholder="面积区间右侧边界，例如280"
                                            value="">

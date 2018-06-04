@@ -329,3 +329,65 @@ function getTimeUnitStr(unit) {
             return "月";
     }
 }
+
+function regular(type, value) {
+    switch (type) {
+        // 手机号码
+        case 'phone_num':
+            var reg = new RegExp("^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$")
+            return reg.test(value) ? true : '请填写正确的手机号码格式'
+            break
+        // 数字
+        case 'number':
+            var reg = new RegExp("^\\d+\.?\\d+$")
+            return reg.test(value) ? true : '请填写正确的数字格式'
+            break
+        // 身份证号码
+        case 'id_card':
+            var reg = new RegExp("^(\\d{6})(\\d{4})(\\d{2})(\\d{2})(\\d{3})([0-9]|X)$")
+            return reg.test(value) ? true : '请填写正确的身份证号码格式'
+            break
+        // 日期
+        case 'date':
+            var reg = new RegExp("^\\d{4}-\\d{1,2}-\\d{1,2}$")
+            return reg.test(value) ? true : '请填写正确的日期格式'
+            break
+        // 时间
+        case 'time':
+            var reg = new RegExp("^(20|21|22|23|[0-1]\\d):[0-5]d:[0-5]\\d$")
+            return reg.test(value) ? true : '请填写正确的时间格式'
+            break
+        // 日期时间
+        case 'date_time':
+            var reg = new RegExp("^[1-9]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])s+(20|21|22|23|[0-1]\\d):[0-5]d:[0-5]\\d$")
+            return reg.test(value) ? true : '请填写正确的日期及时间格式'
+            break
+        // 验证码
+        case 'verify_code':
+            var reg = new RegExp("^\\d{4}$")
+            return reg.test(value) ? true : '请填写正确的验证码格式'
+            break
+        // 邮政编码
+        case 'post_code':
+            var reg = new RegExp("^[1-9][0-9]{5}$")
+            return reg.test(value) ? true : '请填写正确的验证码格式'
+            break
+        // 弱密码
+        case 'weak_password':
+            var reg = new RegExp("^\\w{6,15}$")
+            return reg.test(value) ? true : '密码长度在6~15之间，只能包含字母、数字和下划线'
+            break
+        // 强密码
+        case 'strong_password':
+            var reg = new RegExp("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,10}$")
+            return reg.test(value) ? true : '密码必须包含大小写字母和数字的组合，不能使用特殊字符，长度在8-10之间'
+            break
+        // 电子邮箱
+        case 'e-mail':
+            var reg = new RegExp("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$")
+            return reg.test(value) ? true : '请填写正确的Email地址格式'
+            break
+        default:
+            return true
+    }
+}

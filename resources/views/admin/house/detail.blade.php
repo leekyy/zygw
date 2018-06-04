@@ -340,7 +340,7 @@
                                 <label for="size" class="col-sm-2 control-label">面积</label>
 
                                 <div class="col-sm-10">
-                                    <input id="size" name="size" type="text" class="form-control"
+                                    <input id="size" name="size" type="number" class="form-control"
                                            placeholder="面积"
                                            value="">
                                 </div>
@@ -394,7 +394,7 @@
                                 <label for="price" class="col-sm-2 control-label">均价</label>
 
                                 <div class="col-sm-10">
-                                    <input id="price" name="price" type="text" class="form-control"
+                                    <input id="price" name="price" type="number" class="form-control"
                                            placeholder="均价"
                                            value="">
                                 </div>

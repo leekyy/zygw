@@ -66,14 +66,14 @@
                             <div class="form-group">
                                 <label for="deal_size" class="col-sm-3 control-label">成交面积（㎡）</label>
                                 <div class="col-sm-9">
-                                    <input id="deal_size" name="deal_size" type="text" class="form-control"
+                                    <input id="deal_size" name="deal_size" type="number" class="form-control"
                                            value="{{$data->deal_size}}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="deal_price" class="col-sm-3 control-label"> 成交金额（元）</label>
                                 <div class="col-sm-9">
-                                    <input id="deal_price" name="deal_price" type="text" class="form-control"
+                                    <input id="deal_price" name="deal_price" type="number" class="form-control"
                                            value="{{$data->deal_price}}">
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                             <div class="form-group">
                                 <label for="yongjin" class="col-sm-3 control-label"> 成交佣金（元）</label>
                                 <div class="col-sm-9">
-                                    <input id="yongjin" name="yongjin" type="text" class="form-control"
+                                    <input id="yongjin" name="yongjin" type="number" class="form-control"
                                            value="{{$data->yongjin}}" disabled>
                                 </div>
                             </div>
