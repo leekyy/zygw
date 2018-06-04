@@ -141,43 +141,6 @@
                                            value="@{{=it.author}}">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="img" class="col-sm-2 control-label">封面*</label>
-                                <div class="col-sm-10">
-                                    <input id="img" name="img" type="text" class="form-control"
-                                           placeholder="图片网路链接地址"
-                                           value="@{{=it.img}}">
-                                </div>
-                            </div>
-                            <div class="text-center margin-top-10">
-                                <div id="container">
-                                    @{{? it.img}}
-                                    <img id="pickfiles" src="@{{=it.img}}" style="width: 260px;">
-                                    @{{??}}
-                                    <img id="pickfiles" src="{{URL::asset('/img/upload.png')}}" style="width: 260px;">
-                                    @{{?}}
-                                </div>
-                                <div style="font-size: 12px;margin-top: 10px;" class="text-gray">*请上传500*260尺寸图片
-                                </div>
-                            </div>
-                            <div class="form-group margin-top-10">
-                                <label for="type" class="col-sm-2 control-label">位置</label>
-                                <div class="col-sm-10">
-                                    <div class="margin-top-10 row">
-                                        {{--<div class="row">--}}
-                                            {{--@foreach($hposs as $hpos)--}}
-                                                {{--<div class="col-xs-4">--}}
-                                                    {{--<input type="checkbox" name="hpos_id" id="hpos_id{{$hpos->id}}"--}}
-                                                           {{--value="{{$hpos->id}}"--}}
-                                                           {{--class="minimal">--}}
-                                                    {{--<span--}}
-                                                            {{--class="margin-left-10">{{$hpos->name}}</span>--}}
-                                                {{--</div>--}}
-                                            {{--@endforeach--}}
-                                        {{--</div>--}}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <!-- /.box-body -->
                     </div>

@@ -57,15 +57,14 @@ class ADManager
     }
 
 
-    /*根据type属性获取轮播图类型
+    /*根据级别获取信息
      * By Yinyue
      * 2017-2-26
      */
-    public static function getByType($type)
+    public static function getInfoByLevel($info)
     {
-        $tw = AD::where('type', '=', $type)->first();
-        $tw->steps = ADStepManager::getStepsByFidAndFtable($tw->id,'t_ad_info');
-        return $tw;
+        $info->steps = ADStepManager::getStepsByFidAndFtable($info->id, 't_ad_info');
+        return $info;
     }
 
 

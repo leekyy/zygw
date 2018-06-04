@@ -64,12 +64,13 @@ class TWController
         if (!$tw) {
             return ApiResponse::makeResponse(false, '未找到合作细则信息', ApiResponse::INNER_ERROR);
         }
-        $tw = TWManager::getByType($tw->type);
+        $tw = TWManager::getInfoByLevel($tw);
         return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
 
-    public function getByType(Request $request){
-        $data=$request->all();
+    public function getByType(Request $request)
+    {
+        $data = $request->all();
         $requestValidationResult = RequestValidator::validator($request->all(), [
             'type' => 'required',
         ]);
@@ -77,7 +78,7 @@ class TWController
             return ApiResponse::makeResponse(false, $requestValidationResult, ApiResponse::MISSING_PARAM);
         }
 //        $tw=TWManager::getById($data['id']);
-        $tw=TWManager::getTWByType($data['type']);
+        $tw = TWManager::getTWByType($data['type']);
 
         if (!$tw) {
             return ApiResponse::makeResponse(false, '未找到合作细则信息', ApiResponse::INNER_ERROR);
@@ -86,11 +87,6 @@ class TWController
         return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
 
     }
-
-
-
-
-
 
 
     //编辑合作细则,返回页面
@@ -109,8 +105,9 @@ class TWController
         }
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.tw.editTW', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token, ]);
+        return view('admin.tw.editTW', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token,]);
     }
+
     /*
      * 编辑合作细则详细信息
      *
@@ -155,6 +152,7 @@ class TWController
         $tw = TWManager::getByType($tw->type);
         return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
+
     /*
      * 分类首页
      *
@@ -172,6 +170,7 @@ class TWController
         }
         return view('admin.xjType.index', ['admin' => $admin, 'datas' => $xjTypes]);
     }
+
     /*
      * 根据id获取合作细则详情
      *
@@ -194,6 +193,7 @@ class TWController
         $upload_token = QNManager::uploadToken();
         return view('admin.tw.editStep', ['admin' => $admin, 'data' => $xj, 'upload_token' => $upload_token]);
     }
+
     /*
      * 添加宣教步骤信息
      *
@@ -211,6 +211,7 @@ class TWController
         $tw_step->save();
         return redirect('/admin/tw/setStep/' . $tw_step->f_id);
     }
+
     //设置状态
     public function setStatus(Request $request, $id)
     {
@@ -232,6 +233,7 @@ class TWController
         $xj->save();
         return redirect('/admin/tw/index');
     }
+
     //删除宣教
     public function del(Request $request, $id)
     {
@@ -242,6 +244,7 @@ class TWController
         $xj->delete();
         return redirect('/admin/tw/index');
     }
+
     //删除合作细则步骤
     public function delStep(Request $request, $id)
     {
@@ -253,6 +256,7 @@ class TWController
         $tw_step->delete();
         return redirect('/admin/tw/setStep/' . $xj_id);
     }
+
     //新建或编辑宣教-get
     public function edit(Request $request)
     {

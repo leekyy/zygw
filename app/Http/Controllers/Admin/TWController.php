@@ -81,11 +81,7 @@ class TWController
         $tw = new TWInfo();
         if (array_key_exists('id', $data)) {
             $tw = TWManager::getById($data['id']);
-            //步骤信息
-            $tw->steps = [];
-
-           // $tw = TWStepManager::getStepById($data['f_id']);
-            $tw = TWManager::getByType($tw->type);
+            $tw = TWManager::getInfoByLevel($tw);
         }
 
         //生成七牛token
@@ -126,7 +122,6 @@ class TWController
         foreach ($new_steps as $new_step) {
             $new_step['f_id'] = $tw->id;
             $new_step['f_table'] = "t_tw_info";
-           // $new_step['f_table'] = "t_ad_info";
             $twStep = new TWStep();
             if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
                 $twStep = TWStepManager::getById($new_step['id']);
@@ -135,7 +130,7 @@ class TWController
             $twStep->save();
         }
         //重新获取合作细则信息并返回
-        $tw = TWManager::getByType($tw->type);
+        $tw = TWManager::getInfoByLevel($tw);
         return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
 

@@ -39,26 +39,7 @@
 
     {{--页面加载模板--}}
     <script id="message-content-template" type="text/x-dot-template">
-        <div>
-            <div class="font-size-16">
-                @{{=it.title}}
-            </div>
 
-            <div class="border-t margin-top-10 margin-bottom-10">
-            </div>
-            <div class="font-size-14 grey-font">
-                <span>@{{=it.created_at_str}}</span>
-                <span class="margin-left-10 text-info">@{{=it.author}}</span>
-                <span class="margin-left-10">阅读 @{{=it.show_num}}</span>
-            </div>
-            <div class="grey-bg margin-top-10" style="padding: 10px;">
-                @{{=it.desc_html}}
-            </div>
-            <div class="text-right margin-top-15">
-                <img src="{{URL::asset('/img/edit_icon.png')}}" class="opt-btn-size" onclick="editTWInfo();">
-            </div>
-            <div style="border: 1px #F1F1F1 dashed;" class="margin-top-20 margin-bottom-20"></div>
-        </div>
         <div class="margin-top-15 margin-bottom-15 text-center">
             <img src="{{URL::asset('/img/add_button_icon.png')}}" style="width: 36px;height: 36px;"
                  onclick="editStep(0,'add');">
@@ -357,43 +338,7 @@
             $("#editTWModal").modal('show');
             setICheck();
         }
-        //点击编辑图文
-        function clickEditTW() {
-            //对宣教对象基础信息进行赋值
-            twInfo.title = $("#title").val();
-            twInfo.author = $("#author").val();
-            twInfo.desc = $("#desc").val();
-            twInfo.img = $("#img").val();
-            twInfo.hpos_ids = "";
-            var hpos_arr = [];
-            $('input:checkbox').each(function () {
-                if ($(this).is(':checked') == true) {
-                    hpos_arr.push($(this).attr('value'));
-                }
-            });
-            twInfo.hpos_ids = hpos_arr.toString();
-            //合规校验
-            if (judgeIsNullStr(twInfo.title)) {
-                $("#title").focus();
-                return;
-            }
-            if (judgeIsNullStr(twInfo.author)) {
-                $("#author").focus();
-                return;
-            }
-            if (judgeIsNullStr(twInfo.desc)) {
-                $("#desc").focus();
-                return;
-            }
-            if (judgeIsNullStr(twInfo.img)) {
-                $("#img").focus();
-                return;
-            }
-            //加载页面
-            loadHtml();
-            console.log("twInfo:" + JSON.stringify(twInfo));
-            $("#editTWModal").modal('hide');
-        }
+
         //点击编辑步骤信息
         function editStep(index, edit_or_add) {
             console.log("editStep index:" + index + " edit_or_add:" + edit_or_add);

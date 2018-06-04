@@ -114,18 +114,17 @@ class ADController
     {
         $admin = $request->session()->get('admin');
         $data = $request->all();
-        $tw = new AD();
+        $ad = new AD();
         if (array_key_exists('id', $data)) {
-            $tw = ADManager::getADById($data['id']);
-            //步骤信息
-            $tw->steps = [];
-            $tw = ADManager::getByType($tw->type);
+            $ad = ADManager::getADById($data['id']);
+            $ad = ADManager::getInfoByLevel($ad);
         }
 
         //生成七牛token
         $upload_token = QNManager::uploadToken();
-        return view('admin.ad.editAD', ['admin' => $admin, 'data' => $tw, 'upload_token' => $upload_token, ]);
+        return view('admin.ad.editAD', ['admin' => $admin, 'data' => $ad, 'upload_token' => $upload_token,]);
     }
+
     /*
         * 编辑详细信息
         *
@@ -140,14 +139,12 @@ class ADController
         $data = $request->all();
 //        dd($data);
         //新建/编辑信息
-        $tw = new AD();
+        $ad = new AD();
         if (array_key_exists('id', $data) && $data['id'] != null) {
-            $tw = ADManager::getADById($data['id']);
+            $ad = ADManager::getADById($data['id']);
         }
-        $tw = ADManager::setInfo($tw, $data);
-        $tw->save();
         //获取数据库中原有的信息
-        $ori_steps = ADStepManager::getStepsByFidAndFtable($tw->id, 't_ad_info');
+        $ori_steps = ADStepManager::getStepsByFidAndFtable($ad->id, 't_ad_info');
         $new_steps = $data['steps'];
         //删除步骤
         foreach ($ori_steps as $ori_step) {
@@ -157,7 +154,7 @@ class ADController
         }
         //新建/编辑步骤
         foreach ($new_steps as $new_step) {
-            $new_step['f_id'] = $tw->id;
+            $new_step['f_id'] = $ad->id;
             $new_step['f_table'] = "t_ad_info";
             $twStep = new TWStep();
             if (array_key_exists('id', $new_step) && !Utils::isObjNull($new_step['id'])) {
@@ -167,8 +164,8 @@ class ADController
             $twStep->save();
         }
         //重新获取合作细则信息并返回
-        $tw = ADManager::getByType($tw->type);
-        return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
+        $ad = ADManager::getInfoByLevel($ad);
+        return ApiResponse::makeResponse(true, $ad, ApiResponse::SUCCESS_CODE);
     }
 
 }

@@ -27,7 +27,7 @@ class TWManager
      * 2017-11-27
      *
      */
-     public static function getById($id)
+    public static function getById($id)
     {
         $tw = TWInfo::where('id', '=', $id)->first();
         return $tw;
@@ -48,16 +48,14 @@ class TWManager
     }
 
 
-
     /*根据type属性获取图文类型
      * By Yinyue
      * 2017-2-26
      */
-    public static function getByType($type)
+    public static function getInfoByLevel($info)
     {
-        $tw = TWInfo::where('type', '=', $type)->first();
-        $tw->steps = TWStepManager::getStepsByFidAndFtable($tw->id,'t_tw_info');
-        return $tw;
+        $info->steps = TWStepManager::getStepsByFidAndFtable($info->id, 't_tw_info');
+        return $info;
     }
 
 
@@ -70,7 +68,7 @@ class TWManager
      */
     public static function getInfoById($info, $level)
     {
-        $info->step =[];
+        $info->step = [];
         $tw = self::getById($info);
 //        if ($tw) {
 //            $tw = self::getInfoByLevel($tw, $level);

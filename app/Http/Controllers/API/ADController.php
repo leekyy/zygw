@@ -59,7 +59,7 @@ class ADController extends Controller
         if (!$ad) {
             return ApiResponse::makeResponse(false, '未找到合作细则信息', ApiResponse::INNER_ERROR);
         }
-        $ad = ADManager::getByType($ad->type);
+        $ad = ADManager::getInfoByLevel($ad);
         return ApiResponse::makeResponse(true, $ad, ApiResponse::SUCCESS_CODE);
     }
 
