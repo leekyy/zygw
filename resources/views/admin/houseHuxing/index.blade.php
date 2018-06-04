@@ -591,7 +591,7 @@
                 return false;
             }
             //如果是千分比
-            if (yongjin_type == 1 && yongjin_value > 5) {
+            if (yongjin_type == 1 && yongjin_value > 100) {
                 $("#tipModalBody").html('<p>请确认佣金类型和金额，可能输入存在错误</p>');
                 $("#tipModal").modal('show');
                 return false;
