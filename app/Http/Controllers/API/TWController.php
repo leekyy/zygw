@@ -68,6 +68,13 @@ class TWController
         return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
     }
 
+    /*
+     * 根据类型获取图文详情
+     *
+     * By TerryQi
+     *
+     * 2018-06-05
+     */
     public function getByType(Request $request)
     {
         $data = $request->all();
@@ -83,7 +90,7 @@ class TWController
         if (!$tw) {
             return ApiResponse::makeResponse(false, '未找到合作细则信息', ApiResponse::INNER_ERROR);
         }
-        $tw = TWManager::getByType($tw->type);
+        $tw = TWManager::getInfoByLevel($tw);
         return ApiResponse::makeResponse(true, $tw, ApiResponse::SUCCESS_CODE);
 
     }
