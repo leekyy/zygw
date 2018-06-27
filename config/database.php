@@ -42,11 +42,11 @@ return [
         //生产数据库
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '47.93.127.4'),
+            'host' => env('DB_HOST', ''),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'zygwdb'),
-            'username' => env('DB_USERNAME', 'zygw'),
-            'password' => env('DB_PASSWORD', 'bK0ObsmK'),
+            'database' => env('DB_DATABASE', ''),
+            'username' => env('DB_USERNAME', ''),
+            'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
